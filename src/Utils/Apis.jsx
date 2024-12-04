@@ -2,7 +2,7 @@ import axios from 'axios'
 const token = `Bearer ${localStorage.getItem('token')}`;
 const forgetTooken = `Bearer ${localStorage.getItem('forgteToken')}`;
 // const token = localStorage.getItem('token');
-
+// tesing
 // const Domain= 'http://89.116.122.211:5000';
 // const Domain= 'http://192.168.20.109:5000';
  const Domain= 'https://www.auth.edu2all.in/sch/';
