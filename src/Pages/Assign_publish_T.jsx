@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import HashLoader from './HashLoaderCom';
 // import { AssignmntGetByIdApi } from '../Utils/Apis'
 // import { AssignmntDeleteByIdApi } from '../Utils/Apis'
-import Add_assign_offcnvs from './Add_assign_offcnvs';
+import Add_assign_offcnvs from './Add_assign_offcnvs_T';
 
 import { TeacherClassGetApi } from '../Utils/Apis'
 // import { AssignmntPutApi } from '../Utils/Apis'

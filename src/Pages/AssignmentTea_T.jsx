@@ -6,12 +6,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import HashLoader from './HashLoaderCom';
 import { TeacherClassGetApi } from '../Utils/Apis'
 import { TeacherSectionRoomByIdGetApi } from '../Utils/Apis'
-import Assign_publish from './Assign_publish';
+import Assign_publish from './Assign_publish_T';
 import { TeacherSubjectByClassIdInSyllabusGetAllApi } from '../Utils/Apis'
-import Assign_archieves from '../Pages/Assign_archieves';
-import Assign_draft from '../Pages/Assign_draft';
+import Assign_archieves from '../Pages/Assign_archieves_T';
+import Assign_draft from '../Pages/Assign_draft_T';
 import { TeacherAssignmntGetAllApi } from '../Utils/Apis';
-import Add_assign_offcnvs from './Add_assign_offcnvs';
+import Add_assign_offcnvs from './Add_assign_offcnvs_T';
 import { useLocation } from 'react-router-dom';
 
 // ## style css area start ####  
