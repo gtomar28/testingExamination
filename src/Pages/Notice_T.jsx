@@ -473,8 +473,6 @@ const Notice = () => {
   const [noticeTitleById, setNoticeTitleById] = useState()
   const [noticeDescriptionById, setNoticeDescriptionById] = useState()
   const [searchKey, setsearchKey] = useState('')
-  // console.log('my search key',searchKey)
-  // console.log('Notice id for update',noticeIdForUpdate)
 
   const [noticeHeading, setNoticeHeading] = useState()
   const [noticeDescription, setNoticeDescription] = useState()
@@ -857,7 +855,7 @@ const Notice = () => {
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyNoticePutApi(noticeIdForUpdate)}>Update</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -916,7 +914,7 @@ const Notice = () => {
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyNoticePostApi()}>Add Notice</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       {/* <Toaster /> */}
                     </div>
                   </div>

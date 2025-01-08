@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { BookManagerPostApi } from '../Utils/Apis'
 import { BookManagerGetAllApi } from '../Utils/Apis'
@@ -464,13 +463,12 @@ const BookListManager = () => {
   const [showdelete, setShowdelete] = useState(true)
   const [hidedelete, setHidedelete] = useState(false)
   const [BookManagerData, setBookManagerData] = useState([])
-  // console.log('my role name for redirect',roleNameForPage)
 
   const [isValidNameRequired, setIsValidNameRequired] = useState(false);
   const [isValidAuthorNameRequired, setIsValidAuthorNameRequired] = useState(false);
   const [isValidNoOfCopyRequired, setIsValidNoOfCopyRequired] = useState(false);
 
-  const token = localStorage.getItem;           
+  const token = localStorage.getItem;
   // CSV 
   const [csvData, setCsvData] = useState([]);
 
@@ -541,7 +539,7 @@ const BookListManager = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1);
   };
 
   useEffect(() => {
@@ -614,7 +612,6 @@ const BookListManager = () => {
     }
   }
 
-
   // ###### validation  end##########
 
   const offcanvasRef = useRef(null);
@@ -623,7 +620,7 @@ const BookListManager = () => {
 
   // post Api 
   const SubcPutDataApi = async () => {
-  
+
     if (FuncValidation()) {
       const formData = new FormData()
       formData.append('bookName', bookName);
@@ -632,7 +629,6 @@ const BookListManager = () => {
       setLoader(true)
       try {
         const response = await BookManagerPostApi(formData);
-        console.log('my book manager list post api response', response)
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
           MyRolPermisGetAllApi()
@@ -660,7 +656,6 @@ const BookListManager = () => {
     setLoader(true)
     try {
       const response = await BookManagerGetAllApi(searchKey, pageNo, pageSize);
-      console.log('My Book get all DATAAA12', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setBookManagerData(response?.data?.Books)
@@ -676,12 +671,10 @@ const BookListManager = () => {
   }
   // Delete api
   const BookManDeleteApi = async (id) => {
-    console.log('my delete id', id)
     setLoader(true)
 
     try {
       const response = await BookManagerDeleteApi(id);
-      // console.log('my-RolPermission-api',response)
       if (response?.status === 200) {
         toast.success(response?.data?.message);
         MyRolPermisGetAllApi()
@@ -708,10 +701,8 @@ const BookListManager = () => {
   const BookManGetByIdApi = async (id) => {
     setIdForUpdate(id)
     setLoader(true)
-
     try {
       const response = await BookmanGetById(id);
-      console.log('My book get by id', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg);
         setBookName(response?.data?.Books?.bookName)
@@ -729,8 +720,8 @@ const BookListManager = () => {
   }
   // Teacher Put api 
   const MyNoticePutApi = async (id) => {
-    
-    if(FuncValidation()){
+
+    if (FuncValidation()) {
       setLoader(true)
       try {
         const formData = new FormData()
@@ -756,12 +747,12 @@ const BookListManager = () => {
           toast.error(response?.data?.message);
           setShow12(true)
         }
-  
+
       } catch (error) {
         console.log(error)
       }
     }
-  
+
   }
 
   const handleForDelete = () => {
@@ -859,7 +850,6 @@ const BookListManager = () => {
                             </svg>
                           </button>
                           <ul className="dropdown-menu anchor-color heading-14">
-                            {/* <li><button  className="dropdown-item" onClick={(e)=>IdTransfer(item.noticeId)}>View Profile</button></li> */}
                             <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop1234" aria-controls="staticBackdrop" onClick={(e) => BookManGetByIdApi(item.bookId)}>Edit</Link></li>
                             <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="staticBackdrop" onClick={(e) => setIdForDelete(item.bookId)}>Delete</Link></li>
                             <Toaster />
@@ -887,8 +877,6 @@ const BookListManager = () => {
 
         </div>
         {/* ################## Off Canvas Area ####################  */}
-
-
 
         {
           show && (
@@ -944,8 +932,7 @@ const BookListManager = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => SubcPutDataApi()}>Add Book</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -997,7 +984,6 @@ const BookListManager = () => {
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label label-color heading-14">Number of Copy</label>
                       <input type="email" className="form-control form-focus  label-color heading-14" value={NumberBook} onChange={(e) => handleNumberOfCopy(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Number of Copy" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className='pt-1'>
                       {isValidNoOfCopyRequired && (
@@ -1009,13 +995,11 @@ const BookListManager = () => {
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label label-color heading-14">Available books</label>
                       <input type="email" className="form-control form-focus  label-color heading-14" value={NumberAvailableBook} onChange={(e) => setNumberBook(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Number of Copy" disabled />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyNoticePutApi(idForUpdate)}>Update Book</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>

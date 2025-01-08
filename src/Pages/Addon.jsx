@@ -166,13 +166,31 @@ const Addon = () => {
   }, [token, pageNo])
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1);
+  };
+
+
+  const handleSearchInputChange = (e) => {
+    const value = e.target.value.trim();
+    setSearchKeyData(value);
+
+    // Only trigger API call if value changes meaningfully
+    if (value === '') {
+      if (searchKeyData !== '') {
+        // Fetch all data when clearing search input
+        getAllSpecialFeature();
+      }
+    } else {
+      // Perform search if there's a non-empty value
+      getAllSpecialFeature();
+    }
   };
 
   const getAllSpecialFeature = async () => {
     try {
       setloaderState(true);
-      var response = await getAllSpeFeatApi(searchKeyData, pageNo, pageSize);
+      const searchKey = searchKeyData.trim() || '';
+      var response = await getAllSpeFeatApi(searchKey, pageNo, pageSize);
       console.log(response, 'feathdbfvghjendvfrd')
       if (response?.status === 200) {
         if (response?.data?.status === 'success') {
@@ -311,7 +329,7 @@ const Addon = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Backspace'){
-      getAllSchoolData();
+      getAllSpecialFeature();
     }
   };
 
@@ -338,7 +356,7 @@ const Addon = () => {
               <div className="row">
                 <div className="col-md-9 col-sm-6 col-8">
                   <div className="d-flex">
-                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" onChange={(e) => setSearchKeyData(e.target.value)} onKeyDown={handleKeyDown} />
+                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" onKeyDown={handleKeyDown} onChange={handleSearchInputChange} />
                     <button className="btn searchButtons text-white" type="button" onClick={getAllSpecialFeature}><h2>Search</h2></button>
                   </div>
                 </div>
@@ -381,16 +399,6 @@ const Addon = () => {
                                     Edit Feature
                                   </button>
                                 </li>
-                                {/* <li className='p-1'>
-                                  <button className="dropdown-item greyText" type="button" data-bs-toggle="offcanvas" data-bs-target="#Edit_feature" aria-controls="Edit_feature" onClick={(e) => getPermBySpeFeaId(item.planFeatureId, item.featureName)}>
-                                    Edit Feature
-                                  </button>
-                                </li> */}
-                                {/* <li className='p-1'>
-                                  <button className="dropdown-item greyText" type="button" data-bs-toggle="offcanvas" data-bs-target="#Delete_staticBackdrop" aria-controls="Delete_staticBackdrop" onClick={() => setdeletFeatureId(item.planFeatureId)}>
-                                    Delete
-                                  </button>
-                                </li> */}
                               </ul>
                             </div>
                           </td>
@@ -460,62 +468,6 @@ const Addon = () => {
               </div>
             </div>
           </div>
-{/* 
-          <div className="offcanvas offcanvas-end p-2" data-bs-backdrop="static" tabIndex="-1" id="Edit_feature" aria-labelledby="staticBackdropLabel">
-            <div className="offcanvas-header modalHighborder p-1">
-              <Link type="button" data-bs-dismiss="offcanvas" aria-label="Close">
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 16 16">
-                  <path fill="#008479" fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-                </svg>
-              </Link>
-              <h2 className="offcanvas-title" id="staticBackdropLabel">Edit Feature Name</h2>
-            </div>
-            <div className="offcanvas-body p-0">
-              <div>
-                {EditFeatureWarn
-                  ?
-                  <>
-                    <div>
-                      <div className="modalLightBorder d-flex p-2">
-                        <div className="p-2"><h3 className='greyText'>Feature Name</h3></div>
-                        <div className="ms-auto p-2"><h3 className='successText'>HR Management</h3></div>
-                      </div>
-                      <div className="p-3">
-                        <h3 className='greyText'>Features</h3>
-                        {PerDataBySpeFeaId.map((item) => (
-                          <>
-                            <div className="d-flex mt-3 border p-2">
-                              <div className=" flex-grow-1"><h3>{item.perName}</h3></div>
-                              <div className=""><h3 onClick={() => removePerBySpeFeaId(item.feaPerId)} style={{ cursor: 'pointer' }}><Icon icon="bitcoin-icons:cross-outline" width="1.5em" height="1.5em" style={{ color: 'black' }} /></h3></div>
-                            </div>
-                          </>
-                        ))}
-                        <p className='text-center p-3'>
-                          <button className='btn updateButtons text-white' onClick={() => EditFeatureBtnClicked()}>Update</button>
-                          <button className='btn cancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                  :
-                  <>
-                    <div>
-                      <p className='modalLightBorder p-2 mb-0'>Feature Name</p>
-                      <div className="mt-3  ">
-                        <div className='correvtSVG p-3 pt-4 rounded-circle'><img src="./images/Correct.svg" alt="" /></div>
-                        <div className="updatetext border m-4 border-2  ms-5 greydiv rounded-3 text-center greyText p-5">
-                          <p className='warningHeading'>Successful Updated</p>
-                          <p className='greyText warningText pt-2'>Your Changes has been<br />Successfully Saved</p>
-                        </div>
-                        <button className='btn contbtn continueButtons text-white' data-bs-dismiss="offcanvas" aria-label="Close" onClick={PageRefreshFeature}>Continue</button>
-                      </div>
-                    </div>
-                  </>
-                }
-              </div>
-            </div>
-          </div> */}
-
           <div className="offcanvas offcanvas-end p-2" data-bs-backdrop="static" tabIndex="-1" id="Delete_staticBackdrop" aria-labelledby="staticBackdropLabel">
             <div className="offcanvas-header ps-0 modalHighborder p-1">
               <Link type="button" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -535,8 +487,8 @@ const Addon = () => {
                       <p className='modalLightBorder p-2'>School List</p>
                       <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                       <p className='text-center warningHeading'>Are you Sure?</p>
-                      <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                      <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Feature Data</p>
+                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Feature Data</p>
                       <p className='text-center p-3'>
                         <button className='btn deleteButtons text-white' onClick={() => deleteSpeFeaById(deletFeatureId)}>Delete</button>
                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
@@ -1251,8 +1203,8 @@ export default Addon
 //                       <p className='modalLightBorder p-2'>School List</p>
 //                       <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
 //                       <p className='text-center warningHeading'>Are you Sure?</p>
-//                       <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-//                       <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+//                       <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Feature Data</p>
+//                       <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Feature Data</p>
 //                       <p className='text-center p-3'>
 //                         <button className='btn deleteButtons text-white' onClick={() => deleteSpeFeaById(deletFeatureId)}>Delete</button>
 //                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

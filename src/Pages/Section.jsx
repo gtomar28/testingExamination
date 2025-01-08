@@ -433,22 +433,18 @@ const Section = () => {
   const [datafromclassroom, setDatafromclassroom] = useState([])
   const [putpackage, setPutpackage] = useState([])
   const [classchange, setClasschange] = useState()
-  console.log('class id', classchange)
   const [idForDelete, setIdForDelete] = useState()
   const [roomChange, setRoomChange] = useState()
   const [idForPut, setIdForPut] = useState()
-  console.log('id for update', idForPut)
   const [isValidNameRequired, setIsValidNameRequired] = useState(false);
   const [searchKey, setSearchKey] = useState('')
-
-  // console.log('ID FOR PUT API  ',idForPut)
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
 
   useEffect(() => {
@@ -461,10 +457,9 @@ const Section = () => {
 
   // ###### validation ##########
 
-
   const FuncValidation = () => {
+
     let isValid = true;
-    
     // name 
     if (!section || section === "" || !/^[0-9]+-[A-Z]$/.test(section)) {
       setIsValidNameRequired(true)
@@ -504,8 +499,6 @@ const Section = () => {
       formData.append('sectionNames', section);
       try {
         const response = await SectionPostApi(formData);
-        // console.log('class-post-api', response)
-
         if (response?.status === 200) {
           if (response?.data?.status === "success") {
             toast.success(response?.data?.message);
@@ -544,7 +537,6 @@ const Section = () => {
     setLoader(true)
     try {
       const response = await ClassGetApi(searchKey, pageNo, pageSize);
-      console.log('class-get-all-api-data-in-section-page for class id111111', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.classes?.msg)
         setClassdata(response?.data?.classes)
@@ -563,7 +555,6 @@ const Section = () => {
     setLoader(true)
     try {
       const response = await NullRoomGetApi();
-      console.log('get all api from room page for room id', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.classes?.msg)
         setDatafromclassroom(response?.data?.rooms)
@@ -581,7 +572,6 @@ const Section = () => {
     setLoader(true)
     try {
       const response = await SectionRoomGetApi(searchKey, pageNo, pageSize);
-      console.log('SECTION-get-all-api00000000', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setSectionAllData(response?.data?.classes)
@@ -602,7 +592,6 @@ const Section = () => {
 
     try {
       const response = await SectionDeleteApi(id);
-      // console.log('my-subs-api',response)
       if (response?.status === 200) {
         setHidedelete(true)
         setShowdelete(false)
@@ -648,15 +637,12 @@ const Section = () => {
       setLoader(true)
       try {
         const formData = new FormData()
-        // formData.append('roomId', roomChange)
         formData.append('sectionName', section)
         formData.append('roomNo', putpackage)
         formData.append('classId', classchange)
   
         const response = await SectionPutApi(id, formData);
-  
-        console.log('MY_SECTION____put-Api', response)
-        if (response?.status === 200) {
+          if (response?.status === 200) {
           toast.success(response?.data?.message);
           setShow(true)
           MySectionGetApi()
@@ -670,15 +656,12 @@ const Section = () => {
         } else {
           toast.error(response?.data?.message);
         }
-        // if(response){
-        //   setDatamsg('')
-        // }
+      
       } catch (error) {
         console.log(error)
       }
     }
   
-    // console.log('my-dataset',data)
   }
 
 

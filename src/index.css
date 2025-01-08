@@ -362,6 +362,21 @@ tr {
     height: 36px;
 }
 
+.addButtons3 {
+    background-color: var(--greenColorBtn);
+    border-radius: 5px;
+    width: 135px;
+    height: 36px;
+}
+
+.addButtons3:hover,
+.addButtons3:focus {
+    background-color: var(--greenColorBtn);
+    border-radius: 5px;
+    width: 135px;
+    height: 36px;
+}
+
 .addCategoryButtons {
     background-color: var(--greenColorBtn);
     border-radius: 5px;

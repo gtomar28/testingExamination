@@ -495,29 +495,25 @@ font-size: 12px;
 // ## style css area end ####  
 
 const OnlineCourse = () => {
-  const [forDelete, setForDelete] = useState(false)
 
+  const [forDelete, setForDelete] = useState(false)
   const [loader, setLoader] = useState(false)
   const [hide, setHide] = useState(false)
   const [show, setShow] = useState(true)
-
   const [subjectId, setSubjectId] = useState('')
   const [hide12, setHide12] = useState(false)
   const [show12, setShow12] = useState(true)
   const [subjectData, setSubjectData] = useState([])
-
   const [editshow, setEditshow] = useState(true)
   const [edithide, setEdithide] = useState(false)
   const [addshow, setAddshow] = useState(true)
   const [addhide, setAddhide] = useState(false)
   const [showdelete, setShowdelete] = useState(true)
   const [hidedelete, setHidedelete] = useState(false)
-
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
   const [activeCourse, setActiveCourse] = useState()
   const [inActiveCourse, setInActiveCourse] = useState()
-
   const [courseName, setCourseName] = useState()
   const [lesson, setLesson] = useState()
   const [courseSection, setCourseSection] = useState()
@@ -528,7 +524,6 @@ const OnlineCourse = () => {
   const [courseId, setCourseId] = useState()
 
   const [classdata, setClassdata] = useState([])
-  // console.log('class data0000000000',classdata)
   const [teacherAllData, setTeacherAllData] = useState([])
   const [onlineAllData, setOnlineAllData] = useState([])
   console.log('my teacher get all api data0011', teacherAllData)
@@ -544,7 +539,7 @@ const OnlineCourse = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
 
   useEffect(() => {
@@ -869,7 +864,6 @@ const OnlineCourse = () => {
             <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
               <ol className="breadcrumb ms-2">
                 <li className="breadcrumb-item active heading-14 font-color" aria-current="page">Home</li>
-                {/* <li className="breadcrumb-item active heading-14 font-color" aria-current="page">Academic</li> */}
                 <li className="breadcrumb-item breadcrum-li heading-14" ><Link href="#">Online Courses</Link></li>
               </ol>
             </nav>
@@ -892,7 +886,7 @@ const OnlineCourse = () => {
 
           <div className="table-container px-3 table-responsive">
             <div>
-              {/* conting area  */}
+              {/* counting area  */}
 
               <div className="row mt-3">
 
@@ -1064,10 +1058,7 @@ const OnlineCourse = () => {
                         </p>
                       )}
                     </div>
-                    {/* <div className="mb-3 for-media-margin">
-                      <label for="exampleFormControlInput1" className="form-label label-color heading-16">Section </label>
-                      <input type="email" className="form-control form-focus-input form-control-md heading-14 grey-input-text-color input-border-color" onChange={(e) => handleSection(e.target.value)} style={{ borderRadius: '5px', marginTop: '-5px' }} id="exampleFormControlInput12" placeholder="Enter Section No" />
-                    </div> */}
+                  
 
                     <div className='pt-1'>
                       {isValidSectionRequired && (
@@ -1087,7 +1078,7 @@ const OnlineCourse = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyOnlinePostApi()}>Add New Course</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       <Toaster />
                     </div>
                   </div>
@@ -1196,7 +1187,7 @@ const OnlineCourse = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyOnlinePutApi(IdForUpdate)}>Update</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       <Toaster />
                     </div>
                   </div>

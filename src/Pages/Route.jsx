@@ -288,7 +288,7 @@ const AllRoute = () => {
                 toast.error('An error occurred while deleting the route');
             }
         } else {
-            toast.error('You must agree to delete the profile data');
+            toast.error('You must agree to delete the Route Data');
         }
     };
 
@@ -480,7 +480,7 @@ const AllRoute = () => {
                             </p>
                             <p className='text-center warningHeading'>Are you Sure?</p>
                             <p className='text-center greyText warningText pt-2'>
-                                This action will permanently delete <br /> the Profile Data.
+                                This action will permanently delete <br /> the Route Data.
                             </p>
                             <p className='text-center warningText p-2'>
                                 <input className="form-check-input formdltcheck me-2" type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} /> I Agree to delete the Profile Dat </p>

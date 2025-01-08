@@ -71,6 +71,11 @@ const Container = styled.div`
     border-radius: 3px;
 }
 
+.my-image img{
+    width: 35%;
+    height: 10%;
+}
+
 @media only screen and (max-width: 1200px) {
     .content-responsive{
 font-size: 11px !important;
@@ -87,20 +92,10 @@ font-size: 14px !important;
 
 const Profile = () => {
 
-    const [forDelete, setForDelete] = useState(false)
-    
-    const [hide, setHide] = useState(false)
-    const [show, setShow] = useState(true)
     const [hide22, setHide22] = useState(false)
     const [show22, setShow22] = useState(true)
-    const [showdelete, setShowdelete] = useState(true)
-    const [hidedelete, setHidedelete] = useState(false)
-    const [leaveType, setLeaveType] = useState()
-    const [LeaveData, setLeaveData] = useState([])
+
     const [loader, setLoader] = useState(false)
-    const [searchKey, setSearchKey] = useState()
-    const [IdForDelete, setIdForDelete] = useState()
-    const [IdForUpdate, setIdForUpdate] = useState()
 
     const [address, setAddress] = useState()
     const [staffName, setStaffName] = useState()
@@ -112,11 +107,13 @@ const Profile = () => {
     const [gender, setGender] = useState()
     const [swicthInput, setSwicthInput] = useState(false)
     const [imageFile, setImageFile] = useState()
+
     const [isValidAddressRequired, setIsValidAddressRequired] = useState(false);
     const [isValidStaffNameRequired, setIsValidStaffNameRequired] = useState(false);
     const [isValidStaffLastNameRequired, setIsValidStaffLastNameRequired] = useState(false);
     const [isValidPhoneRequired, setIsValidPhoneRequired] = useState(false);
     const [isValidStaffEmailRequired, setIsValidStaffEmailRequired] = useState(false);
+    const [isValidDesignationRequired, setIsValidDesignationRequired] = useState(false);
 
     useEffect(() => {
         MyProfileGetAllApi()
@@ -143,14 +140,6 @@ const Profile = () => {
         }
         else {
         }
-        // stafflastname
-        if (!staffLastName || staffLastName === "" || !/^[A-Za-z\s]+$/.test(staffName)) {
-            setIsValidStaffLastNameRequired(true)
-            isValid = false;
-            setLoader(false)
-        }
-        else {
-        }
         // phone
         if (!phone || phone === "" || !/^[6-9]{4}[0-9]{6}$/.test(phone)) {
             setIsValidPhoneRequired(true)
@@ -159,15 +148,24 @@ const Profile = () => {
         }
         else {
         }
+        // Designation
+        if (!designation || designation === "" || !/^[A-Za-z\s]+$/.test(designation)) {
+            setIsValidDesignationRequired(true)
+            isValid = false;
+            setLoader(false)
+        }
+        else {
+        }
         // staffemail
-        if (staffEmail === "" || !staffEmail) {
+        if (staffEmail === "" || !staffEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(staffEmail)) {
             setIsValidStaffEmailRequired(true)
+            isValid = false;
+            setLoader(false)
         }
         else {
         }
         return isValid;
     }
-
     // address 
     const handleAddress = (e2) => {
         setAddress(e2);
@@ -203,16 +201,41 @@ const Profile = () => {
         } else {
             setIsValidPhoneRequired(false)
         }
-        if(e2.length > 10){
+        if (e2.length > 10) {
             setIsValidPhoneRequired(true)
-           } else {
+        } else {
             setIsValidPhoneRequired(false)
+        }
+    }
+
+    // designation 
+    const handleDesignation = (e2) => {
+        setDesignation(e2);
+        const nameRegex = /^[A-Za-z\s]+$/;
+        setIsValidDesignationRequired(nameRegex.test(e2));
+
+        if (e2 === "" || !nameRegex.test(e2)) {
+            setIsValidDesignationRequired(true)
+        } else {
+            setIsValidDesignationRequired(false)
+        }
+    }
+    // Email 
+    const handleEmail = (e2) => {
+        setStaffEmail(e2);
+        const nameRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        setIsValidStaffEmailRequired(nameRegex.test(e2));
+
+        if (e2 === "" || !nameRegex.test(e2)) {
+            setIsValidStaffEmailRequired(true)
+        } else {
+            setIsValidStaffEmailRequired(false)
         }
     }
 
     // ###### validation ##########
 
-    // Leave Get All Api   
+    // Profile Get All Api   
     const MyProfileGetAllApi = async () => {
         setLoader(true)
         try {
@@ -225,8 +248,8 @@ const Profile = () => {
                 setStaffLastName(response?.data?.otherStaff?.staffLastName)
                 setPhone(response?.data?.phone)
                 setStaffEmail(response?.data?.email)
-                setDesignation(response?.data?.roleType?.roleName)
-                setDob(response?.data?.staffDOB)
+                setDesignation(response?.data?.designation)
+                setDob(response?.data?.dob)
                 setImageFile(response?.data?.image)
                 setGender(response?.data?.gender)
                 setLoader(false)
@@ -249,24 +272,29 @@ const Profile = () => {
                 formData.append('staffPhone', phone)
                 formData.append('address', address)
                 formData.append('staffImage', imageFile)
+                formData.append('staffEmail', staffEmail)
+                formData.append('designation', designation)
+                formData.append('dob', dob)
+                formData.append('gender', gender)
 
                 const response = await TeacherProfileUpdateAllApi(formData);
                 console.log('MY profile update api', response)
                 if (response?.status === 200) {
                     toast.success(response?.data?.message);
-                    // MyLeaveGetAllApi()
-                    setShow22(false)
-                    setHide22(true)
+                    MyProfileGetAllApi()
+                    // setShow22(false)
+                    // setHide22(true)
                     setLoader(false)
                 } else {
                     toast.error(response?.data?.message);
-                    setShow22(true)
                 }
+
             } catch (error) {
                 console.log(error)
             }
         }
     }
+
     return (
         <Container>
             <div className="container-fluid p-4">
@@ -276,9 +304,11 @@ const Profile = () => {
                         <div className="col-lg-3 div-col-3 content-div123" >
 
                             <div className="content-div">
-                                <p>
-                                    <img src="./public/images/Ellipse 26 (3).png" alt="" />
-                                </p>
+                                <div className='image-container'>
+                                    <p className='my-image'>
+                                        <img src={imageFile} alt="" />
+                                    </p>
+                                 </div>
                                 <h2 className='heading-20 mt-2' >{staffName}</h2>
                                 <p className='heading-14 mt-2'>Teacher <span className='verified'>Verified</span></p>
                                 <hr className='mx-2 mb-0' />
@@ -313,25 +343,37 @@ const Profile = () => {
                             </div>
                             <div class="mb-1">
                                 <label for="exampleFormControlInput1" class="form-label heading-16">Email</label>
-                                <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={staffEmail} placeholder="admin@example.com" disabled />
+                                <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={staffEmail} placeholder="admin@example.com" onChange={(e) => handleEmail(e.target.value)} />
+                            </div>
+                            <div className='pt-3'>
+                                {isValidStaffEmailRequired && (
+                                    <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                                        Email is required
+                                    </p>
+                                )}
                             </div>
                             <div class="mb-1">
                                 <label for="exampleFormControlInput1" class="form-label heading-16">Designation</label>
-                                <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={designation} placeholder="Enter your Designation" disabled />
+                                <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={designation} placeholder="Enter your Designation" onChange={(e) => handleDesignation(e.target.value)} />
+                            </div>
+                            <div className='pt-3'>
+                                {isValidDesignationRequired && (
+                                    <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                                        Designation is required
+                                    </p>
+                                )}
                             </div>
                             <div class="mb-1">
                                 <label for="exampleFormControlInput1" class="form-label heading-16">Birthday</label>
-                                <input type="date" class="form-control form-control-sm" id="exampleFormControlInput1" value={dob ? dob.split('T')[0] : ''} placeholder="Bertha N. Fisher" disabled />
+                                <input type="date" class="form-control form-control-sm" id="exampleFormControlInput1" value={dob ? dob.split('T')[0] : ''} placeholder="Bertha N. Fisher" onChange={(e) => setDob(e.target.value)} />
                             </div>
 
                             <div className="mb-1  ">
                                 <label for="exampleFormControlInput1" className="form-label heading-16">Gender</label>
-                                <select class="form-select  form-select-sm form-focus  label-color" aria-label="Default select example" disabled>
-                                    <option  >--Choose--</option>
+                                <select class="form-select  form-select-sm form-focus label-color" value={gender} aria-label="Default select example" onChange={(e) => setGender(e.target.value)}>
                                     <option value="male" >Male</option>
                                     <option value="female" >Female</option>
                                     <option value="other" >Other</option>
-
                                 </select>
                             </div>
                             <div class="mb-1">
@@ -356,7 +398,7 @@ const Profile = () => {
                                     </p>
                                 )}
                             </div>
-                      
+
                             <div class="mb-3 " style={{ display: 'flex', }}>
                                 <div className='w-100'>
                                     <label for="exampleFormControlInput1" class="form-label">Profile Image</label>

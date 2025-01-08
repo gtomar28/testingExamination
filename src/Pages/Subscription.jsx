@@ -14,8 +14,7 @@ import { valueOrDefault } from 'chart.js/helpers';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
-// import HashLoader from './HashLoader';
-import DataLoader from '../Layouts/Loader';
+import HashLoader from './HashLoaderCom';
 // ## style css area start ####  
 
 const Container = styled.div`
@@ -530,7 +529,7 @@ const Subscription = () => {
 
   // Put Apii
   const SubcPutDataApi = async (id) => {
-    console.log('id for request update',id)
+    console.log('id for request update', id)
     if (putphoneNo === '') {
       FuncValidation();
     }
@@ -614,9 +613,9 @@ const Subscription = () => {
 
   return (
     <Container>
-       {
+      {
         loader && (
-          <DataLoader />
+          <HashLoader />
         )
       }
       <div className="container-fluid main-body p-3">
@@ -716,7 +715,7 @@ const Subscription = () => {
 
                       <td className=' greyText'>{index + 1}</td>
                       <td className=' greyText'>{item.price}</td>
-                      <td className=' greyText'>{item.plan}</td>
+                      <td className=' greyText'>{item.planName}</td>
                       <td className='greyText'>{item?.purchaseDate ? item.purchaseDate.slice(0, 10) : ''} </td>
 
                       <td className=' greyText'>{item.email}</td>
@@ -762,9 +761,9 @@ const Subscription = () => {
         </div>
         {/* ########################## edit offcanvas  start ################  */}
 
-          {
-            updateState && (
-              <>
+        {
+          updateState && (
+            <>
               <div className="offcanvas-end offcanvas" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" ref={offcanvasRef}>
                 <div className="offcanvas-header">
                   <Link data-bs-dismiss="offcanvas" >
@@ -840,11 +839,11 @@ const Subscription = () => {
                     </div>
                   </div>
                 </div>
-          </div>
-              </>
-            )
-          }
-          {/* {
+              </div>
+            </>
+          )
+        }
+        {/* {
             successUpdateState && (
               <>
                 <div className="offcanvas-header d-block for-my-display">

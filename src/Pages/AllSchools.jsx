@@ -715,7 +715,7 @@ const AllSchools = () => {
                             </tbody>
                           </table>
                           <p className='text-center p-3'>
-                            <button className='btn cancelButtons ms-3' onClick={getAllSchoolData}>Back</button>
+                            <button className='btn cancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close" >Back</button>
                           </p>
                         </div>
                       </>
@@ -757,7 +757,7 @@ const AllSchools = () => {
                           </table>
                           <p className='text-center p-3'>
                             <button className='btn updateButtons text-white' onClick={UpdateFeatureInPlan}>Update</button>
-                            <button className='btn cancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close" onClick={getAllSchoolData}>Cancel</button>
+                            <button className='btn cancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                           </p>
                         </div>
                       </>
@@ -803,7 +803,7 @@ const AllSchools = () => {
                       <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                       <p className='text-center warningHeading'>Are you Sure?</p>
                       <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the School Data</p>
-                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the School Data</p>
                       <p className='text-center p-3'>
                         <button className='btn deleteButtons text-white' onClick={() => DeleteSchoolIdData(deleteSchoolId)}>Delete</button>
                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
@@ -1859,7 +1859,7 @@ export default AllSchools
 //                       <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
 //                       <p className='text-center warningHeading'>Are you Sure?</p>
 //                       <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the School Data</p>
-//                       <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+//                       <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the School Data</p>
 //                       <p className='text-center p-3'>
 //                         <button className='btn deleteButtons text-white' onClick={() => DeleteSchoolIdData(deleteSchoolId)}>Delete</button>
 //                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

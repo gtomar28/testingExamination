@@ -449,7 +449,6 @@ const Teacher = () => {
   const [TeacherAddress, setTeacherAddress] = useState();
   const [TeacherContact, setTeacherContact] = useState();
   const [basicSalary, setBasicSalary] = useState();
-  // console.log('teaxcher email = ', TeacherEmail)
   const [TeacherGender, setTeacherGender] = useState();
   const [TeacherRoleId, setRoleID] = useState('');
   const [searchKey, setSearchKey] = useState("");
@@ -475,7 +474,6 @@ const Teacher = () => {
       if (response?.status === 200) {
         const rows = response?.data?.split('\n').map(row => row.split(','));
         setCsvData(rows);
-        // setTableData(rows.slice(1));
       }
     } catch (err) {
       console.log(err);
@@ -503,7 +501,7 @@ const Teacher = () => {
     setLoader(true);
     try {
       const response = await TeacherGetAllApi(68, searchKey, pageNo, pageSize);
-      console.log("My teacher get all DATA", response);
+      // console.log("My teacher get all DATA", response);
       if (response?.status === 200) {
         // toast.success(response?.data?.message);
         setTeacherAllData(response?.data?.AllRoles);
@@ -524,7 +522,7 @@ const Teacher = () => {
     setLoader(true);
     try {
       const response = await StaffGetById(id);
-      console.log("My Teacher get DATA by get by id", response);
+      // console.log("My Teacher get DATA by get by id", response);
       if (response?.status === 200) {
         // toast.success(response?.data?.msg);
         setTeacherName(response?.data?.user?.staffName);
@@ -534,7 +532,6 @@ const Teacher = () => {
         setTeacherContact(response?.data?.user?.staffPhone);
         setTeacherGender(response?.data?.user?.staffGender);
         setBasicSalary(response?.data?.user?.basicSalary);
-        // setRoleID(response?.data?.user?.staffGender);
         setLoader(false);
       } else {
         toast.error(response?.data?.msg);
@@ -659,7 +656,6 @@ const Teacher = () => {
     // email 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!TeacherEmail || TeacherEmail === "" || !emailRegex.test(TeacherEmail)) {
-      // errors.email = "Invalid email";
       setIsValidEmailRequired(true);
       isValid = false
       setLoader(false);
@@ -745,7 +741,7 @@ const Teacher = () => {
     setLoader(true);
     try {
       const response = await RolePermissionGetApi();
-      console.log("My role permission get all data12", response);
+      // console.log("My role permission get all data12", response);
 
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
@@ -863,7 +859,6 @@ const Teacher = () => {
                   <th>Actions</th>
                 </tr>
               </thead>
-
               <tbody className="heading-14 align-middle greyTextColor">
                 {
                   TeacherAllData?.map((item, index) => (
@@ -896,7 +891,6 @@ const Teacher = () => {
                             </svg>
                           </button>
                           <ul className="dropdown-menu anchor-color heading-14">
-                            {/* <li><button  className="dropdown-item" onClick={(e)=>IdTransfer(item.noticeId)}>View Profile</button></li> */}
                             <li> <Link className="dropdown-item"   onClick={(e) => localoStorage(item.id)} to={`/mainuserform/${item.id}`}>  Edit  </Link>  </li> <li>
                               <Link
                                 className="dropdown-item"
@@ -1048,7 +1042,6 @@ const Teacher = () => {
                     valid contact is required
                   </p>
                 )}
-
                 <div>
                   <label
                     for="exampleFormControlTextarea1"
@@ -1129,7 +1122,7 @@ const Teacher = () => {
                   >
                     Update
                   </button>
-                  <button type="button" className="btn btn-outline-success">
+                  <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">
                     Cancel
                   </button>
                 </div>
@@ -1173,7 +1166,6 @@ const Teacher = () => {
                   <p className="heading-14">admin@example.com</p>
                 </div>
               </div>
-
               <div className="view-details-background-color p-3 mt-4">
                 <div className="between-content mt- ">
                   <div className="d-flex justify-content-between  ">
@@ -1265,9 +1257,7 @@ const Teacher = () => {
                         />
                       </svg>
                     </div>
-                    {/* <div className="symbol-container">
-                                         <img src="./images/Group.png" alt="" />
-                                       </div> */}
+             
                     <div className="sure-content mt-2">
                       <h5 className="heading-20">Are you sure?</h5>
                       <p>

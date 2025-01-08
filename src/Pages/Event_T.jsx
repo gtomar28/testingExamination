@@ -544,7 +544,6 @@ const Event = () => {
 
   const FuncValidation = () => {
     let isValid = true;
-
     // name 
     if (!eventName || eventName === "" || !/^[A-Za-z\s]+$/.test(eventName)) {
       setIsValidNameRequired(true)
@@ -640,6 +639,7 @@ const Event = () => {
       setIsValidEndTimeRequired(false)
     }
   }
+  
   // ###### validation  end##########
 
   const offcanvasRef = useRef(null);
@@ -795,6 +795,7 @@ const Event = () => {
   const handleForDelete = () => {
     MyEventDeleteApi(idForDelete)
   }
+  
   return (
     <Container>
       {
@@ -984,7 +985,7 @@ const Event = () => {
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyEventPostApi()}>Add Events</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       <Toaster />
                     </div>
                   </div>
@@ -1078,7 +1079,7 @@ const Event = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyEventPutApi(eventIdForUpdate)}>Update</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>

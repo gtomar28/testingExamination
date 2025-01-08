@@ -833,12 +833,10 @@ const Notice = () => {
             </div>
           </div>
 
-
         </div>
         {/* ################## Off Canvas Area ####################  */}
 
         {/* ################## Edit Off Canvas Area end ####################  */}
-
 
         {
           addshow && (
@@ -883,7 +881,7 @@ const Notice = () => {
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyNoticePostApi()}>Add Notice</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       {/* <Toaster /> */}
                     </div>
                   </div>
@@ -892,8 +890,6 @@ const Notice = () => {
             </>
           )
         }
-
-
         {
           editshow && (
             <>
@@ -938,7 +934,7 @@ const Notice = () => {
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyNoticePutApi(noticeIdForUpdate)}>Update</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       {/* <Toaster /> */}
                     </div>
                   </div>
@@ -947,8 +943,6 @@ const Notice = () => {
             </>
           )
         }
-
-
         {
           showdelete && (
             <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef33}>
@@ -993,8 +987,7 @@ const Notice = () => {
           )
         }
         {/* ############## After click ##############  */}
-
-
+        
       </div>
       {/* ################ offcanvas delete end #############  */}
 

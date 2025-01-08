@@ -227,13 +227,19 @@ const Marksheet = () => {
                     // toast.success(response?.data?.message);
                 }
                 else {
+                    setloaderState(false);
+                    setIsSearched(false);
                     toast.error(response?.data?.message);
                 }
             }
             else {
+                setloaderState(false);
+                setIsSearched(false);
                 toast.error(response?.data?.message);
             }
         } catch (error) {
+            setloaderState(false);
+            setIsSearched(false);
             console.error('Error During Get Marksheet', error);
         }
     };
@@ -258,8 +264,13 @@ const Marksheet = () => {
                             <form className="row g-3">
                                 <div className="col-md-4 col-sm-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Class</label>
-                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => handleClassChange(e.target.value)}>
-                                        <option >--- Choose ---</option>
+                                    <select
+                                        className="form-select borderRadius5 font14"
+                                        aria-label="Default select example"
+                                        value={classId}
+                                        onChange={(e) => handleClassChange(e.target.value)}
+                                    >
+                                        <option value="">--- Choose ---</option>
                                         {allClassData?.map((option, index) => (
                                             <option key={option.classId} value={`${option?.classId}, ${option.classNo}`}>
                                                 {option.classNo}
@@ -269,9 +280,14 @@ const Marksheet = () => {
                                 </div>
                                 <div className="col-md-4 col-sm-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Section</label>
-                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => setSectionId(e.target.value)}>
-                                        <option >--- Choose ---</option>
-                                        {allSectionData?.map(option => (
+                                    <select
+                                        className="form-select borderRadius5 font14"
+                                        aria-label="Default select example"
+                                        value={sectionId}
+                                        onChange={(e) => setSectionId(e.target.value)}
+                                    >
+                                        <option value="">--- Choose ---</option>
+                                        {allSectionData?.map((option) => (
                                             <option key={option.classSecId} value={option.classSecId}>
                                                 {option.sectionName}
                                             </option>
@@ -280,8 +296,13 @@ const Marksheet = () => {
                                 </div>
                                 <div className="col-md-4 col-sm-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Exam Category</label>
-                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => setExamCategorySelect(e.target.value)}>
-                                        <option defaultValue>Select an Exam Category</option>
+                                    <select
+                                        className="form-select borderRadius5 font14"
+                                        aria-label="Default select example"
+                                        value={examCategorySelect}
+                                        onChange={(e) => setExamCategorySelect(e.target.value)}
+                                    >
+                                        <option value="">Select an Exam Category</option>
                                         {ExamCategoryData?.map((option) => (
                                             <option key={option.categoryId} value={option?.examCategoryName}>
                                                 {option.examCategoryName}
@@ -289,11 +310,29 @@ const Marksheet = () => {
                                         ))}
                                     </select>
                                 </div>
-                                <p className='text-center p-3'>
-                                    <button type='button' className='btn updateButtons text-white' onClick={getAllMarksheet}>Search</button>
-                                    <button type='button' className='btn cancelButtons ms-3' onClick={() => setIsSearched(false)}>Cancel</button>
+                                <p className="text-center p-3">
+                                    <button
+                                        type="button"
+                                        className="btn updateButtons text-white"
+                                        onClick={getAllMarksheet}
+                                    >
+                                        Search
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn cancelButtons ms-3"
+                                        onClick={() => {
+                                            setClassId('');
+                                            setSectionId('');
+                                            setExamCategorySelect('');
+                                            setIsSearched(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
                                 </p>
                             </form>
+
                             <div className="row">
                                 {!isSearched ? (
                                     <div className="d-flex justify-content-center p-5">

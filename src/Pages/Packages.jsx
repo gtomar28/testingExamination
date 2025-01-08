@@ -377,12 +377,35 @@ const Packages = () => {
   }
 
   const handleClosingEditCanvas = () => {
+    console.log('close edit')
     setEditCanvasClosing(true)
+  }
+
+  const handleAddClosingButton = () => {
+    const offcanvasElement = document.getElementById('AddPackageCanvas');
+    if (offcanvasElement) {
+      let offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if (!offcanvas) {
+        offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+      }
+      offcanvas.hide();
+    }
+  }
+
+  const handleEditClosingButton = () => {
+    const offcanvasElement = document.getElementById('Edit_staticBackdrop');
+    if (offcanvasElement) {
+      let offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if (!offcanvas) {
+        offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+      }
+      offcanvas.hide();
+    }
   }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Backspace'){
-      getAllSchoolData();
+      getAllPlans();
     }
   };
 
@@ -496,72 +519,6 @@ const Packages = () => {
               }
             </div>
           </div>
-          {/* <div className="row ps-2 pe-2">
-            <div className="overflow-scroll cardradius bg-white p-3">
-              <table className="table align-middle table-striped">
-                <thead>
-                  <tr>
-                    <th><h2>#</h2></th>
-                    <th><h2>Package</h2></th>
-                    <th><h2>Price <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Interval <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Period <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Student Limit <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Feature Details</h2></th>
-                    <th><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Action</h2></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {AllPlan.map((item, index) => (
-                    <tr key={item.planId} className={`my-bg-color align-middle`}>
-                      <th className='greyText'><h3>{index + 1}</h3></th>
-                      <td className='greyText'><h3>{item.planName}</h3></td>
-                      <td className='greyText'><h3>{item.price}</h3></td>
-                      <td className='greyText'><h3>{item.type}</h3></td>
-                      <td className='greyText'><h3>{item.value}</h3></td>
-                      <td className='greyText'><h3>{item.studentLimit}</h3></td>
-                      <td><h3>{(item.usedAddons).length > 0 ? <span className='blueText text-decoration-none' data-bs-toggle="modal" data-bs-target="#FeatureModal" style={{ cursor: 'pointer' }} onClick={(e) => setFeaturePackData(item.usedAddons)}>View Linked Features</span> : <span className='blueText text-decoration-none text-center'>---</span>}</h3></td>
-                      <td>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
-                      <td>
-                        <div className="dropdown dropdownbtn">
-                          <button className="btn btn-sm actionButtons dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>Action</span>
-                          </button>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <button className="dropdown-item greyText font14" type="button" data-bs-toggle="offcanvas" data-bs-target="#Edit_staticBackdrop" aria-controls="Edit_staticBackdrop" onClick={() => setUpdatePlanId(item.planId)}>
-                                Edit Package
-                              </button>
-                            </li>
-                            <li>
-                              <button className="dropdown-item greyText font14" type="button" data-bs-toggle="offcanvas" data-bs-target="#SpeFeature_staticBackdrop" aria-controls="SpeFeature_staticBackdrop" onClick={() => getAllSpecialFeature(item.planId)}>
-                                Link Features
-                              </button>
-                            </li>
-                            <li>
-                              <button className="dropdown-item greyText font14" type="button" data-bs-toggle="offcanvas" data-bs-target="#Delete_staticBackdrop" aria-controls="Delete_staticBackdrop" onClick={() => setDeletePlanId(item.planId)}>
-                                Delete
-                              </button>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div className="d-flex">
-                <p className='font14'>Showing {currentPage} of {totalPages} Pages</p>
-                <div className="ms-auto">
-                  <ReactPaginate previousLabel={<Icon icon="tabler:chevrons-left" width="1.4em" height="1.4em" />} nextLabel={<Icon icon="tabler:chevrons-right" width="1.4em" height="1.4em" />} breakLabel={'...'} totalItems={totalItems} breakClassName={'break-me'} pageCount={totalPages} marginPagesDisplayed={2} pageRangeDisplayed={10} onPageChange={handlePageClick} containerClassName={'pagination'} subContainerClassName={'pages pagination'} activeClassName={'active'} />
-                </div>
-              </div>
-
-            </div>
-          </div> */}
-
           {/* Add Package */}
           <div className="offcanvas offcanvas-end p-2" data-bs-backdrop="static" tabIndex="-1" id="AddPackageCanvas" aria-labelledby="AddPackageCanvas">
             <div className="offcanvas-header modalHighborder p-1">
@@ -575,7 +532,7 @@ const Packages = () => {
             <div className="offcanvas-body p-1">
               {loaderState && (<DataLoader />)}
               <div style={{ zIndex: -1 }}>
-                <AddPackage closingOfAddCanvas={handleClosingAddCanvas} />
+                <AddPackage closingOfAddCanvas={handleClosingAddCanvas} closingCancel={handleAddClosingButton} />
               </div>
             </div>
           </div>
@@ -593,7 +550,7 @@ const Packages = () => {
             <div className="offcanvas-body p-0">
               {loaderState && (<DataLoader />)}
               <div style={{ zIndex: -1 }}>
-                <UpdatePackage planId={updatePlanId} closingEditCanvas={handleClosingEditCanvas} />
+                <UpdatePackage planId={updatePlanId} closingEditCanvas={handleClosingEditCanvas} closingCancel={handleEditClosingButton} />
               </div>
             </div>
           </div>
@@ -618,8 +575,8 @@ const Packages = () => {
                       <p className='modalLightBorder p-2'>Packages</p>
                       <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                       <p className='text-center warningHeading'>Are you Sure?</p>
-                      <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                      <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Package Data</p>
+                      <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Package Data</p>
                       <p className='text-center p-3'>
                         <button className='btn deleteButtons text-white' onClick={() => DeletePlanIdData(deletePlanId)}>Delete</button>
                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

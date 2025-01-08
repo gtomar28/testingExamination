@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,6 +10,8 @@ import { ItemSupplierGetByIdApi } from '../Utils/Apis'
 import { ItemSupplierUpdateApi } from '../Utils/Apis'
 
 import "flatpickr/dist/themes/light.css";
+import ReactPaginate from 'react-paginate';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 
 // ## style css area start ####  
@@ -412,6 +414,45 @@ font-size: 12px;
     border: 1px solid #DDDDEB;
     padding: 0px 12px 0px 12px;
 }
+/* pagination css  */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-size: var(--font-size-14);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #000;
+    /* background-color: #f5f5f5;
+    transition: background-color 0.3s; */
+  }
+
+  .pagination li a:hover {
+    background-color: #317a77 !important;
+    color: #fff !important;
+  }
+
+  .pagination li.active a {
+    background-color: #317a77 !important;
+    color: #fff;
+    font-weight: bold;
+  }
+/* pagination css  */
+
 /* ############# offcanvas ############## */
 
 /* ########## media query ###########  */
@@ -481,7 +522,7 @@ const Item_supplier = () => {
   const [Phone, setPhone] = useState()
   const [Email, setEmail] = useState()
   const [address, setAddress] = useState()
-  const [ personName, setPersonName] = useState()
+  const [personName, setPersonName] = useState()
   const [personPhone, setPersonPhone] = useState()
   const [personEmail, setPersonEmail] = useState()
   const [description, setDescription] = useState()
@@ -498,14 +539,197 @@ const Item_supplier = () => {
 
   const [supplierrrData, setSupplierrrData] = useState([])
   const [myIncomeCategoryData, setMyIncomeCategoryData] = useState([])
-  console.log(' Supplier id update data', IdForUpdate)
 
-  useEffect(()=>{
+  const [isValidNameRequired, setIsValidNameRequired] = useState(false);
+  const [isValidNumberRequired, setIsValidNumberRequired] = useState(false);
+  const [isValidEmailRequired, setIsValidEmailRequired] = useState(false);
+  const [isValidAddressRequired, setIsValidAddressRequired] = useState(false);
+  const [isValidPersonNameRequired, setIsValidPersonNameRequired] = useState(false);
+  const [isValidPersonPhoneRequired, setIsValidPersonPhoneRequired] = useState(false);
+  const [isValidPersonEmailRequired, setIsValidPersonEmailRequired] = useState(false);
+  const [isValidDescriptionRequired, setIsValidDescriptionRequired] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const handlePageClick = (event) => {
+    setPageNo(event.selected + 1);
+  };
+
+  useEffect(() => {
     MySupplierrrGetAllApi()
-  },[])
-    // Income category Post Api 
-    const MyItemSupplierPostApi = async () => {
+  }, [pageNo])
 
+  // Validation 
+  const FuncValidation = () => {
+    let inValid = true;
+
+    // name 
+    if (!name || name === "" || !/^[A-Za-z\s]+$/.test(name)) {
+      setIsValidNameRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+
+    // Number  
+    if (!Phone || Phone === "" || !/^[6-9]\d{9}$/.test(Phone)) {
+      setIsValidNumberRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+
+    // Email  
+    if (!Email || Email === "" || !/(^[6-9]\d{9}$)|(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)/.test(Email)) {
+      setIsValidEmailRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+    // Address 
+    if (!address || address === "" || !/^[A-Za-z\s]+$/.test(address)) {
+      setIsValidAddressRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+    // Person name 
+    if (!personName || personName === "" || !/^[A-Za-z\s]+$/.test(personName)) {
+      setIsValidPersonNameRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+    // Number  
+    if (!personPhone || personPhone === "" || !/^[6-9]\d{9}$/.test(personPhone)) {
+      setIsValidPersonPhoneRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+    // Person Email  
+    if (!personEmail || personEmail === "" || !/(^[6-9]\d{9}$)|(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)/.test(personEmail)) {
+      setIsValidPersonEmailRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+    //  Description 
+    if (!description || description === "" || !/^[A-Za-z\s]+$/.test(description)) {
+      setIsValidDescriptionRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+
+
+    return inValid;
+  }
+
+  const handleName = (e2) => {
+    setName(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidNameRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidNameRequired(true)
+    } else {
+      setIsValidNameRequired(false)
+    }
+  }
+  const handleNumber = (e2) => {
+    setPhone(e2);
+    // const noRegex = /^\d{1,4}$/;
+    const noRegex = /^[6-9]\d{9}$/;
+    setIsValidNumberRequired(noRegex.test(e2));
+    if (e2 === "" || !noRegex.test(e2)) {
+      setIsValidNumberRequired(true)
+    } else {
+      setIsValidNumberRequired(false)
+    }
+  }
+  const handleEmail = (e2) => {
+    setEmail(e2);
+    // const noRegex = /^\d{1,4}$/;
+    const noRegex = /(^[6-9]\d{9}$)|(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)/;
+    setIsValidEmailRequired(noRegex.test(e2));
+    if (e2 === "" || !noRegex.test(e2)) {
+      setIsValidEmailRequired(true)
+    } else {
+      setIsValidEmailRequired(false)
+    }
+  }
+  const handleAddress = (e2) => {
+    setAddress(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidAddressRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidAddressRequired(true)
+    } else {
+      setIsValidAddressRequired(false)
+    }
+  }
+  const handlePersonName = (e2) => {
+    setPersonName(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidPersonNameRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidPersonNameRequired(true)
+    } else {
+      setIsValidPersonNameRequired(false)
+    }
+  }
+  const handlePersonNumber = (e2) => {
+    setPersonPhone(e2);
+    const noRegex = /^[6-9]\d{9}$/;
+    setIsValidPersonPhoneRequired(noRegex.test(e2));
+    if (e2 === "" || !noRegex.test(e2)) {
+      setIsValidPersonPhoneRequired(true)
+    } else {
+      setIsValidPersonPhoneRequired(false)
+    }
+  }
+  const handleContactPersonEmail = (e2) => {
+    setPersonEmail(e2);
+    const noRegex = /(^[6-9]\d{9}$)|(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)/;
+    setIsValidPersonEmailRequired(noRegex.test(e2));
+    if (e2 === "" || !noRegex.test(e2)) {
+      setIsValidPersonEmailRequired(true)
+    } else {
+      setIsValidPersonEmailRequired(false)
+    }
+  }
+  const handleDescription = (e2) => {
+    setDescription(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidDescriptionRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidDescriptionRequired(true)
+    } else {
+      setIsValidDescriptionRequired(false)
+    }
+  }
+  // Validation 
+
+
+  const offcanvasRef = useRef(null);
+  const offcanvasRef22 = useRef(null);
+  const offcanvasRef33 = useRef(null);
+
+  // Income category Post Api 
+  const MyItemSupplierPostApi = async () => {
+
+    if (FuncValidation()) {
       const formData = {
         "supplierId": 0,
         "schoolId": "string",
@@ -518,54 +742,57 @@ const Item_supplier = () => {
         "contactPersonEmail": personEmail,
         "supplierDescription": description
       }
-      setLoader(true)
-      try {
-          const response = await ItemSupplierPostApi(formData);
-          console.log('Supplierrrrr response', response)
-          if (response?.status === 200) {
-              if (response?.data?.status === "success") {
-                  toast.success(response?.data?.message);
-                  setHidedelete(true)
-                  MySupplierrrGetAllApi()
-                  if (response?.data?.status === "success") {
-                      setActive(true)
-                  }
-                  setLoader(false)
-                  setShow(false)
-                  setHide(true)
-              } else {
-                  toast.error(response?.data?.message);
-                  // setShow(true)
-              }
-          } else {
-              toast.error(response?.data?.msg);
-          }
-      } catch (error) {
-          console.log(error)
-      }
-  }
 
-     // Get All api  
-     const MySupplierrrGetAllApi = async () => {
       setLoader(true)
-      
       try {
-        const response = await ItemSupplierGetAllApi();
-        console.log('my Supplierrrrrr all dataaaaa', response);
+        const response = await ItemSupplierPostApi(formData);
+        console.log('Supplierrrrr response', response)
         if (response?.status === 200) {
-          toast.success(response?.data?.message)
-          setSupplierrrData(response?.data?.itemSupplier)
-          setLoader(false)
+          if (response?.data?.status === "success") {
+            toast.success(response?.data?.message);
+            setHidedelete(true)
+            MySupplierrrGetAllApi()
+            if (response?.data?.status === "success") {
+              setActive(true)
+            }
+            setLoader(false)
+            setShow(false)
+            setHide(true)
+          } else {
+            toast.error(response?.data?.message);
+            // setShow(true)
+          }
         } else {
-          toast.error(response?.data?.classes?.message);
+          toast.error(response?.data?.msg);
         }
       } catch (error) {
         console.log(error)
       }
     }
 
-     // Delete api
-   const MySupplierDelApi = async (id) => {
+  }
+
+  // Get All api  
+  const MySupplierrrGetAllApi = async () => {
+    setLoader(true)
+
+    try {
+      const response = await ItemSupplierGetAllApi(pageNo, pageSize);
+      console.log('my Supplierrrrrr all dataaaaa', response);
+      if (response?.status === 200) {
+        // toast.success(response?.data?.message)
+        setSupplierrrData(response?.data?.itemSuppliers)
+        setLoader(false)
+      } else {
+        toast.error(response?.data?.classes?.message);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // Delete api
+  const MySupplierDelApi = async (id) => {
     setLoader(true)
 
     try {
@@ -588,39 +815,37 @@ const Item_supplier = () => {
     }
   }
 
-    //  Get by id 
-    const MySupplierGetById = async (id) => {
-      setIdForUpdate(id)
-      setLoader(true)
-      try {
-        const response = await ItemSupplierGetByIdApi(id);
-        console.log('Suppplierrrr Get By Idddddd', response)
-  
-        if (response?.status === 200) {
-          toast.success(response?.data?.message)
+  //  Get by id 
+  const MySupplierGetById = async (id) => {
+    setIdForUpdate(id)
+    setLoader(true)
+    try {
+      const response = await ItemSupplierGetByIdApi(id);
+      console.log('Suppplierrrr Get By Idddddd', response)
 
-          setName(response?.data?.itemSupplier?.supplierName)
-          setPhone(response?.data?.itemSupplier?.supplierPhone)
-          setEmail(response?.data?.itemSupplier?.supplierEmail)
-          setAddress(response?.data?.itemSupplier?.supplierAddress)
-          setPersonName(response?.data?.itemSupplier?.contactPersonName)
-          setPersonPhone(response?.data?.itemSupplier?.contactPersonPhone)
-          setPersonEmail(response?.data?.itemSupplier?.contactPersonEmail)
-          setDescription(response?.data?.itemSupplier?.supplierDescription)
-          
-          (response?.data)
-          setLoader(false)
-  
-        } else {
-          toast.error(response?.data?.message);
-        }
-      } catch (error) {
-        console.log(error)
+      if (response?.status === 200) {
+        // toast.success(response?.data?.message)
+
+        setName(response?.data?.itemSupplier?.supplierName)
+        setPhone(response?.data?.itemSupplier?.supplierPhone)
+        setEmail(response?.data?.itemSupplier?.supplierEmail)
+        setAddress(response?.data?.itemSupplier?.supplierAddress)
+        setPersonName(response?.data?.itemSupplier?.contactPersonName)
+        setPersonPhone(response?.data?.itemSupplier?.contactPersonPhone)
+        setPersonEmail(response?.data?.itemSupplier?.contactPersonEmail)
+        setDescription(response?.data?.itemSupplier?.supplierDescription)
+        setLoader(false)
+
+      } else {
+        toast.error(response?.data?.message);
       }
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-       // Put api 
-   const MySupplierPutApi = async () => {
+  // Put api 
+  const MySupplierPutApi = async () => {
     setLoader(true)
     try {
       const formData = {
@@ -642,10 +867,13 @@ const Item_supplier = () => {
         toast.success(response?.data?.message);
         MySupplierrrGetAllApi()
         setShowadd(false)
-        setHideedit(true)
         MyItemCategoryGetAllApi()
         setLoader(false)
-
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef22.current);
+        offcanvasInstance.hide();
+        setTimeout(() => {
+          setShowadd(true)
+        }, 0.5)
       } else {
         toast.error(response?.data?.message);
         setShowadd(true)
@@ -684,22 +912,41 @@ const Item_supplier = () => {
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14"> Name *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : name}  onChange={(e) => setName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm heading-14" value={active === true ? '' : name} onChange={(e) => handleName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Name " />
               </div>
-
-              {/* <input type="text" class="form-control  form-control-sm form-focus font-color" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" placeholder="name@example.com" /> */}
-
+              <div className='pt-1'>
+                {isValidNameRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Name is required
+                  </p>
+                )}
+              </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Phone * </label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : Phone}  onChange={(e) => setPhone(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : Phone} onChange={(e) => handleNumber(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Number " />
               </div>
+              <div className='pt-1'>
+                {isValidNumberRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Number is required
+                  </p>
+                )}
+              </div>
+
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Email*</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : Email}  onChange={(e) => setEmail(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : Email} onChange={(e) => handleEmail(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Email" />
+              </div>
+              <div className='pt-1'>
+                {isValidEmailRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Email is required
+                  </p>
+                )}
               </div>
             </div>
 
@@ -709,22 +956,41 @@ const Item_supplier = () => {
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Address *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : address}  onChange={(e) => setAddress(e.target.value)}  style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : address} onChange={(e) => handleAddress(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Address " />
               </div>
-
-              {/* <input type="text" class="form-control  form-control-sm form-focus font-color" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" placeholder="name@example.com" /> */}
+              <div className='pt-1'>
+                {isValidAddressRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Address is required
+                  </p>
+                )}
+              </div>
 
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Contact Person Name *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : personName}  onChange={(e) => setPersonName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : personName} onChange={(e) => handlePersonName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Person Name " />
+              </div>
+              <div className='pt-1'>
+                {isValidPersonNameRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Person Name is required
+                  </p>
+                )}
               </div>
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Contact Person Phone *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : personPhone}  onChange={(e) => setPersonPhone(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : personPhone} onChange={(e) => handlePersonNumber(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Person Phone  " />
+              </div>
+              <div className='pt-1'>
+                {isValidPersonPhoneRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Person Number is required
+                  </p>
+                )}
               </div>
             </div>
 
@@ -734,17 +1000,28 @@ const Item_supplier = () => {
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-1" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Contact Person Email *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : personEmail}  onChange={(e) => setPersonEmail(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : personEmail} onChange={(e) => handleContactPersonEmail(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Person Email " />
               </div>
-
-              {/* <input type="text" class="form-control  form-control-sm form-focus font-color" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" placeholder="name@example.com" /> */}
-
+              <div className='pt-3'>
+                {isValidPersonEmailRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Email is required
+                  </p>
+                )}
+              </div>
             </div>
-        
+
             <div className="col-lg-8 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Description *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14"  value={active === true ? '' : description}  onChange={(e) => setDescription(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Notice Heading " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : description} onChange={(e) => handleDescription(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Description " />
+              </div>
+              <div className='pt-1'>
+                {isValidDescriptionRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Description is required
+                  </p>
+                )}
               </div>
             </div>
 
@@ -775,97 +1052,88 @@ const Item_supplier = () => {
                 {
                   supplierrrData?.map((item, index) => (
                     <tr className='heading-14' >
-                    <td className=' greyText'>{index + 1}</td>
-                    <td className=' greyText' >{item.supplierName}</td>
-                    <td className=' greyText' >{item.contactPersonPhone}</td>
-                    <td className=' greyText' >{item.supplierAddress}</td>
-                    <td className=' greyText' >
-                      <div className='d-flex '>
-                        <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1234" aria-controls="offcanvasRight1234" onClick={(e) => MySupplierGetById(item.supplierId)} >
-                          <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.2813 8.92188L10.0781 4.71875L0.15625 14.6406V18.8438H4.35938L14.2813 8.92188ZM1.40625 17.5938V15.1563L10.0781 6.48438L12.5156 8.92188L3.84375 17.5938H1.40625Z" fill="#8F8F8F" />
-                            <path d="M15.4688 17.5938H8.59375V18.8438H15.4688V17.5938Z" fill="#8F8F8F" />
-                            <path d="M18.2812 17.5938H17.0312V18.8438H18.2812V17.5938Z" fill="#8F8F8F" />
-                            <path d="M11.1875 3.625L15.3906 7.82812L18.25 4.9375L14.0625 0.75L11.1875 3.625ZM15.375 6.04687L12.9531 3.625L14.0625 2.51562L16.4844 4.9375L15.375 6.04687Z" fill="#8F8F8F" />
-                          </svg>
-  
-                        </Link>
-  
-                        <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e) => setIdForDelete(item.supplierId)}>
-                          <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.4043 4.96289L3.36906 20.0337" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3.36914 20.0332C3.36914 20.5666 3.80192 21 4.33396 21" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M4.33398 21H15.5491" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M15.5488 21C16.0809 21 16.513 20.5666 16.513 20.0332" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16.5131 20.0337L17.4792 4.96289H2.4043" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M19.2267 4.03125C19.2267 4.54226 18.813 4.95659 18.3027 4.95659" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M18.302 4.95508H1.5791" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M1.57925 4.95659C1.07032 4.95659 0.655273 4.54226 0.655273 4.03125" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M0.655273 4.03139C0.655273 3.52242 1.07032 3.10742 1.57925 3.10742" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M1.5791 3.10742H18.302" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M18.3027 3.10742C18.813 3.10742 19.2267 3.52247 19.2267 4.03139" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12.8555 3.09247V1.64453" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12.855 1.64445C12.855 1.11236 12.423 0.679688 11.8916 0.679688" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M11.8913 0.679688H7.99121" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7.9915 0.679688C7.45875 0.679688 7.02734 1.11241 7.02734 1.64445" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7.02734 1.64453V3.09247H12.855" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5.69043 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M8.52344 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M11.3594 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14.1914 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                        </Link>
-  
-                      </div>
-  
-                    </td>
-                  </tr>
+                      <td className=' greyText'>{index + 1}</td>
+                      <td className=' greyText' >{item.supplierName}</td>
+                      <td className=' greyText' >{item.contactPersonPhone}</td>
+                      <td className=' greyText' >{item.supplierAddress}</td>
+                      <td className=' greyText' >
+                        <div className='d-flex '>
+                          <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1234" aria-controls="offcanvasRight1234" onClick={(e) => MySupplierGetById(item.supplierId)} >
+                            <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14.2813 8.92188L10.0781 4.71875L0.15625 14.6406V18.8438H4.35938L14.2813 8.92188ZM1.40625 17.5938V15.1563L10.0781 6.48438L12.5156 8.92188L3.84375 17.5938H1.40625Z" fill="#8F8F8F" />
+                              <path d="M15.4688 17.5938H8.59375V18.8438H15.4688V17.5938Z" fill="#8F8F8F" />
+                              <path d="M18.2812 17.5938H17.0312V18.8438H18.2812V17.5938Z" fill="#8F8F8F" />
+                              <path d="M11.1875 3.625L15.3906 7.82812L18.25 4.9375L14.0625 0.75L11.1875 3.625ZM15.375 6.04687L12.9531 3.625L14.0625 2.51562L16.4844 4.9375L15.375 6.04687Z" fill="#8F8F8F" />
+                            </svg>
+
+                          </Link>
+
+                          <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e) => setIdForDelete(item.supplierId)}>
+                            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M2.4043 4.96289L3.36906 20.0337" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M3.36914 20.0332C3.36914 20.5666 3.80192 21 4.33396 21" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M4.33398 21H15.5491" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M15.5488 21C16.0809 21 16.513 20.5666 16.513 20.0332" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M16.5131 20.0337L17.4792 4.96289H2.4043" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M19.2267 4.03125C19.2267 4.54226 18.813 4.95659 18.3027 4.95659" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M18.302 4.95508H1.5791" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M1.57925 4.95659C1.07032 4.95659 0.655273 4.54226 0.655273 4.03125" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M0.655273 4.03139C0.655273 3.52242 1.07032 3.10742 1.57925 3.10742" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M1.5791 3.10742H18.302" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M18.3027 3.10742C18.813 3.10742 19.2267 3.52247 19.2267 4.03139" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M12.8555 3.09247V1.64453" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M12.855 1.64445C12.855 1.11236 12.423 0.679688 11.8916 0.679688" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M11.8913 0.679688H7.99121" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M7.9915 0.679688C7.45875 0.679688 7.02734 1.11241 7.02734 1.64445" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M7.02734 1.64453V3.09247H12.855" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M5.69043 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M8.52344 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M11.3594 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M14.1914 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </Link>
+
+                        </div>
+                      </td>
+                    </tr>
                   ))}
               </tbody>
               <Toaster />
             </table>
-          </div>
-
-          <div className="row ">
-            <div className='d-flex justify-content-between px-5'>
-              <div className='heading-13'>
-                <p>Showing 1 to 10 entries</p>
-              </div>
-              <div >
-                <nav aria-label="Page navigation example">
-                  <ul className="pagination my-pagina " >
-                    <li className="page-item">
-                      <a className="page-link pagination-a" href="#" aria-label="Previous">
-                        <span aria-hidden="true">
-                          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 0.84875L7.1375 0L0 7L7.1375 14L8 13.1556L1.72917 7L8 0.84875Z" fill="black" />
-                          </svg>
-                        </span>
-                      </a>
-                      &nbsp;
-                    </li>
-                    &nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">1</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">2</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">3</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">4</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">5</a></li>&nbsp;
-                    <li className="page-item">
-                      <a className="page-link pagination-a" href="#" aria-label="Next" >
-                        <span aria-hidden="true">
-                          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 0.84875L0.8625 0L8 7L0.8625 14L0 13.1556L6.27083 7L0 0.84875Z" fill="black" />
-                          </svg>
-
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+            <div className="d-flex" style={{ marginBottom: "10px" }}>
+              <p className="font14">
+                Showing {currentPage} of {totalPages} Pages
+              </p>
+              <div className="ms-auto">
+                <ReactPaginate
+                  previousLabel={
+                    <Icon
+                      icon="tabler:chevrons-left"
+                      width="1.4em"
+                      height="1.4em"
+                    />
+                  }
+                  nextLabel={
+                    <Icon
+                      icon="tabler:chevrons-right"
+                      width="1.4em"
+                      height="1.4em"
+                    />
+                  }
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={totalPages}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={10}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
               </div>
             </div>
-
           </div>
+
 
         </div>
         {/* ################## Off Canvas Area ####################  */}
@@ -946,10 +1214,10 @@ const Item_supplier = () => {
 
         </div>
         {/* ##### offcanvas edit start ########  */}
-        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1234" aria-labelledby="offcanvasRightLabel">
-          {
-            showadd && (
-              <>
+        {
+          showadd && (
+            <>
+              <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1234" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef22}>
                 <div className="offcanvas-header">
                   <Link data-bs-dismiss="offcanvas" ><img src="./images/Vector (13).svg" alt="" /></Link>
                   <h5 className="offcanvas-title heading-16" id="offcanvasRightLabel">Edit Item Supplier</h5>
@@ -958,7 +1226,7 @@ const Item_supplier = () => {
                 <div className="offcanvas-body pt-0">
                   <div class="mb-2">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Name *</label>
-                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={name}  onChange={(e) => setName(e.target.value)} placeholder="Select Title" />
+                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={name} onChange={(e) => setName(e.target.value)} placeholder="Select Title" />
                   </div>
                   <div class="mb-2  ">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Phone *</label>
@@ -970,7 +1238,7 @@ const Item_supplier = () => {
                   </div>
                   <div class="mb-2  ">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Address *</label>
-                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={address} onChange={(e) => setAddress(e.target.value)}  placeholder="Select Title" />
+                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Select Title" />
                   </div>
                   <div class="mb-2  ">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Contact Person Name *</label>
@@ -982,7 +1250,7 @@ const Item_supplier = () => {
                   </div>
                   <div class="mb-2  ">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Contact Person Email *</label>
-                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={personEmail}  onChange={(e) => setPersonEmail(e.target.value)} placeholder="Select Title" />
+                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={personEmail} onChange={(e) => setPersonEmail(e.target.value)} placeholder="Select Title" />
                   </div>
                   <div class="mb-2  ">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Description</label>
@@ -996,39 +1264,12 @@ const Item_supplier = () => {
                   </div>
                 </div>
 
-              </>
-            )
-          }
-          {/* ################# After click ###############  */}
-          {
-            hideedit && (
-              <div className="container-fluid">
-                <div className="offcanvas-header">
-                  <Link data-bs-dismiss="offcanvas" ><img src="./images/Vector (13).svg" alt="" /></Link>
-                  <h5 className="offcanvas-title heading-16" id="offcanvasRightLabel">Successfully Message</h5>
-                </div>
-                <hr className='' style={{ marginTop: '-3px' }} />
-                <div className="delete-section  mt-5">
-                  <div className="bg-container">
-                    <div className="img-container">
-                      <img src="./images/XMLID_1_.png" alt="" />
-                    </div>
-                    <div className="content mt-5">
-                      <p >Successful Edit</p>
-                      <hr style={{ width: '' }} />
-                      <p className='mb-5' style={{ color: '#ADADBD', fontSize: '14px' }}>Your Changes has been <br /> Successfully Saved</p>
-                    </div>
-                    <div className='button-position'>
-                      <button type="button" data-bs-dismiss="offcanvas" className="btn btn-outline-primary button11 mt-4 mb" style={{ fontSize: '14px' }}>Continue</button>
-                    </div>
-
-                  </div>
-                </div>
               </div>
-            )
-          }
-          {/* ##### offcanvase edit end ########  */}
-        </div>
+            </>
+          )
+        }
+
+        {/* ##### offcanvase edit end ########  */}
         {/* ################ offcanvas delete start #############  */}
 
         <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel">

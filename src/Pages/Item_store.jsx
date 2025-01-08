@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,6 +10,8 @@ import { ItemStoreGetByIdApi } from '../Utils/Apis'
 import { ItemUpdatedApi } from '../Utils/Apis'
 
 import "flatpickr/dist/themes/light.css";
+import ReactPaginate from 'react-paginate';
+import { Icon } from '@iconify/react/dist/iconify.js';
 // ## style css area start ####  
 
 const Container = styled.div`
@@ -410,6 +412,46 @@ font-size: 12px;
     border: 1px solid #DDDDEB;
     padding: 0px 12px 0px 12px;
 }
+
+/* pagination css  */
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    box-shadow: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-size: var(--font-size-14);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #000;
+    /* background-color: #f5f5f5;
+    transition: background-color 0.3s; */
+  }
+
+  .pagination li a:hover {
+    background-color: #317a77 !important;
+    color: #fff !important;
+  }
+
+  .pagination li.active a {
+    background-color: #317a77 !important;
+    color: #fff;
+    font-weight: bold;
+  }
+/* pagination css  */
+
 /* ############# offcanvas ############## */
 
 /* ########## media query ###########  */
@@ -481,7 +523,6 @@ const Item_store = () => {
 
   const [active, setActive] = useState()
 
-
   const [showdelete, setShowdelete] = useState(true)
   const [hidedelete, setHidedelete] = useState(false)
 
@@ -495,59 +536,149 @@ const Item_store = () => {
   const [myIncomeCategoryData, setMyIncomeCategoryData] = useState([])
   console.log(' item store data', ItemStoreData)
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageNo, setPageNo] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
+  const handlePageClick = (event) => {
+    setPageNo(event.selected + 1);
+  };
+
+  const [isValidNameRequired, setIsValidNameRequired] = useState(false);
+  const [isValidNumberRequired, setIsValidNumberRequired] = useState(false);
+  const [isValidDescriptionRequired, setIsValidDescriptionRequired] = useState(false);
+
+  // Validation 
+  const FuncValidation = () => {
+    let inValid = true;
+
+    // name 
+    if (!storeName || storeName === "" || !/^[A-Za-z\s]+$/.test(storeName)) {
+      setIsValidNameRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+
+    // Number  
+    if (!storeCode || storeCode === "" || !/^\d{1,4}$/.test(storeCode)) {
+      setIsValidNumberRequired(true)
+      inValid = false
+      setLoader(false)
+    }
+    else {
+    }
+      // name 
+      if (!description || description === "" || !/^[A-Za-z\s]+$/.test(description)) {
+        setIsValidDescriptionRequired(true)
+        inValid = false
+        setLoader(false)
+      }
+      else {
+      }
+    return inValid;
+  }
+
+  const handleName = (e2) => {
+    setStoreName(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidNameRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidNameRequired(true)
+    } else {
+      setIsValidNameRequired(false)
+    }
+  }
+  const handleNumber = (e2) => {
+    setStoreCode(e2);
+    const noRegex = /^\d{1,4}$/;
+    setIsValidNumberRequired(noRegex.test(e2));
+    if (e2 === "" || !noRegex.test(e2)) {
+      setIsValidNumberRequired(true)
+    } else {
+      setIsValidNumberRequired(false)
+    }
+  }
+  const handleDescription = (e2) => {
+    setDescription(e2);
+    const nameRegex = /^[A-Za-z\s]+$/;
+    setIsValidDescriptionRequired(nameRegex.test(e2));
+    if (e2 === "" || !nameRegex.test(e2)) {
+      setIsValidDescriptionRequired(true)
+    } else {
+      setIsValidDescriptionRequired(false)
+    }
+  }
+  // Validation 
+  
   useEffect(() => {
     MyItemStoreGetAllApi()
 
-}, [])
+  }, [pageNo])
 
-// Income category Post Api 
-const MyItemCategoryPostApi = async () => {
+  const offcanvasRef = useRef(null);
+  const offcanvasRef22 = useRef(null);
+  const offcanvasRef33 = useRef(null);
 
-  const formdata = {
-    "storeName": storeName,
-    "storeCode": storeCode,
-    "description": description
-  }
-    setLoader(true)
-    try {
+  // Add item Post Api 
+  const MyItemCategoryPostApi = async () => {
+    if (FuncValidation()) {
+      const formdata = {
+        "storeName": storeName,
+        "storeCode": storeCode,
+        "description": description
+      }
+      setLoader(true)
+      try {
         const response = await ItemStorePostApi(formdata);
         console.log('item store response', response)
         if (response?.status === 200) {
+          if (response?.data?.status === "success") {
+            toast.success(response?.data?.message);
+            MyItemStoreGetAllApi()
+            setHidedelete(true)
             if (response?.data?.status === "success") {
-                toast.success(response?.data?.message);
-                MyItemStoreGetAllApi()
-                setHidedelete(true)
-                if (response?.data?.status === "success") {
-                    setActive(true)
-                }
-                setLoader(false)
-                setShow(false)
-                setHide(true)
-            } else {
-                toast.error(response?.data?.message);
-                // setShow(true)
+              // setActive(true)
+              setStoreName('')
+              setStoreCode('')
+              setDescription('')
             }
+            setLoader(false)
+            setShow(false)
+            setHide(true)
+          } else {
+            toast.error(response?.data?.message);
+            // setShow(true)
+          }
         } else {
-            toast.error(response?.data?.msg);
+          toast.error(response?.data?.msg);
         }
-    } catch (error) {
+      } catch (error) {
         console.log(error)
+      }
     }
-}
-   // Get All api  
-   const MyItemStoreGetAllApi = async () => {
+
+  }
+
+  // Get All api  
+  const MyItemStoreGetAllApi = async () => {
     setLoader(true)
-    
+
     try {
-      const response = await ItemStoreGetAllApi();
+      const response = await ItemStoreGetAllApi(pageNo, pageSize);
       console.log('my Item storeee all dataaaaa', response);
       if (response?.status === 200) {
-        toast.success(response?.data?.message)
-        setItemStoreData(response?.data?.itemStore)
+        // toast.success(response?.data?.message)
+        setItemStoreData(response?.data?.itemStores)
+
+        setCurrentPage(response?.data?.currentPage);
+        setTotalPages(response?.data?.totalPages);
+
         setLoader(false)
       } else {
-        toast.error(response?.data?.classes?.message);
+        // toast.error(response?.data?.classes?.message);
       }
     } catch (error) {
       console.log(error)
@@ -565,8 +696,14 @@ const MyItemCategoryPostApi = async () => {
         toast.success(response?.data?.message);
         MyItemStoreGetAllApi()
         setShowdelete(false)
-        setHidedelete(true)
+        // setHidedelete(true)
         setLoader(false)
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef33.current);
+        offcanvasInstance.hide();
+        // setShow(false)
+        setTimeout(() => {
+          setShowdelete(true)
+        }, 0.5)
 
       } else {
         toast.error(response?.data?.message);
@@ -576,31 +713,30 @@ const MyItemCategoryPostApi = async () => {
       console.log(error)
     }
   }
+  // Get By Id  api  
+  const MyItemStoreGetByIdApi = async (id) => {
+    setIdForUpdate(id)
+    setLoader(true)
+    try {
+      const response = await ItemStoreGetByIdApi(id);
+      // console.log('my Item storeee all by id  dataa', response);
+      if (response?.status === 200) {
+        // toast.success(response?.data?.message)
 
-     // Get By Id  api  
-     const MyItemStoreGetByIdApi = async (id) => {
-      setIdForUpdate(id)
-      setLoader(true)
-      try {
-        const response = await ItemStoreGetByIdApi(id);
-        console.log('my Item storeee all by id  dataa', response);
-        if (response?.status === 200) {
-          toast.success(response?.data?.message)
+        setStoreName(response?.data?.itemStore?.storeName)
+        setStoreCode(response?.data?.itemStore?.storeCode)
+        setDescription(response?.data?.itemStore?.description)
 
-          setStoreName(response?.data?.itemStore?.storeName)
-          setStoreCode(response?.data?.itemStore?.storeCode)
-          setDescription(response?.data?.itemStore?.description)
-
-          setLoader(false)
-        } else {
-          toast.error(response?.data?.classes?.message);
-        }
-      } catch (error) {
-        console.log(error)
+        setLoader(false)
+      } else {
+        toast.error(response?.data?.classes?.message);
       }
+    } catch (error) {
+      console.log(error)
     }
-     // Put api 
-   const MyItemCategoryPutApi = async () => {
+  }
+  // Put api 
+  const MyItemCategoryPutApi = async () => {
     setLoader(true)
     try {
       const formdata = {
@@ -613,10 +749,14 @@ const MyItemCategoryPostApi = async () => {
       if (response?.status === 200) {
         toast.success(response?.data?.message);
         setShowadd(false)
-        setHideedit(true)
         MyItemStoreGetAllApi()
         setLoader(false)
-
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef22.current);
+        offcanvasInstance.hide();
+        setShow(false)
+        setTimeout(() => {
+          setShowadd(true)
+        }, 0.5)
       } else {
         toast.error(response?.data?.message);
         setShowadd(true)
@@ -626,6 +766,7 @@ const MyItemCategoryPostApi = async () => {
       console.log(error)
     }
   }
+
   return (
     <Container>
       {
@@ -645,7 +786,7 @@ const MyItemCategoryPostApi = async () => {
               </ol>
             </nav>
           </div>
-        
+
         </div>
         <h5 className='ms-3 mb-2 margin-minus22 heading-16' style={{ marginTop: '-12px' }}>Item Store</h5>
 
@@ -656,22 +797,42 @@ const MyItemCategoryPostApi = async () => {
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Item Store Name *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : storeName} onChange={(e) => setStoreName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Store " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={storeName} onChange={(e) => handleName(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter Name " />
               </div>
-
-              {/* <input type="text" class="form-control  form-control-sm form-focus font-color" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" placeholder="name@example.com" /> */}
+              <div className='pt-1'>
+                {isValidNameRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Name is required
+                  </p>
+                )}
+              </div>
 
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12  ">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Item Store Code *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : storeCode} onChange={(e) => setStoreCode(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter code " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={storeCode} onChange={(e) => handleNumber(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter code " />
               </div>
+              <div className='pt-1'>
+                {isValidNumberRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Number is required
+                  </p>
+                )}
+              </div>
+              
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12">
               <div className="mb-3" >
                 <label for="exampleFormControlInput1" className="form-label label-color heading-14">Description *</label>
-                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={active === true ? '' : description} onChange={(e) => setDescription(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter description " />
+                <input type="text" className="form-control form-focus form-control-sm   heading-14" value={description} onChange={(e) => handleDescription(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Enter description " />
+              </div>
+              <div className='pt-1'>
+                {isValidDescriptionRequired && (
+                  <p className='ms-1' style={{ color: 'red', fontSize: '14px', marginTop: '-18px' }}>
+                    Description is required
+                  </p>
+                )}
               </div>
             </div>
 
@@ -698,101 +859,95 @@ const MyItemCategoryPostApi = async () => {
                 </tr>
               </thead>
               <tbody className='heading-14 align-middle greyTextColor'>
-              
+
                 {
                   ItemStoreData?.map((item, index) => (
                     <tr className='heading-14' >
-                    <td className=' greyText'>{index + 1}</td>
-                    <td className=' greyText' >{item.storeName}</td>
-                    <td className=' greyText' >{item.storeCode}</td>
-                    <td className=' greyText' >{item.description}</td>
-                    <td className=' greyText' >
-                      <div className='d-flex '>
-                        <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1234" aria-controls="offcanvasRight1234" onClick={(e) => MyItemStoreGetByIdApi(item.id)} >
-                          <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.2813 8.92188L10.0781 4.71875L0.15625 14.6406V18.8438H4.35938L14.2813 8.92188ZM1.40625 17.5938V15.1563L10.0781 6.48438L12.5156 8.92188L3.84375 17.5938H1.40625Z" fill="#8F8F8F" />
-                            <path d="M15.4688 17.5938H8.59375V18.8438H15.4688V17.5938Z" fill="#8F8F8F" />
-                            <path d="M18.2812 17.5938H17.0312V18.8438H18.2812V17.5938Z" fill="#8F8F8F" />
-                            <path d="M11.1875 3.625L15.3906 7.82812L18.25 4.9375L14.0625 0.75L11.1875 3.625ZM15.375 6.04687L12.9531 3.625L14.0625 2.51562L16.4844 4.9375L15.375 6.04687Z" fill="#8F8F8F" />
-                          </svg>
-  
-                        </Link>
-                        <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e) => setIdForDelete(item.id)}>
-                          <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.4043 4.96289L3.36906 20.0337" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M3.36914 20.0332C3.36914 20.5666 3.80192 21 4.33396 21" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M4.33398 21H15.5491" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M15.5488 21C16.0809 21 16.513 20.5666 16.513 20.0332" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M16.5131 20.0337L17.4792 4.96289H2.4043" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M19.2267 4.03125C19.2267 4.54226 18.813 4.95659 18.3027 4.95659" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M18.302 4.95508H1.5791" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M1.57925 4.95659C1.07032 4.95659 0.655273 4.54226 0.655273 4.03125" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M0.655273 4.03139C0.655273 3.52242 1.07032 3.10742 1.57925 3.10742" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M1.5791 3.10742H18.302" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M18.3027 3.10742C18.813 3.10742 19.2267 3.52247 19.2267 4.03139" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12.8555 3.09247V1.64453" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12.855 1.64445C12.855 1.11236 12.423 0.679688 11.8916 0.679688" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M11.8913 0.679688H7.99121" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7.9915 0.679688C7.45875 0.679688 7.02734 1.11241 7.02734 1.64445" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7.02734 1.64453V3.09247H12.855" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5.69043 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M8.52344 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M11.3594 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14.1914 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-  
-                        </Link>
-  
-                      </div>
-  
-                    </td>
-                  </tr>
+                      <td className=' greyText'>{index + 1}</td>
+                      <td className=' greyText' >{item.storeName}</td>
+                      <td className=' greyText' >{item.storeCode}</td>
+                      <td className=' greyText' >{item.description}</td>
+                      <td className=' greyText' >
+                        <div className='d-flex '>
+                          <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1234" aria-controls="offcanvasRight1234" onClick={(e) => MyItemStoreGetByIdApi(item.id)} >
+                            <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14.2813 8.92188L10.0781 4.71875L0.15625 14.6406V18.8438H4.35938L14.2813 8.92188ZM1.40625 17.5938V15.1563L10.0781 6.48438L12.5156 8.92188L3.84375 17.5938H1.40625Z" fill="#8F8F8F" />
+                              <path d="M15.4688 17.5938H8.59375V18.8438H15.4688V17.5938Z" fill="#8F8F8F" />
+                              <path d="M18.2812 17.5938H17.0312V18.8438H18.2812V17.5938Z" fill="#8F8F8F" />
+                              <path d="M11.1875 3.625L15.3906 7.82812L18.25 4.9375L14.0625 0.75L11.1875 3.625ZM15.375 6.04687L12.9531 3.625L14.0625 2.51562L16.4844 4.9375L15.375 6.04687Z" fill="#8F8F8F" />
+                            </svg>
+
+                          </Link>
+                          <Link className="dropdown-item " to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e) => setIdForDelete(item.id)}>
+                            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M2.4043 4.96289L3.36906 20.0337" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M3.36914 20.0332C3.36914 20.5666 3.80192 21 4.33396 21" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M4.33398 21H15.5491" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M15.5488 21C16.0809 21 16.513 20.5666 16.513 20.0332" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M16.5131 20.0337L17.4792 4.96289H2.4043" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M19.2267 4.03125C19.2267 4.54226 18.813 4.95659 18.3027 4.95659" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M18.302 4.95508H1.5791" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M1.57925 4.95659C1.07032 4.95659 0.655273 4.54226 0.655273 4.03125" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M0.655273 4.03139C0.655273 3.52242 1.07032 3.10742 1.57925 3.10742" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M1.5791 3.10742H18.302" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M18.3027 3.10742C18.813 3.10742 19.2267 3.52247 19.2267 4.03139" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M12.8555 3.09247V1.64453" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M12.855 1.64445C12.855 1.11236 12.423 0.679688 11.8916 0.679688" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M11.8913 0.679688H7.99121" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M7.9915 0.679688C7.45875 0.679688 7.02734 1.11241 7.02734 1.64445" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M7.02734 1.64453V3.09247H12.855" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M5.69043 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M8.52344 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M11.3594 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M14.1914 6.89258V18.769" stroke="#8F8F8F" stroke-miterlimit="2.6131" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+
+                          </Link>
+
+                        </div>
+
+                      </td>
+                    </tr>
                   ))}
               </tbody>
               <Toaster />
             </table>
-          </div>
-
-          <div className="row ">
-            <div className='d-flex justify-content-between px-5'>
-              <div className='heading-13'>
-                <p>Showing 1 to 10 entries</p>
-              </div>
-              <div >
-                <nav aria-label="Page navigation example">
-                  <ul className="pagination my-pagina " >
-                    <li className="page-item">
-                      <a className="page-link pagination-a" href="#" aria-label="Previous">
-                        <span aria-hidden="true">
-                          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 0.84875L7.1375 0L0 7L7.1375 14L8 13.1556L1.72917 7L8 0.84875Z" fill="black" />
-                          </svg>
-                        </span>
-                      </a>
-                      &nbsp;
-                    </li>
-                    &nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">1</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">2</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">3</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">4</a></li>&nbsp;
-                    <li className="page-item"><a className="page-link pagination-a" href="#">5</a></li>&nbsp;
-                    <li className="page-item">
-                      <a className="page-link pagination-a" href="#" aria-label="Next" >
-                        <span aria-hidden="true">
-                          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 0.84875L0.8625 0L8 7L0.8625 14L0 13.1556L6.27083 7L0 0.84875Z" fill="black" />
-                          </svg>
-
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+            <div className="d-flex" style={{ marginBottom: "10px" }}>
+              <p className="font14">
+                Showing {currentPage} of {totalPages} Pages
+              </p>
+              <div className="ms-auto">
+                <ReactPaginate
+                  previousLabel={
+                    <Icon
+                      icon="tabler:chevrons-left"
+                      width="1.4em"
+                      height="1.4em"
+                    />
+                  }
+                  nextLabel={
+                    <Icon
+                      icon="tabler:chevrons-right"
+                      width="1.4em"
+                      height="1.4em"
+                    />
+                  }
+                  breakLabel={"..."}
+                  breakClassName={"break-me"}
+                  pageCount={totalPages}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={10}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
               </div>
             </div>
-
           </div>
+
+
+
         </div>
         {/* ################## Off Canvas Area ####################  */}
 
@@ -840,39 +995,12 @@ const MyItemCategoryPostApi = async () => {
 
             )
           }
-          {/* ################# After click ###############  */}
-          {
-            hide && (
-              <div className="container-fluid">
-                <div className="offcanvas-header">
-                  <Link data-bs-dismiss="offcanvas" ><img src="./images/Vector (13).svg" alt="" /></Link>
-                  <h5 className="offcanvas-title heading-16" id="offcanvasRightLabel">Successfully Message</h5>
-                </div>
-                <hr className='' style={{ marginTop: '-3px' }} />
-                <div className="delete-section  mt-5">
-                  <div className="bg-container">
-                    <div className="img-container">
-                      <img src="./images/XMLID_1_.png" alt="" />
-                    </div>
-                    <div className="content mt-5">
-                      <p >Successful Added</p>
-                      <hr style={{ width: '' }} />
-                      <p className='mb-5' style={{ color: '#ADADBD', fontSize: '14px' }}>Your Changes has been <br /> Successfully Saved</p>
-                    </div>
-                    <div className='button-position'>
-                      <button type="button" data-bs-dismiss="offcanvas" className="btn btn-outline-primary button11 mt-4 mb" style={{ fontSize: '14px' }}>Continue</button>
-                    </div>
 
-                  </div>
-                </div>
-              </div>
-            )
-          }
-          {/* ##### offcanvase added  end ########  */}
 
         </div>
+
         {/* ##### offcanvas edit start ########  */}
-        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1234" aria-labelledby="offcanvasRightLabel">
+        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1234" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef22}>
           {
             showadd && (
               <>
@@ -884,11 +1012,11 @@ const MyItemCategoryPostApi = async () => {
                 <div className="offcanvas-body pt-0">
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Item Store Name *</label>
-                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={storeName}  onChange={(e) => setStoreName(e.target.value)} placeholder="Select Title" />
+                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={storeName} onChange={(e) => setStoreName(e.target.value)} placeholder="Select Title" />
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Item Store Code *</label>
-                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={storeCode}  onChange={(e) => setStoreCode(e.target.value)} placeholder="Select Title" />
+                    <input type="text" class="form-control form-control-sm" id="exampleFormControlInput1" value={storeCode} onChange={(e) => setStoreCode(e.target.value)} placeholder="Select Title" />
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label heading-16">Description</label>
@@ -898,7 +1026,7 @@ const MyItemCategoryPostApi = async () => {
 
                   <div className='my-button11 '>
                     <button type="button" className="btn btn-outline-success heading-16 btn-bgAndColor" onClick={MyItemCategoryPutApi} >Update</button>
-                    <button type="button" className="btn btn-outline-success heading-16">Cancel</button>
+                    <button type="button" className="btn btn-outline-success heading-16" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                   </div>
                 </div>
 
@@ -908,7 +1036,7 @@ const MyItemCategoryPostApi = async () => {
             )
           }
           {/* ################# After click ###############  */}
-          {
+          {/* {
             hideedit && (
               <div className="container-fluid">
                 <div className="offcanvas-header">
@@ -934,12 +1062,12 @@ const MyItemCategoryPostApi = async () => {
                 </div>
               </div>
             )
-          }
+          } */}
           {/* ##### offcanvase edit end ########  */}
         </div>
         {/* ################ offcanvas delete start #############  */}
 
-        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel">
+        <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef33}>
 
           {
             showdelete && (
@@ -987,7 +1115,7 @@ const MyItemCategoryPostApi = async () => {
           }
           {/* ############## After click ##############  */}
 
-          {
+          {/* {
             hidedelete && (
               <div className="container-fluid">
                 <div className="offcanvas-header p-0 pt-3">
@@ -1015,7 +1143,7 @@ const MyItemCategoryPostApi = async () => {
               </div>
 
             )
-          }
+          } */}
         </div>
         {/* ################ offcanvas delete end #############  */}
       </div>

@@ -343,8 +343,8 @@ const ItemStockList = ({ Reload }) => {
           <div className=''>
             <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
             <p className='text-center warningHeading'>Are you Sure?</p>
-            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" checked={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Issue Stock List Data</p>
+            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" checked={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Issue Stock List Data</p>
             <p className='text-center p-3'>
               <button className='btn deleteButtons text-white' onClick={DeleteItemStockById}>Delete</button>
               <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

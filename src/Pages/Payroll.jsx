@@ -576,7 +576,6 @@ const Payroll = () => {
 
               <tbody className='heading-14 align-middle greyTextColor'>
 
-               
                 {
                   payrollData.map((item, index) => (
                     <tr className='heading-14' >
@@ -609,8 +608,6 @@ const Payroll = () => {
                 </tr>
                   ))
                 }
-
-
               </tbody>
             </table>
           </div>
@@ -701,7 +698,7 @@ const Payroll = () => {
                 </div>
                 <div className='my-button11 '>
                   <button type="button" className="btn btn-outline-success heading-16" onClick={(e) => { UpdateHandleBtn() }}>Submit</button>
-                  <button type="button" className="btn btn-outline-success heading-16">Cancel</button>
+                  <button type="button" className="btn btn-outline-success heading-16" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                 </div>
               </div>
             )

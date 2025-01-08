@@ -294,7 +294,7 @@ const AddSchool = () => {
               </CollapsedContainer>
               <div className="d-flex justify-content-center mt-3 mb-3">
                 <button className='me-2 btn addButtons text-white' type="submit">Submit</button>
-                <button className='ms-2 btn cancelButtons text-black' type="button">Cancel</button>
+                <Link className='ms-2 btn cancelButtons text-black' type="button" to='/allSchoolsPage'>Cancel</Link>
               </div>
             </div>
           </div>

@@ -135,6 +135,8 @@ const Assignment = () => {
     const [sectionId, setSectionId] = useState(0);
     const [subjectId, setSubjectId] = useState(0);
     const [allClassData, setAllClassData] = useState([]);
+    const [allSectionData, setAllSectionData] = useState([]);
+    const [allSubjectData, setAllSubjectData] = useState([]);
     const [allAssignmentData, setAllAssignmentData] = useState([]);
     const [closeAddModal, setCloseAddModal] = useState(false);
     const [closeEditModal, setCloseEditModal] = useState(false);
@@ -347,6 +349,26 @@ const Assignment = () => {
         }
     };
 
+
+    const handleChange = (value) => {
+        console.log(value)
+        const val = parseInt(value)
+        // setLoaderState(true);
+        setClassId(val);
+        const selectedClass = allClassData.find(c => c.classId === val)
+        console.log(selectedClass, 'rdctfvggyh')
+        if (selectedClass) {
+            setAllSectionData(selectedClass.section || []);
+            setAllSubjectData(selectedClass.subjects || []);
+            // setLoaderState(false)
+        } else {
+            setAllSectionData([]);
+            setAllSubjectData([]);
+            // setLoaderState(false)
+        }
+    }
+
+
     return (
         <>
             <Container>
@@ -424,7 +446,7 @@ const Assignment = () => {
                             <form className="row g-3">
                                 <div className="col-md-4 col-sm-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Class</label>
-                                    <select className="form-select bordeRadius5 font14" aria-label="Default select example" onChange={handleChange}>
+                                    <select className="form-select bordeRadius5 font14" aria-label="Default select example" onChange={(e)=> handleChange(e.target.value)}>
                                         <option value="">-- Select --</option>
                                         {allClassData?.map((option) => (
                                             <option key={option.classId} value={option?.classId}>
@@ -618,8 +640,8 @@ const Assignment = () => {
                             <p className='modalLightBorder p-2'>Assignment</p>
                             <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                             <p className='text-center warningHeading'>Are you Sure?</p>
-                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" checked={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Assignment Data</p>
+                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" checked={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Assignment Data</p>
                             <p className='text-center p-3'>
                                 <button className='btn deleteButtons text-white' onClick={() => DeleteAssignmentDataById(DeleteItemId)}>Delete</button>
                                 <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

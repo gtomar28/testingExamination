@@ -433,7 +433,6 @@ const OtherStaff = () => {
   const [staffAllData, setStaffAllData] = useState([])
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
-
   const [TeacherName, setTeacherName] = useState()
   const [TeacherEmail, setTeacherEmail] = useState()
   const [originalMail, setOriginalMail] = useState();
@@ -443,8 +442,6 @@ const OtherStaff = () => {
   const [TeacherRoleId, setRoleID] = useState('')
   const [searchKey, setSearchKkey] = useState('')
   const [basicSalary, setBasicSalary] = useState();
-
-
   const [isValidNameRequired, setIsValidNameRequired] = useState(false);
   const [isValidEmailRequired, setIsValidEmailRequired] = useState(false);
   const [isValidAddressRequired, setIsValidAddressRequired] = useState(false);
@@ -462,7 +459,6 @@ const OtherStaff = () => {
       if (response?.status === 200) {
         const rows = response?.data?.split('\n').map(row => row.split(','));
         setCsvData(rows);
-        // setTableData(rows.slice(1));
       }
     } catch (err) {
       console.log(err);
@@ -489,7 +485,6 @@ const OtherStaff = () => {
     setLoader(true)
     try {
       const response = await TeacherGetAllApi(70, searchKey, pageNo, pageSize);
-      console.log('My otherstaff get all DATA', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setOtherStaffAllData(response?.data?.AllRoles)
@@ -511,7 +506,7 @@ const OtherStaff = () => {
       const response = await StaffDeleteApi(id);
       // console.log('my-subs-api',response)
       if (response?.status === 200) {
-        toast.success(response?.data?.msg);
+        toast.success(response?.data?.message);
         MyTeacherGetAllApi()
         setShowdelete(false)
         setHidedelete(true)
@@ -522,7 +517,7 @@ const OtherStaff = () => {
           setShowdelete(true)
         }, 0.5)
       } else {
-        toast.error(response?.data?.msg);
+        toast.error(response?.data?.message);
         setShowdelete(true)
       }
     } catch (error) {
@@ -536,7 +531,6 @@ const OtherStaff = () => {
     setLoader(true)
     try {
       const response = await StaffGetById(id);
-      console.log('My Other Staff get DATA by get by id', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setTeacherName(response?.data?.user?.staffName)
@@ -546,8 +540,6 @@ const OtherStaff = () => {
         setTeacherContact(response?.data?.user?.staffPhone)
         setTeacherGender(response?.data?.user?.staffGender)
         setBasicSalary(response?.data?.user?.basicSalary);
-
-        // setRoleID(response?.data?.user?.staffGender)
         setLoader(false)
       } else {
         toast.error(response?.data?.msg);
@@ -556,7 +548,6 @@ const OtherStaff = () => {
       console.log(error)
     }
   }
-
 
   // validation 
 
@@ -620,10 +611,8 @@ const OtherStaff = () => {
     } else {
       setIsValidBasicSalaryRequired(false)
     }
-
   }
   const FuncValidation = () => {
-
     let isValid = true;
     setIsValidNameRequired(false)
     setIsValidEmailRequired(false)
@@ -691,9 +680,7 @@ const OtherStaff = () => {
         if (originalMail !== TeacherEmail) {
           formData.append("staffEmail", TeacherEmail);
         }
-
         formData.append('staffName', TeacherName)
-        // formData.append('staffEmail', TeacherEmail)
         formData.append('staffAddress', TeacherAddress)
         formData.append('staffPhone', TeacherContact)
         formData.append('staffGender', TeacherGender)
@@ -709,7 +696,6 @@ const OtherStaff = () => {
           setHide(true)
           MyTeacherGetAllApi()
           setLoader(false)
-
           const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef.current);
           offcanvasInstance.hide();
           setTimeout(() => {
@@ -745,7 +731,6 @@ const OtherStaff = () => {
       console.log(error)
     }
   }
-
   const handleForDelete = () => {
     showNamedelete(IdForDelete)
   }
@@ -775,8 +760,6 @@ const OtherStaff = () => {
           </div>
 
           <div className='d-flex g-1 for-media-query'>
-
-
             <div className='me-2 search-responsive'>
               <div className="input-group mb-3 ">
                 <input type="text" className="form-control form-focus font-color" style={{ height: '34px' }} placeholder="Search" aria-label="Recipient's username" onChange={(e) => setSearchKkey(e.target.value)} aria-describedby="basic-addon2" />
@@ -784,7 +767,6 @@ const OtherStaff = () => {
               </div>
             </div>
             <Link type="button" className="btn btn-success heading-16 my-own-button me-3"   onClick={(e)=> localoStorage("0")} to={`/mainuserform/${'0'}`}>+ ADD Staff</Link>
-
           </div>
 
         </div>
@@ -806,9 +788,7 @@ const OtherStaff = () => {
                   <th>Actions</th>
                 </tr>
               </thead>
-
               <tbody className='heading-14 align-middle greyTextColor'>
-
                 {
                   otherStaffAllData.map((item, index) => (
                     <tr className='heading-14' >
@@ -827,7 +807,6 @@ const OtherStaff = () => {
                             </svg>
                           </button>
                           <ul className="dropdown-menu anchor-color heading-14">
-                            {/* <li><button  className="dropdown-item" onClick={(e)=>IdTransfer(item.noticeId)}>View Profile</button></li> */}
                             <li><Link className="dropdown-item" onClick={(e) => localoStorage(item.id)} to={`/mainuserform/${item.id}`}>Edit</Link></li>
                             <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="staticBackdrop" onClick={(e) => setIdForDelete(item.id)}>Delete</Link></li>
 
@@ -965,7 +944,7 @@ const OtherStaff = () => {
 
                   <div className='my-button11 '>
                     <button type="button" className="btn btn-outline-success" onClick={(e) => { MyNoticePutApi(IdForUpdate) }}>Update</button>
-                    <button type="button" className="btn btn-outline-success">Cancel</button>
+                    <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                   </div>
                 </div>
               </div>
@@ -1021,7 +1000,7 @@ const OtherStaff = () => {
                 </div>
                 <hr className='mt-4' />
 
-                <div className='d-flex  justify-content-between '>
+                <div className='d-flex justify-content-between '>
                   <div >
                     <p className='heading-14 label-color'>Gender</p>
                   </div>
@@ -1060,9 +1039,7 @@ const OtherStaff = () => {
                           <path d="M31.4062 16.6406H27.6562V20.3906H31.4062V16.6406Z" fill="#B50000" />
                         </svg>
                       </div>
-                      {/* <div className="symbol-container">
-                                         <img src="./images/Group.png" alt="" />
-                                       </div> */}
+         
                       <div className="sure-content mt-2">
                         <h5 className='heading-20'>Are you sure?</h5>
                         <p>This Action will be permanently <br /> delete the Profile Data</p>

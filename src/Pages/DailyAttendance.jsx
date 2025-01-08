@@ -447,17 +447,12 @@ const DailyAttendance = ({ items }) => {
   const [showMonth, setShowMonth] = useState()
   const [lastUpdate, setLastUpdate] = useState()
   const [time, setTime] = useState()
-
   const [attendance, setAttendance] = useState(false)
   const [present, setPresent] = useState([])
   const [absent, setAbsent] = useState([])
-  console.log('present', present)
-  console.log('absent', absent)
-
   const [classId, setClassId] = useState()
   const [sectionId, setSectionId] = useState()
   const [sectionId2, setSectionId2] = useState()
-  console.log('my section id is', sectionId2)
   const [month, setMonth] = useState()
   const [year, setYear] = useState()
   const [sectionName, setSectionName] = useState()
@@ -480,7 +475,6 @@ const DailyAttendance = ({ items }) => {
       if (response?.status === 200) {
         const rows = response?.data?.split('\n').map(row => row.split(','));
         setCsvData(rows);
-        // setTableData(rows.slice(1));
       }
     } catch (err) {
       console.log(err);
@@ -511,7 +505,7 @@ const DailyAttendance = ({ items }) => {
   const [pageSize, setPageSize] = useState(10);
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
 
   // class Get all data from class page for class id  
@@ -618,7 +612,6 @@ const DailyAttendance = ({ items }) => {
       if (response?.status === 200) {
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
-          // setHidedelete(true)
           setLoader(false)
           setShow(false)
           setHide(false)
@@ -659,7 +652,6 @@ const DailyAttendance = ({ items }) => {
       console.log('MY_Attendance____put-Api', response)
       if (response?.status === 200) {
         toast.success(response?.data?.message);
-        // setHidedelete(true)
         setLoader(false)
         setShow(false)
         setHide(false)
@@ -699,24 +691,7 @@ const DailyAttendance = ({ items }) => {
     }
   };
 
-  // ****************************************************************************************************************************
 
-  // Table data by months 
-
-
-  // const startDate = new Date(year, month, 1);
-  // const endDate = new Date(year, month + 1, 0); // Last day of the month
-
-  // const dates = [];
-  // for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-  //   dates.push(new Date(date));
-  // }
-
-  // console.log(dates)
-
-
-
-  // Table data by months 
 
   return (
     <Container>
@@ -841,7 +816,6 @@ const DailyAttendance = ({ items }) => {
           </div>
 
           <div className="row mt-4 mb-4 bg-color-pink p-3 m-3">
-            {/* <div className="col-1"></div> */}
             <div className="col-12 ">
               <div className="row heading-16 ">
                 <div className="col-2 p-0 ps-5">
@@ -866,7 +840,6 @@ const DailyAttendance = ({ items }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="col-1"></div> */}
           </div>
 
           <div className="table-container px-3 table-responsive">
@@ -1245,12 +1218,9 @@ const DailyAttendance = ({ items }) => {
                   <label for="exampleFormControlInput1" className="form-label label-color ">Section</label>
                   <select class="form-select form-focus input-bg label-color" onChange={(e) => SectionHandle(e.target.value)} aria-label="Default select example">
                     <option value=''>--Choose--</option>
-
                     {
                       sectionData.map((item) => (
-                        // <option value={item.sectionId}>{item.sectionName}</option>
                         <option value={`${item.sectionId}, ${item.sectionName}`}>{item.sectionName}</option>
-
                       ))
                     }
                   </select>
@@ -1316,11 +1286,9 @@ const DailyAttendance = ({ items }) => {
                           <button type="button" className="btn  heading-16" style={{ backgroundColor: '#008479', color: '#fff' }} onClick={MyNewDailyAttendancePutApi}>Update</button>
                           <button type="button" className="btn " data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                         </div>
-
                       </>
                     )
                 }
-
               </div>
             </div>
           )
@@ -1328,10 +1296,6 @@ const DailyAttendance = ({ items }) => {
         {/* ################# After click ###############  */}
 
         {/* ##### offcanvase Update attendance  end ########  */}
-
-
-
-
       </div>
     </Container>
   )

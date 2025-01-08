@@ -417,8 +417,8 @@ const DropPoint = () => {
                             <p className='modalLightBorder p-2'>DropPoint</p>
                             <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                             <p className='text-center warningHeading'>Are you Sure?</p>
-                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Drop Point Data</p>
+                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Drop Point Data</p>
                             <p className='text-center p-3'>
                                 <button className='btn deleteButtons text-white' onClick={() => DeleteDropPointDataById(delDropPointIDD)}>Delete</button>
                                 <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

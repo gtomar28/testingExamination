@@ -448,7 +448,6 @@ const Librarian = () => {
   const [showdelete, setShowdelete] = useState(true)
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
-
   const [TeacherName, setTeacherName] = useState()
   const [TeacherEmail, setTeacherEmail] = useState()
   const [originalMail, setOriginalMail] = useState();
@@ -459,10 +458,8 @@ const Librarian = () => {
   const [rolePermisAllDatashowde, setRolePermisAllData] = useState([])
   const [searchKey, setSearchKkey] = useState('')
   const [LibrarianAllData, setLibrarianAllData] = useState([])
-
   const [basicSalary, setBasicSalary] = useState();
   const [isValidBasicSalaryRequired, setIsValidBasicSalaryRequired] = useState(false);
-
   const [isValidNameRequired, setIsValidNameRequired] = useState(false);
   const [isValidEmailRequired, setIsValidEmailRequired] = useState(false);
   const [isValidAddressRequired, setIsValidAddressRequired] = useState(false);
@@ -481,7 +478,6 @@ const Librarian = () => {
       if (response?.status === 200) {
         const rows = response?.data?.split('\n').map(row => row.split(','));
         setCsvData(rows);
-        // setTableData(rows.slice(1));
       }
     } catch (err) {
       console.log(err);
@@ -506,11 +502,9 @@ const Librarian = () => {
   // Librarian get all api 
 
   const MyTeacherGetAllApi = async () => {
-    console.log('my role ID from add form page', Id)
     setLoader(true)
     try {
       const response = await TeacherGetAllApi(69, searchKey, pageNo, pageSize);
-      console.log('My librarians get all data12345', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setLibrarianAllData(response?.data?.AllRoles)
@@ -531,7 +525,6 @@ const Librarian = () => {
     setLoader(true)
     try {
       const response = await StaffGetById(id);
-      console.log('My Librariann get DATA by get by id', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setTeacherName(response?.data?.user?.staffName)
@@ -541,8 +534,6 @@ const Librarian = () => {
         setTeacherContact(response?.data?.user?.staffPhone)
         setTeacherGender(response?.data?.user?.staffGender)
         setBasicSalary(response?.data?.user?.basicSalary);
-
-        // setRoleID(response?.data?.user?.staffGender)
         setLoader(false)
 
       } else {
@@ -558,9 +549,8 @@ const Librarian = () => {
     setLoader(true)
     try {
       const response = await StaffDeleteApi(id);
-      // console.log('my-subs-api',response)
       if (response?.status === 200) {
-        toast.success(response?.data?.msg);
+        toast.success(response?.data?.message);
         MyTeacherGetAllApi()
         setShowdelete(false)
         setHidedelete(true)
@@ -572,7 +562,7 @@ const Librarian = () => {
         }, 0.5)
 
       } else {
-        toast.error(response?.data?.msg);
+        toast.error(response?.data?.message);
         setShowdelete(true)
       }
     } catch (error) {
@@ -697,8 +687,6 @@ const Librarian = () => {
     else {
       setIsValidBasicSalaryRequired(false)
     }
-    // setErrors(errors);    
-    // return Object.keys(errors).length === 0;
     return isValid
   };
 
@@ -714,7 +702,6 @@ const Librarian = () => {
           formData.append("staffEmail", TeacherEmail);
         }
         formData.append('staffName', TeacherName)
-        // formData.append('staffEmail', TeacherEmail)
         formData.append('staffAddress', TeacherAddress)
         formData.append('staffPhone', TeacherContact)
         formData.append('staffGender', TeacherGender)
@@ -722,8 +709,6 @@ const Librarian = () => {
         formData.append("basicSalary", basicSalary);
 
         const response = await StaffPutApi(id, formData);
-        console.log('MY_TEACHER____put-Api', response)
-
         if (response?.status === 200) {
           toast.success(response?.data?.message);
           setShow(false)
@@ -747,15 +732,11 @@ const Librarian = () => {
     }
 
   }
-
-
   // Role permission Get All Api  from role permission page  
   const MyRolPermisGetAllApi = async () => {
     setLoader(true)
     try {
-      const response = await RolePermissionGetApi();
-      console.log('My role permission get all data12', response)
-
+      const response = await RolePermissionGetApi(); 
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setRolePermisAllData(response?.data?.roles)
@@ -856,15 +837,11 @@ const Librarian = () => {
                           <ul className="dropdown-menu anchor-color heading-14">
                             <li><Link className="dropdown-item"  onClick={(e) => localoStorage(item.id)} to={`/mainuserform/${item.id}`}>Edit</Link></li>
                             <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="staticBackdrop" onClick={(e) => setIdForDelete(item.id)}>Delete</Link></li>
-
                           </ul>
                         </div>
                       </td>
-
                     </tr>
-
                   ))}
-
               </tbody>
               <Toaster />
             </table>
@@ -981,7 +958,6 @@ const Librarian = () => {
                       <label for="exampleFormControlInput1 " className="form-label heading-14 text-color-000 gender-adjust-media">Role Name*</label>
                       <select className="form-select form-control-md form-focus-input heading-14 grey-input-text-color input-border-color" onChange={(e) => setRoleID(e.target.value)} aria-label="Default select example" style={{ borderRadius: '5px' }} >
                         <option value="" >--Choose--</option>
-
                         {
                           rolePermisAllDatashowde.map(item => (
                             <option value={item.roleId} >{item.roleName}</option>
@@ -990,10 +966,9 @@ const Librarian = () => {
                       </select>
                     </div>
                   </div>
-
                   <div className='my-button11 '>
                     <button type="button" className="btn btn-outline-success" onClick={(e) => { MyNoticePutApi(IdForUpdate) }}>Update</button>
-                    <button type="button" className="btn btn-outline-success">Cancel</button>
+                    <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                   </div>
                 </div>
               </div>
@@ -1009,7 +984,6 @@ const Librarian = () => {
           <div className="container-fluid">
             <div className="offcanvas-header p-0 pt-3">
               <Link data-bs-dismiss="offcanvas" className='ps-3' ><img src="./images/Vector (13).svg" alt="" /></Link>
-
               <h5 className="offcanvas-title heading-16 pe-3" id="offcanvasRightLabel">View Profile</h5>
             </div>
             <hr />
@@ -1023,9 +997,7 @@ const Librarian = () => {
                   <p className='heading-14'>admin@example.com</p>
                 </div>
               </div>
-
               <div className='view-details-background-color p-3 mt-4'>
-
                 <div className="between-content mt- ">
                   <div className='d-flex justify-content-between  '>
                     <div >
@@ -1035,7 +1007,6 @@ const Librarian = () => {
                       <p className='heading-14 '>4290 Gregory Lane <br />Louisville, KY 40202</p>
                     </div>
                   </div>
-
                 </div>
 
                 <hr className='mt-4' />
@@ -1102,7 +1073,7 @@ const Librarian = () => {
 
                       <div className="mt-4">
                         <button type="button" class="btn my-btn button00" disabled={forDelete ? false : true} onClick={handleForDelete}>Delete</button>
-                        <button type="button" class="btn cancel-btn ms-2">Cancel</button>
+                        <button type="button" class="btn cancel-btn ms-2" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       </div>
 
                     </div>

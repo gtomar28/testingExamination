@@ -492,13 +492,10 @@ const AssignLeave = () => {
   const [showdelete12, setShowdelete12] = useState(true)
   const [hidedelete12, setHidedelete12] = useState(false)
   const [typeValue, setTypeValue] = useState()
-console.log('my type value :- ',typeValue)
   const [roleType, setRoleType] = useState()
   const [roleId, setRoleId] = useState()
   const [userId, setUserId] = useState()
   const [singleUserId, setSingleUserId] = useState()
-  console.log('Selected Value in state:', roleType);
-  console.log('User ID in state:', singleUserId);
   const [LeaveType, setLeaveType] = useState()
   const [LeaveNo, setLeaveNo] = useState()
   const [rolePermissionAllData, setRolePermissionAllData] = useState([])
@@ -506,7 +503,6 @@ console.log('my type value :- ',typeValue)
   const [leaveTypeAllData, setLeaveTypeAllData] = useState([])
   const [AssignAllData, setAssignAllData] = useState([])
   const [assignAllDataGetById, setAssignAllDataGetById] = useState()
-  console.log('my USER leave in assign leve by get  by id', assignAllDataGetById)
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForDeleteType, setIdForDeleteType] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
@@ -524,6 +520,7 @@ console.log('my type value :- ',typeValue)
     }
     MyLeaveGetAllApi()
     MyAssignLeaveGetAllApi()
+    
   }, [roleId])
 
   const HandleRoleId = (selectedValue, userId) => {
@@ -532,13 +529,6 @@ console.log('my type value :- ',typeValue)
 
     // You can now use userId to identify which row's dropdown was changed
   };
-
-  // const HandleRoleId = (e) => {
-  //   const value = e.target.value;
-  //   const [val1, val2] = value.split(',');
-  //   setRoleTypeId(val1)
-  //   setId(val2)
-  // }
 
   const FuncValidation = () => {
     let isValid = true;
@@ -582,7 +572,6 @@ console.log('my type value :- ',typeValue)
     setLoader(true)
     try {
       const response = await RolePermissionGetApi();
-      // console.log('My role permission get all DATAAA12', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setRolePermissionAllData(response?.data?.roles)
@@ -596,11 +585,9 @@ console.log('my type value :- ',typeValue)
   }
   // users 
   const MyUserGetAllApi = async () => {
-    console.log('mmy roleid', roleType)
     setLoader(true)
     try {
       const response = await TeacherGetAllApi(roleId, searchKey, pageNo, pageSize);
-      // console.log('My USER get all DATAAA000', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setUserAllData(response?.data?.AllRoles)
@@ -618,7 +605,6 @@ console.log('my type value :- ',typeValue)
     setLoader(true)
     try {
       const response = await LeaveGetAllApi(searchKey, pageNo, pageSize);
-      // console.log('Leave get All Api data',response);
       if (response?.status === 200) {
         // toast.success(response?.data?.classes?.msg)
         setLeaveTypeAllData(response?.data?.leave)
@@ -675,13 +661,12 @@ console.log('my type value :- ',typeValue)
 
   }
 
-
   // Assign Leave Get All Api
   const MyAssignLeaveGetAllApi = async () => {
     setLoader(true)
     try {
       const response = await AssignLeaveGetAllApi(searchKey, pageNo, pageSize);
-      console.log('Assign leave get All Api data', response);
+      console.log('assing leave all data', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setAssignAllData(response?.data?.user)
@@ -699,7 +684,6 @@ console.log('my type value :- ',typeValue)
     setLoader(true)
     try {
       const response = await LeaveAssignDeleteApi(id);
-      console.log('my-delete-api in assign leave', response)
       if (response?.status === 200) {
         toast.success(response?.data?.message);
         MyAssignLeaveGetAllApi()
@@ -720,7 +704,6 @@ console.log('my type value :- ',typeValue)
     setLoader(true)
     try {
       const response = await LeaveAssignDeleteTypeApi(id, roleType);
-      console.log('my-delete-api in assign leave', response)
       if (response?.status === 200) {
         toast.success(response?.data?.message);
         MyAssignLeaveGetAllApi()
@@ -732,11 +715,9 @@ console.log('my type value :- ',typeValue)
         setShowdelete12(true)
       }
     } catch (error) {
-      console.log('catch')
+      console.log(error)
     }
   }
-
-
   // Get by id 
   const MyAssignLeaveGetByIdApi = async (id) => {
     setIdForUpdate(id)
@@ -744,7 +725,7 @@ console.log('my type value :- ',typeValue)
     setLoader(true)
     try {
       const response = await AssignLeaveGetById(id);
-      console.log('Assign leave  data get by id1234567890987654', response)
+      console.log('Assign leave  data get by all data', response)
 
       if (response?.status === 200) {
         // toast.success(response?.data?.msg);
@@ -757,31 +738,6 @@ console.log('my type value :- ',typeValue)
       console.log(error)
     }
   }
-  // Leave Put api 
-  // const MyLeavePutApi = async (id) => {
-
-  //   try {
-  //     const formData = new FormData()
-  //     formData.append('leaveType', leaveType)
-
-  //     const response = await LeavePutApi(id, formData);
-
-  //     console.log('MY_SECTION____put-Api', response)
-
-  //     if (response?.status === 'success') {
-  //       toast.success(response?.data?.msg);
-  //       MyLeaveGetAllApi()
-  //       setShow22(false)
-  //       setHide22(true)
-  //     } else {
-  //       toast.error(response?.data?.msg);
-  //       setShow22(true)
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
 
   const handleForDelete = () => {
     MyHolidayDeleteApi(IdForDelete)
@@ -790,22 +746,19 @@ console.log('my type value :- ',typeValue)
     MyHAssignLeaveTypeDeleteApi(IdForDeleteType)
   }
 
-  // chat gtp 
-
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const handleRowClick = (index) => {
-    setSelectedIndex(index); // Set the clicked row's index in state
+    setSelectedIndex(index);
   };
 
-  const handleActionClick = (value,userId) => {
+  const handleActionClick = (value, userId) => {
+    MyAssignLeaveGetByIdApi(value)
     const value1 = value;
     const [val1, val2] = value1.split(',');
-    // console.log('Action for User ID:', userId);
     setTypeValue(val1)
-    // setSelectLeaveIndex(leaveIndex)
-    // Add your logic here to handle the action
   };
+
   return (
     <Container>
       {
@@ -838,7 +791,6 @@ console.log('my type value :- ',typeValue)
         <h5 className='ms-3 mb-2 margin-minus22 heading-16' style={{ marginTop: '-22px' }}>Leave Details</h5>
 
         <div className="main-content-conatainer pt-1 ">
-
           <div className="table-container px-3 table-responsive">
 
             <table className="table table-sm table-striped">
@@ -849,80 +801,43 @@ console.log('my type value :- ',typeValue)
                   <th style={{ width: '100px' }}>Role</th>
                   <th style={{ width: '100px' }}>Leave Type</th>
                   <th style={{ width: '100px' }}>Leave Count</th>
-                  <th style={{ width: '100px' }}>Actions</th>
+                  {/* <th style={{ width: '100px' }}>Actions</th> */}
                 </tr>
               </thead>
-              {/* <tbody className='heading-14 align-middle greyTextColor greyText'>
-                {
-                  AssignAllData.map((item, index) => (
-                    <tr className='heading-14' >
-                      <td className=' greyText pe-0'>{index + 1}</td>
-                      <td className=' greyText pe-0'>{item.userName}</td>
-                      <td className=' greyText pe-0'>{item.roleName}</td>
-                      <td className='greyText pe-0'>
-                        <select
-                          className="form-select form-focus label-color"
-                          onChange={(e) => HandleRoleId(e.target.value, item.userId)} aria-label="Default select example" >
-                          {item?.leaveInfo?.map((leaveItem, leaveIndex) => (
-                            <option key={leaveIndex} value={leaveItem.leaveType}>
-                              {leaveItem.leaveType}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                      <td className='greyText pe-0'>
-                        {item?.leaveInfo?.map((leaveItem, leaveIndex) => (
-                          <div key={leaveIndex}>
-                            {`${leaveItem.leaveType  ? leaveItem.leaveCount : ''}`}
-                          </div>
-                        ))}
-                      </td>
-                   
-                      <td className=' greyText  pe-0' >
-                        <div className="dropdown my-button-show">
-                          <button className="btn btn-secondary dropdown-togg my-button-drop tableActionButtonBgColor text-color-000 heading-14" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Action  &nbsp;
-                            <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="">
-                              <path d="M10.3331 0L11 0.754688L5.5 7L0 0.754688L0.663438 0L5.5 5.48698L10.3331 0Z" fill="black" />
-                            </svg>
-                          </button>
-                          <ul className="dropdown-menu anchor-color heading-14">
-                            <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop202" aria-controls="staticBackdrop" onClick={(e) => MyAssignLeaveGetByIdApi(item.userId)} >Edit</Link></li>
-                            <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e) => setIdForDelete(item.userId)}>Delete All</Link></li>
-                            <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight2233" aria-controls="offcanvasRight" onClick={(e) => setIdForDeleteType(item.userId)}>Delete Type</Link></li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody> */}
+
               <tbody className='heading-14 align-middle greyTextColor greyText'>
-                {AssignAllData.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`heading-14 ${selectedIndex === index ? 'active-row' : ''}`} // Add a class for styling if needed
-                    onClick={() => handleRowClick(index)} // Set the selected index on row click
+                {AssignAllData?.map((item, index) => (
+                  <tr 
+                    key={item.id}
+                    className={`heading-14 ${selectedIndex === index ? 'active-row' : ''}`}
+                    onClick={() => handleRowClick(index)}
                   >
                     <td className='greyText pe-0'>{index + 1}</td>
                     <td className='greyText pe-0'>{item.userName}</td>
                     <td className='greyText pe-0'>{item.roleName}</td>
                     <td className='greyText pe-0'>
-                      <select className="form-select form-focus label-color" onChange={(e) => handleActionClick(e.target.value, item.userId)} aria-label="Default select example">
+                    {item?.leaveInfo?.map((leaveItem, leaveIndex) => (
+                            <div>
+                                {leaveItem.leaveType}
+                            </div>
+                        ))}
+                      {/* <select className="form-select form-focus label-color" onChange={(e) => handleActionClick(e.target.value, item.userId)} aria-label="Default select example">
                         {item?.leaveInfo?.map((leaveItem, leaveIndex) => (
                           <option key={leaveIndex} value={`${leaveItem.leaveType}, ${leaveItem.leaveCount}`}>
                             {leaveItem.leaveType}
                           </option>
                         ))}
-                      </select>
+                      </select> */}
                     </td>
                     <td className='greyText pe-0'>
                       {item?.leaveInfo?.map((leaveItem, leaveIndex) => (
                         <div key={leaveIndex}>
-                          {`${leaveItem.leaveType === typeValue  ? leaveItem.leaveCount : ''}`}
+                          {/* {`${leaveItem?.leaveType === typeValue ? leaveItem?.leaveCount : ''}`} */}
+                          {leaveItem?.leaveCount}
                         </div>
                       ))}
                     </td>
-                    <td className='greyText pe-0'>
+                    {/* <td className='greyText pe-0'>
                       <div className="dropdown my-button-show">
                         <button className="btn btn-secondary dropdown-togg my-button-drop tableActionButtonBgColor text-color-000 heading-14" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                           Action &nbsp;
@@ -931,12 +846,12 @@ console.log('my type value :- ',typeValue)
                           </svg>
                         </button>
                         <ul className="dropdown-menu anchor-color heading-14">
-                          <li><Link className="dropdown-item" to={''} onClick={() => handleActionClick(item.userId)}>Edit</Link></li>
+                          <li><Link className="dropdown-item" to={''} onClick={() => handleActionClick(item.userId)} data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop202" aria-controls="staticBackdrop">Edit</Link></li>
                           <li><Link className="dropdown-item" to={''} onClick={() => handleActionClick(item.userId)}>Delete All</Link></li>
                           <li><Link className="dropdown-item" to={''} onClick={() => handleActionClick(item.userId)}>Delete Type</Link></li>
                         </ul>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
@@ -1036,7 +951,6 @@ console.log('my type value :- ',typeValue)
                     <div className="mb-3" >
                       <label for="exampleFormControlInput1" className="form-label  heading-14">Leave Count</label>
                       <input type="email" className="form-control form-focus label-color  heading-14" onChange={(e) => handleLeaveCount(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Select Leave Count" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className="pt-1">
                       {isValidLeaveCountRequired && (
@@ -1055,8 +969,7 @@ console.log('my type value :- ',typeValue)
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyAssignLeavePostApi()}>Submit</button>
-                      <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
+                      <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -1064,7 +977,6 @@ console.log('my type value :- ',typeValue)
             </>
           )
         }
-
 
         <div className="offcanvas-end offcanvas" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop202" aria-labelledby="staticBackdropLabel">
           {
@@ -1086,17 +998,14 @@ console.log('my type value :- ',typeValue)
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label  heading-14">Leave Type</label>
                       <input type="email" className="form-control form-focus label-color  heading-14" value={''} onChange={(e) => setLeaveType(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Select Leave Type" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label  heading-14">Leave No</label>
                       <input type="email" className="form-control form-focus label-color  heading-14" value={''} onChange={(e) => setLeaveType(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Select Leave No" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyLeavePutApi(IdForUpdate)}>Update</button>
                       <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
                     </div>
                   </div>
                 </div>
@@ -1119,7 +1028,6 @@ console.log('my type value :- ',typeValue)
                           <path d="M11.2266 26.4378L35.68 2" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                           <path d="M14.3912 26.5944L2 14.2032" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                         </svg>
-                        {/* <img src="./images/XMLID_1_.png" alt="" /> */}
                       </div>
                       <div className="content mt-5">
                         <p className='heading-20'>Successful Update</p>
@@ -1128,9 +1036,7 @@ console.log('my type value :- ',typeValue)
                       </div>
                       <div className='button-position'  >
                         <button type="button" className="btn btn-outline-primary button112233 mt-4 mb my-button112233 " data-bs-dismiss="offcanvas" aria-label="Close" style={{ fontSize: '14px' }}>Continue</button>
-
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -1225,7 +1131,6 @@ console.log('my type value :- ',typeValue)
         {/* ################ offcanvas delete TYPE  start #############  */}
 
         <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2233" aria-labelledby="offcanvasRightLabel">
-
           {
             showdelete12 && (
               <div className="container-fluid">
@@ -1236,7 +1141,6 @@ console.log('my type value :- ',typeValue)
                 <hr className='' />
 
                 <div className="offcanvas-body">
-
                   <div className="sure-main-container mt-4">
                     <div className="sure-container">
                       <div>
@@ -1257,12 +1161,10 @@ console.log('my type value :- ',typeValue)
                           I Agree to delete the Profile Data
                         </label>
                       </div>
-
                       <div className="mt-4">
                         <button type="button" className="btn my-btn button00" disabled={forDelete2 ? false : true} onClick={handleForDelete2} >Delete</button>
                         <button type="button" className="btn cancel-btn ms-2" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       </div>
-
                     </div>
                   </div>
                 </div>

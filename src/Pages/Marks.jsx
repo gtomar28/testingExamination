@@ -159,18 +159,20 @@ const Marks = () => {
                     setloaderState(false);
                     setMarksData(response?.data?.marks);
                     setTotalMarksForExam(response?.data?.totalMarks)
-                    // setReloadMarks(false)
                 }
                 else {
                     setloaderState(false);
+                    setIsSearched(false)
                 }
             }
             else {
                 setloaderState(false);
+                setIsSearched(false)
                 toast.error(response?.data?.message);
             }
         }
         catch (e) {
+            setIsSearched(false)
             console.log('Error during data get', e)
             setloaderState(false);
         }
@@ -200,12 +202,17 @@ const Marks = () => {
     }
 
     const handleCancelSearch = () => {
+        setIndexxx('');
         setClassId('');
+        setClassName('')
         setSectionId('');
+        setSectionName('');
         setSubjectId('');
+        setSubjectName('');
         setSessionSelect('');
         setExamCategorySelect('');
         setIsSearched(false);
+        setMarksData([])
     }
 
 
@@ -237,36 +244,54 @@ const Marks = () => {
                                     <div className="row">
                                         <div className="col-md-4 col-sm-6 col-12">
                                             <label htmlFor="inputEmail4" className="form-label font14">Exam Category</label>
-                                            <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => setExamCategorySelect(e.target.value)}>
-                                                <option defaultValue>Select a Exam Category</option>
+                                            <select
+                                                className="form-select borderRadius5 font14"
+                                                aria-label="Default select example"
+                                                value={examCategorySelect}
+                                                onChange={(e) => setExamCategorySelect(e.target.value)}
+                                            >
+                                                <option value="">Select an Exam Category</option>
                                                 {ExamCategoryData?.map((option) => (
-                                                    <option key={option.categoryId} value={option?.examCategoryName}>
+                                                    <option key={option.categoryId} value={option.examCategoryName}>
                                                         {option.examCategoryName}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                         <div className="col-md-4 col-sm-6 col-12">
                                             <label htmlFor="inputEmail4" className="form-label font14">Class</label>
-                                            <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={handleChange}>
-                                                <option >--- Choose ---</option>
+                                            <select
+                                                className="form-select borderRadius5 font14"
+                                                aria-label="Default select example"
+                                                value={`${indexxx},${classId},${className}`}
+                                                onChange={handleChange}
+                                            >
+                                                <option value="">--- Choose ---</option>
                                                 {allClassData?.map((option, index) => (
-                                                    <option key={option.classId} value={`${index}, ${option?.classId}, ${option.classNo}`}>
+                                                    <option key={option.classId} value={`${index},${option.classId},${option.classNo}`}>
                                                         {option.classNo}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                         <div className="col-md-4 col-sm-6 col-12">
                                             <label htmlFor="inputEmail4" className="form-label font14">Section</label>
-                                            <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={handleSection}>
-                                                <option >--- Choose ---</option>
-                                                {allClassData[indexxx]?.section?.map(option => (
-                                                    <option key={option.classSecId} value={`${option?.classSecId}, ${option.sectionName}`} >
+                                            <select
+                                                className="form-select borderRadius5 font14"
+                                                aria-label="Default select example"
+                                                value={`${sectionId},${sectionName}`}
+                                                onChange={handleSection}
+                                            >
+                                                <option value="">--- Choose ---</option>
+                                                {allClassData[indexxx]?.section?.map((option) => (
+                                                    <option key={option.classSecId} value={`${option.classSecId},${option.sectionName}`}>
                                                         {option.sectionName}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -274,25 +299,37 @@ const Marks = () => {
                                     <div className="row">
                                         <div className="col-lg-6 col-md-4 col-sm-6 col-12">
                                             <label htmlFor="inputEmail4" className="form-label font14">Subject</label>
-                                            <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={handleSubject}>
-                                                <option >--- Choose ---</option>
-                                                {allClassData[indexxx]?.subjects?.map(option => (
-                                                    <option key={option.subjectId} value={`${option?.subjectId}, ${option.subjectName}`} >
+                                            <select
+                                                className="form-select borderRadius5 font14"
+                                                aria-label="Default select example"
+                                                value={`${subjectId},${subjectName}`}
+                                                onChange={handleSubject}
+                                            >
+                                                <option value="">--- Choose ---</option>
+                                                {allClassData[indexxx]?.subjects?.map((option) => (
+                                                    <option key={option.subjectId} value={`${option.subjectId},${option.subjectName}`}>
                                                         {option.subjectName}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                         <div className="col-lg-6 col-md-4 col-sm-6 col-12">
                                             <label htmlFor="inputEmail4" className="form-label font14">Session</label>
-                                            <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => setSessionSelect(e.target.value)}>
-                                                <option defaultValue>Select a Session</option>
-                                                {sessionData?.map(option => (
-                                                    <option key={option.sessionId} value={option.sessionName} >
+                                            <select
+                                                className="form-select borderRadius5 font14"
+                                                aria-label="Default select example"
+                                                value={sessionSelect}
+                                                onChange={(e) => setSessionSelect(e.target.value)}
+                                            >
+                                                <option value="">Select a Session</option>
+                                                {sessionData?.map((option) => (
+                                                    <option key={option.sessionId} value={option.sessionName}>
                                                         {option.sessionName}
                                                     </option>
                                                 ))}
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>

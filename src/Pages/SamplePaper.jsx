@@ -135,6 +135,8 @@ const SamplePaper = () => {
     const [sectionId, setSectionId] = useState(0);
     const [subjectId, setSubjectId] = useState(0);
     const [allClassData, setAllClassData] = useState([]);
+    const [allSectionData, setAllSectionData] = useState([]);
+    const [allSubjectData, setAllSubjectData] = useState([]);
     const [allSamplePaperData, setAllSamplePaperData] = useState([]);
     const [closeAddModal, setCloseAddModal] = useState(false);
     const [closeEditModal, setCloseEditModal] = useState(false);
@@ -148,6 +150,10 @@ const SamplePaper = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [pageNo, setPageNo] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+
+
+    console.log(allSectionData, 'section')
+    console.log(allSubjectData, 'subject')
 
     useEffect(() => {
         if (pageNo || closeAddModal || closeEditModal || allowCsvPdf) {
@@ -185,10 +191,12 @@ const SamplePaper = () => {
     }, [token, pageNo, closeAddModal, closeEditModal, allowCsvPdf]);
 
     const handleClassChange = (value) => {
+        console.log(value)
+        const val = parseInt(value)
         // setLoaderState(true);
-        setValue('ClassId', value);
-        const selectedClass = allClassData.find(c => c.classId === value)
-
+        setClassId(val);
+        const selectedClass = allClassData.find(c => c.classId === val)
+        console.log(selectedClass, 'rdctfvggyh')
         if (selectedClass) {
             setAllSectionData(selectedClass.section || []);
             setAllSubjectData(selectedClass.subjects || []);
@@ -259,7 +267,6 @@ const SamplePaper = () => {
                 }
             }
             else {
-                console.log(response?.data?.message);
             }
         }
         catch (e) {
@@ -315,7 +322,6 @@ const SamplePaper = () => {
                 }
             }
             else {
-                console.log(response?.data?.message);
             }
         }
         catch (error) {
@@ -410,19 +416,9 @@ const SamplePaper = () => {
                                                     <span className='ms-1'>Export to CSV</span>
                                                 </span>
                                             </CSVLink>
-                                            {/* {allowCsvPdf ? (
-                                            ) : (
-                                                <button className="btn ps-2 pe-2 ExportBtns bg-white" disabled>
-                                                    <span className='font14 textVerticalCenter'>
-                                                        <Icon icon="fa-solid:file-csv" width="1.4em" height="1.4em" style={{ color: "#008479" }} />
-                                                        <span className='ms-1'>Export to CSV</span>
-                                                    </span>
-                                                </button>
-                                            )} */}
                                         </div>
                                         <div className="col-lg-6 col-sm-6 col-4 text-md-center text-sm-end text-start ps-0 align-self-center">
                                             <button className="btn ps-2 pe-2 ExportBtns bg-white" type="button" onClick={handleDownloadPdf}>
-                                                {/* disabled={!allowCsvPdf} */}
                                                 <span className='font14 textVerticalCenter'>
                                                     <Icon icon="fluent:document-pdf-24-filled" width="1.4em" height="1.4em" style={{ color: "#008479" }} />
                                                     <span className='ms-1'>Export to PDF</span>
@@ -434,10 +430,6 @@ const SamplePaper = () => {
                                 <div className="col-xl-7 col-lg-7 col-md-7 col-sm-6 col-12 text-end align-self-center">
                                     <div className="row gap-md-0 gap-sm-3">
                                         <div className="col-md-8 col-sm-12 col-8 text-sm-end text-start ps-0">
-                                            {/* <form className="d-flex" role="search">
-                                                <input className="form-control formcontrolsearch font14" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchByKey(e.target.value)} />
-                                                <button className="btn searchhhButtons text-white " type="button"><span className='font14' onClick={getAllSamplePaper}>Search</span></button>
-                                            </form> */}
                                             <div className="d-flex">
                                                 <input className="form-control formcontrolsearch font14" type="text" disabled={!allowCsvPdf} placeholder="Search" onChange={(e) => setSearchByKey(e.target.value)} onKeyDown={handleKeyDown} />
                                                 <button className="btn searchhhButtons text-white font14" type="button" disabled={!allowCsvPdf} onClick={getAllSamplePaper}><h2>Search</h2></button>
@@ -456,7 +448,7 @@ const SamplePaper = () => {
                             <form className="row g-3">
                                 <div className="col-md-4 col-sm-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Class</label>
-                                    <select className="form-select bordeRadius5 font14" aria-label="Default select example" value={classId} onChange={handleClassChange}>
+                                    <select className="form-select bordeRadius5 font14" aria-label="Default select example" value={classId} onChange={(e) => handleClassChange(e.target.value)}>
                                         <option value="">-- Select --</option>
                                         {allClassData?.map((option) => (
                                             <option key={option.classId} value={option?.classId}>
@@ -638,8 +630,8 @@ const SamplePaper = () => {
                                     <p className='modalLightBorder p-2'>SamplePaper</p>
                                     <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                                     <p className='text-center warningHeading'>Are you Sure?</p>
-                                    <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                                    <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                                    <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Sample Paper Data</p>
+                                    <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value={isChecked} id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Sample Paper Data</p>
                                     <p className='text-center p-3'>
                                         <button className='btn deleteButtons text-white' onClick={() => DeleteSamplePaperDataById(DeleteItemId)}>Delete</button>
                                         <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

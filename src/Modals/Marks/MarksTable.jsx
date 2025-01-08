@@ -93,8 +93,11 @@ const MarksTable = ({ marksData, className, sectionName, subjectName, sessionSel
                     ReloadMarksData(true);
                 }
                 else{
-                    toast.blank(response?.data?.message)
+                    toast.error(response?.data?.message)
                 }
+            }
+            else {
+                toast.error(response?.data?.message)
             }
         }
         catch {

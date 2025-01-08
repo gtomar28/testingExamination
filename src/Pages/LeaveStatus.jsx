@@ -500,11 +500,6 @@ const LeaveStatus = () => {
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
   const [newStatus, setNewStatus] = useState()
-  console.log('status :- ', status)
-  console.log('my leave ID', IdForDelete)
-  // const [tabclick, setTabclick] = useState('tab3')
-
-
 
   const [searchKey, setSearchKey] = useState('')
   const [currentPage, setCurrentPage] = useState(1);
@@ -513,7 +508,7 @@ const LeaveStatus = () => {
   const [pageSize, setPageSize] = useState(10);
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
 
   useEffect(() => {
@@ -525,7 +520,6 @@ const LeaveStatus = () => {
     setLoader(true)
     try {
       const response = await LeaveStatusPostApi(id, status);
-      console.log('leave-status-post-api', response)
       if (response?.status === 200) {
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
@@ -549,7 +543,6 @@ const LeaveStatus = () => {
     setLoader(true)
     try {
       const response = await LeaveStatusGetAllApi(pageNo, pageSize);
-      console.log('Leave Status get All Api data00', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setLeaveData(response?.data?.leave)
@@ -691,12 +684,10 @@ const LeaveStatus = () => {
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label  heading-14">Leave Type</label>
                       <input type="email" className="form-control form-focus label-color  heading-14" onChange={(e) => setLeaveType(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Select Leave Type" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyHolidayPostApi()}>Submit</button>
                       <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
                     </div>
                   </div>
                 </div>
@@ -719,7 +710,6 @@ const LeaveStatus = () => {
                           <path d="M11.2266 26.4378L35.68 2" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                           <path d="M14.3912 26.5944L2 14.2032" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                         </svg>
-                        {/* <img src="./images/XMLID_1_.png" alt="" /> */}
                       </div>
                       <div className="content mt-5">
                         <p className='heading-20'>Successful Update</p>
@@ -759,12 +749,10 @@ const LeaveStatus = () => {
                     <div className="mb-3" style={{ marginTop: '-6px' }}>
                       <label for="exampleFormControlInput1" className="form-label  heading-14">Leave Type</label>
                       <input type="email" className="form-control form-focus label-color  heading-14" value={leaveType} onChange={(e) => setLeaveType(e.target.value)} style={{ marginTop: '-4px' }} id="exampleFormControlInput1" placeholder="Select Leave Type" />
-                      {/* {errors.putemail && <span style={{ color: 'red' }}>{errors.putemail}</span>} */}
                     </div>
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success my-button112233" onClick={(e) => MyLeavePutApi(IdForUpdate)}>Update</button>
                       <button type="button" className="btn btn-outline-success">Cancel</button>
-                      {/* <Toaster /> */}
                     </div>
                   </div>
                 </div>
@@ -787,7 +775,6 @@ const LeaveStatus = () => {
                           <path d="M11.2266 26.4378L35.68 2" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                           <path d="M14.3912 26.5944L2 14.2032" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                         </svg>
-                        {/* <img src="./images/XMLID_1_.png" alt="" /> */}
                       </div>
                       <div className="content mt-5">
                         <p className='heading-20'>Successful Update</p>
@@ -842,12 +829,10 @@ const LeaveStatus = () => {
                           I Agree to delete the Profile Data
                         </label>
                       </div>
-
                       <div className="mt-4">
                         <button type="button" className="btn btn-outline-primary button00" onClick={(e) => MyHolidayDeleteApi(IdForDelete)}>Delete</button>
                         <button type="button" className="btn btn-outline-primary button00 ms-2">Cancel</button>
                       </div>
-
                     </div>
                   </div>
                 </div>

@@ -6,12 +6,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import HashLoader from './HashLoaderCom';
 import { TeacherClassGetApi } from '../Utils/Apis'
 import { TeacherSectionRoomByIdGetApi } from '../Utils/Apis'
-import Assign_publish from './Assign_publish_T';
+import Assign_publish from './Assign_publish';
 import { TeacherSubjectByClassIdInSyllabusGetAllApi } from '../Utils/Apis'
-import Assign_archieves from '../Pages/Assign_archieves_T';
-import Assign_draft from '../Pages/Assign_draft_T';
+import Assign_archieves from '../Pages/Assign_archieves';
+import Assign_draft from '../Pages/Assign_draft';
 import { TeacherAssignmntGetAllApi } from '../Utils/Apis';
-import Add_assign_offcnvs from './Add_assign_offcnvs_T';
+import Add_assign_offcnvs from './Add_assign_offcnvs';
 import { useLocation } from 'react-router-dom';
 
 // ## style css area start ####  
@@ -467,7 +467,7 @@ overflow : scroll;
 
 
 
-const AssignmentTeacher = () => {
+const AssignmentTea = () => {
   const location = useLocation();
   const [loader, setLoader] = useState(false)
   const [forDelete, setForDelete] = useState(false)
@@ -479,7 +479,7 @@ const AssignmentTeacher = () => {
   const [showdelete, setShowdelete] = useState(true)
   const [hidedelete, setHidedelete] = useState(false)
   const [classdata, setClassdata] = useState([])
-  const [assignmntdata, setAssignmntdata] = useState()
+  const [assignmntdata, setAssignmntdata] = useState([])
   const [sectionData, setSectionData] = useState([])
   const [subjectData, setSubjectData] = useState([])
   const [examCategoryData, setExamCategoryData] = useState([])
@@ -492,8 +492,8 @@ const AssignmentTeacher = () => {
   const [title, setTitle] = useState()
 
   const [classId, setClassId] = useState()
-  const [sectionId, setSectionId] = useState()
-  const [subjectId, setSubjectId] = useState()
+  const [sectionId, setSectionId] = useState('')
+  const [subjectId, setSubjectId] = useState('')
   const [singleState, setSingleState] = useState('published');
 
   const [isValidFromDateRequired, setIsValidFromDateRequired] = useState(false);
@@ -579,11 +579,11 @@ const AssignmentTeacher = () => {
     setLoader(true)
     try {
       const response = await TeacherAssignmntGetAllApi(sectionId, subjectId, searchKey, pageNo, pageSize);
-      console.log('Assignmnt-get-all-api in Assignmenttttt_______', response);
+      console.log('Assignmnt-get-all-api in Assignmenttttt_______ currentt error', response);
       if (response?.status === 200) {
         setSearch(true)
         // toast.success(response?.data?.msg)
-        setAssignmntdata(response?.data)
+        setAssignmntdata(response?.data?.assignment)
         setLoader(false)
       } else {
         toast.error(response?.data?.msg);
@@ -595,7 +595,8 @@ const AssignmentTeacher = () => {
 
   const [search, setSearch] = useState(false)
 
-  const data = assignmntdata;
+  const data = assignmntdata  ;
+  // const data = `${assignmntdata ? assignmntdata : ''}` ;
 
   return (
     <Container>
@@ -630,11 +631,10 @@ const AssignmentTeacher = () => {
                 <select class="form-select  form-select-sm form-focus label-color" onChange={(e) => setClassId(e.target.value)} aria-label="Default select example">
                   <option value="" >--Choose--</option>
                   {
-                    classdata.map(item =>
+                    classdata?.map(item =>
                       <option value={item.classId}>{item.classNo}</option>
                     )
                   }
-
                 </select>
               </div>
             </div>
@@ -644,9 +644,8 @@ const AssignmentTeacher = () => {
                 <select class="form-select  form-select-sm form-focus label-color" onChange={(e) => setSectionId(e.target.value)} aria-label="Default select example">
                   <option value="" >All Class</option>
                   {
-                    sectionData.map(item =>
+                    sectionData?.map(item =>
                       <option value={item.sectionId}>{item.sectionName}</option>
-
                     )
                   }
                 </select>
@@ -658,7 +657,7 @@ const AssignmentTeacher = () => {
                 <select class="form-select  form-select-sm form-focus   label-color" onChange={(e) => setSubjectId(e.target.value)} aria-label="Default select example">
                   <option value="">--Choose--</option>
                   {
-                    subjectData.map(item =>
+                    subjectData?.map(item =>
                       <option value={item.subjectId}>{item.subjectName}</option>
                     )
                   }
@@ -858,4 +857,4 @@ const AssignmentTeacher = () => {
   )
 }
 
-export default AssignmentTeacher
+export default AssignmentTea

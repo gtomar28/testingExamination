@@ -451,7 +451,6 @@ const Accountant = () => {
   const [TeacherRoleId, setRoleID] = useState('')
   const [basicSalary, setBasicSalary] = useState();
   const [searchKey, setSearchKkey] = useState('')
-  // console.log('my teacher data by role id from add form page',TeacherAllData)
   const offcanvasRef = useRef(null);
   const offcanvasRef22 = useRef(null);
 
@@ -471,7 +470,6 @@ const Accountant = () => {
       if (response?.status === 200) {
         const rows = response?.data?.split('\n').map(row => row.split(','));
         setCsvData(rows);
-        // setTableData(rows.slice(1));
       }
     } catch (err) {
       console.log(err);
@@ -488,7 +486,6 @@ const Accountant = () => {
     setPageNo(event.selected + 1);
   };
   useEffect(() => {
-    // MyTeacherGetAllApi()
     MyStaffGetById()
     MyRolPermisGetAllApi()
     Download_Slip()
@@ -496,11 +493,9 @@ const Accountant = () => {
   // Accountant get all api
 
   const MyTeacherGetAllApi = async () => {
-    // console.log('my role ID from add form page',Id)
     setLoader(true)
     try {
       const response = await TeacherGetAllApi(67, searchKey, pageNo, pageSize);
-      console.log('accountant data101010', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setAccountAllData(response?.data?.AllRoles)
@@ -525,7 +520,6 @@ const Accountant = () => {
     setLoader(true)
     try {
       const response = await StaffGetById(id);
-      console.log('My Accountant get DATA by get by id', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setTeacherName(response?.data?.user?.staffName)
@@ -549,9 +543,8 @@ const Accountant = () => {
     setLoader(true)
     try {
       const response = await StaffDeleteApi(id);
-      // console.log('my-subs-api',response)
       if (response?.status === 200) {
-        toast.success(response?.data?.msg);
+        toast.success(response?.data?.message);
         MyTeacherGetAllApi()
         setShowdelete(false)
 
@@ -563,7 +556,7 @@ const Accountant = () => {
           setShowdelete(true)
         }, 0.5)
       } else {
-        toast.error(response?.data?.msg);
+        toast.error(response?.data?.message);
         setShowdelete(true)
       }
     } catch (error) {
@@ -764,7 +757,6 @@ const Accountant = () => {
   }
   return (
     <Container>
-
       {
         loader && (
           <HashLoader />
@@ -841,16 +833,12 @@ const Accountant = () => {
                             </svg>
                           </button>
                           <ul className="dropdown-menu anchor-color heading-14">
-                            {/* <li><button  className="dropdown-item" onClick={(e)=>IdTransfer(item.noticeId)}>View Profile</button></li> */}
                             <li><Link className="dropdown-item"   onClick={(e) => localoStorage(item.id)} to={`/mainuserform/${item.id}`}>Edit</Link></li>
                             <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="staticBackdrop" onClick={(e) => setIdForDelete(item.id)}>Delete</Link></li>
-
                           </ul>
                         </div>
                       </td>
-
                     </tr>
-
                   ))}
 
               </tbody>
@@ -868,7 +856,6 @@ const Accountant = () => {
               </div>
             </div>
           </div>
-
         </div>
         {/* ################## Off Canvas Area ####################  */}
 
@@ -976,10 +963,9 @@ const Accountant = () => {
                       </select>
                     </div>
                   </div>
-
                   <div className='my-button11 '>
                     <button type="button" className="btn btn-outline-success" onClick={(e) => { MyNoticePutApi(IdForUpdate) }}>Update</button>
-                    <button type="button" className="btn btn-outline-success">Cancel</button>
+                    <button type="button" className="btn btn-outline-success" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                   </div>
                 </div>
               </div>

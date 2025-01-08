@@ -406,7 +406,6 @@ const RolePermission = () => {
   const [formValues, setFormValues] = useState([{ name: "" }])
 
   const [roletype, setRoletype] = useState()
-  // const [rolename, setRolename] = useState()
   const [read, setRead] = useState(false)
   const [write, setWrite] = useState(false)
   const [delete1, setDelete1] = useState(false)
@@ -507,7 +506,6 @@ const RolePermission = () => {
     setLoader(true)
     try {
       const response = await SpeFeaGetAllApi();
-      console.log('SPECIAL FEATURE get All Api data', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setfeatureData(response?.data?.features)
@@ -519,7 +517,6 @@ const RolePermission = () => {
       console.log(error)
     }
   }
-
 
   const UpdateHandleBtn = (e) => {
 
@@ -539,7 +536,6 @@ const RolePermission = () => {
       setShowdelete(true)
     }
   }
-
 
   return (
     <Container>
@@ -568,7 +564,7 @@ const RolePermission = () => {
         <div className="main-content-conatainer pt-1 ">
           {/* ###### copy content till here for all component ######  */}
           <div className="row p-3">
-            <div className="col-lg-6 col-md-6 col-sm-12  ">
+            <div className="col-lg-6 col-md-6 col-sm-12 ">
 
               <div>
                 <label for="exampleFormControlInput1" className="form-label mb-1 label-text-color focus heading-14">Role Name</label>
@@ -618,7 +614,6 @@ const RolePermission = () => {
               <div className="mb-3">
                 <label for="exampleFormControlInput1" className="form-label mb-1 label-text-color heading-14">Role Type</label>
                 <select className="form-select label-color  form-select-sm" value={roletype} onChange={(e) => setRoletype(e.target.value)} aria-label="Default select example">
-                  {/* <option selected>Select Type </option> */}
                   <option value="admin">ADMIN</option>
                   <option value="user">USER</option>
                   <option value="staff">STAFF</option>
@@ -658,7 +653,7 @@ const RolePermission = () => {
               <div className='my-button11 heading-16'>
                 <button type="button" className="btn btn-outline-success add-role" onClick={(e) => SubcPutDataApi()}>Add Role & Permission</button>
                 <button type="button" className="btn btn-outline-success">Cancel</button>
-                <Toaster />
+                {/* <Toaster />  */}
               </div>
             </div>
           </div>
@@ -783,9 +778,6 @@ const RolePermission = () => {
         </div>
         {/* ############## Offcanvas view profile ######### */}
 
-
-
-
         {/* ################ offcanvas delete start #############  */}
         <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel">
 
@@ -809,9 +801,7 @@ const RolePermission = () => {
                           <path d="M31.4062 16.6406H27.6562V20.3906H31.4062V16.6406Z" fill="#B50000" />
                         </svg>
                       </div>
-                      {/* <div className="symbol-container">
-                                     <img src="./images/Group.png" alt="" />
-                                   </div> */}
+                   
                       <div className="sure-content mt-2">
                         <h5 className='heading-20'>Are you sure?</h5>
                         <p>This Action will be permanently <br /> delete the Profile Data</p>
@@ -868,8 +858,6 @@ const RolePermission = () => {
           }
         </div>
         {/* ################ offcanvas delete end #############  */}
-
-
 
       </div>
     </Container>

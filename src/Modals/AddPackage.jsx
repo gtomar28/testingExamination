@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import DataLoader from '../Layouts/Loader';
 
-const AddPackage = ({ closingOfAddCanvas }) => {
+const AddPackage = ({ closingOfAddCanvas, closingCancel }) => {
 
     //loader State
     const [loaderState, setloaderState] = useState(false);
@@ -105,7 +105,7 @@ const AddPackage = ({ closingOfAddCanvas }) => {
                             </div>
                             <p className='text-center p-3'>
                                 <button className='btn addButtons2 text-white' type='submit'>Add Package</button>
-                                <button className='btn cancelButtons ms-3' type='button'>Cancel</button>
+                                <button className='btn cancelButtons ms-3' type='button' onClick={() => closingCancel(true)}>Cancel</button>
                             </p>
                         </form>
                     </>
@@ -119,7 +119,7 @@ const AddPackage = ({ closingOfAddCanvas }) => {
                                     <p className='warningHeading'>Successful Updated</p>
                                     <p className='greyText warningText pt-2'>Your Changes has been<br />Successfully Saved</p>
                                 </div>
-                                <button className='btn contbtn continueButtons text-white' data-bs-dismiss="offcanvas" aria-label="Close">Success</button>
+                                <button className='btn contbtn continueButtons text-white'>Success</button>
                             </div>
                         </div>
                     </>

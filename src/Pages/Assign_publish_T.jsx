@@ -5,9 +5,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import HashLoader from './HashLoaderCom';
 // import { AssignmntGetByIdApi } from '../Utils/Apis'
 // import { AssignmntDeleteByIdApi } from '../Utils/Apis'
-import Add_assign_offcnvs from './Add_assign_offcnvs_T';
+import Add_assign_offcnvs from './Add_assign_offcnvs';
 
-// import { TeacherClassGetApi } from '../Utils/Apis'
+import { TeacherClassGetApi } from '../Utils/Apis'
 // import { AssignmntPutApi } from '../Utils/Apis'
 // import { TeacherSectionRoomByIdGetApi } from '../Utils/Apis'
 // import { TeacherSubjectByClassIdInSyllabusGetAllApi } from '../Utils/Apis'
@@ -521,6 +521,7 @@ font-size: 12px;
 // ## style css area end ####  
 
 const Assign_publish = (props) => {
+  // const Assign_publish = (props) => {
 
   const navigate = useNavigate();
 
@@ -528,6 +529,7 @@ const Assign_publish = (props) => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [dataRender, setDataRender] = useState([]);
 
 
   useEffect(() => {
@@ -536,11 +538,13 @@ const Assign_publish = (props) => {
   }, [pageNo])
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
-  console.log(props.data, 'Data time000000000')
 
-  const assignments = props.data?.assignment || [];
+  console.log('Data time000000000', props.data)
+
+  const assignments = props.data ? props.data : [] ;
+  console.log('data for assign publishh pagee', assignments)
 
   useEffect(() => {
     setCurrentPage(props.data?.currentPage);
@@ -603,7 +607,6 @@ const Assign_publish = (props) => {
 
   // ###### validation ##########
   const [errors, setErrors] = useState({});
-
 
   const FuncValidation = () => {
     let isValid = true
@@ -702,6 +705,7 @@ const Assign_publish = (props) => {
     MySubjectByClassIdGetApi(val1)
   }
   // Get All Api from class list page for id 
+
   const UpdatClassGetApi = async () => {
     setLoader(true)
     try {
@@ -718,6 +722,7 @@ const Assign_publish = (props) => {
       console.log(error)
     }
   }
+
   // Section Get All Api from section page for id 
   const MySectionGetApi = async (id) => {
     console.log(id, 'id in section')
@@ -775,30 +780,30 @@ const Assign_publish = (props) => {
   const offcanvasRef22 = useRef(null);
   const offcanvasRef33 = useRef(null);
 
-    // Delete api
-    const AssignmnttttDeleteByIdApi = async (id) => {
-      setLoader(true)
-      try {
-        const response = await AssignmntDeleteByIdApi(id);
-        console.log('delete api assignmnttttttt111',response)
-        if (response?.status === 200) {
-          toast.success(response?.data?.message);
-          setShowdelete(false)
-          setLoader(false)
-          const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef33.current);
-          offcanvasInstance.hide();
-          setTimeout(() => {
-            setShowdelete(true)
-            setForDelete(false)
-          }, 0.5)
-        } else {
-          toast.error(response?.data?.message);
+  // Delete api
+  const AssignmnttttDeleteByIdApi = async (id) => {
+    setLoader(true)
+    try {
+      const response = await AssignmntDeleteByIdApi(id);
+      console.log('delete api assignmnttttttt111', response)
+      if (response?.status === 200) {
+        toast.success(response?.data?.message);
+        setShowdelete(false)
+        setLoader(false)
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef33.current);
+        offcanvasInstance.hide();
+        setTimeout(() => {
           setShowdelete(true)
-        }
-      } catch (error) {
-        console.log('catch')
+          setForDelete(false)
+        }, 0.5)
+      } else {
+        toast.error(response?.data?.message);
+        setShowdelete(true)
       }
+    } catch (error) {
+      console.log('catch')
     }
+  }
 
   //   Get All  by id
   const MyAssigmntGetByIdGetAll = async (id) => {
@@ -828,7 +833,6 @@ const Assign_publish = (props) => {
     }
   }
 
-
   //  Put api 
   const MyAssignmntPutApi = async (id) => {
     if (FuncValidation()) {
@@ -844,6 +848,7 @@ const Assign_publish = (props) => {
         formData.append('endDate', endDay)
         formData.append('status', status)
         formData.append('sectionId', sectionId)
+        
         const response = await AssignmntPutApi(IdForUpdate, formData);
         console.log('MY_Assigmnt-put-Api', response)
 
@@ -869,6 +874,7 @@ const Assign_publish = (props) => {
       }
     }
   }
+
   return (
     <Container>
       {
@@ -925,7 +931,7 @@ const Assign_publish = (props) => {
                               <li><Link className="dropdown-item" to={`/assignmentdetails/${item.id}`} onChange={(e) => setIdForDetails(item.id)}>Open</Link></li>
                               <li><Link className="dropdown-item" to={`/assignmntsubmssion/${item.id}/${item.sectionId}/${item.totalMarks}`}>Submission</Link></li>
                               <li><Link className="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="staticBackdrop" onClick={() => setIdForDelete(item.id)}>Delete</Link></li>
-                     
+
                             </ul>
                           </div>
                         </td>
@@ -1094,9 +1100,9 @@ const Assign_publish = (props) => {
           )
         }
 
-          {
-            showdelete && (
-              <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef33}>
+        {
+          showdelete && (
+            <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight22" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef33}>
               <div className="container-fluid">
                 <div className="offcanvas-header p-0 pt-3">
                   <Link data-bs-dismiss="offcanvas" className='ps-3'><img src="./images/Vector (13).svg" alt="" /></Link>
@@ -1128,7 +1134,7 @@ const Assign_publish = (props) => {
                       </div>
 
                       <div className="mt-4">
-                        <button type="button" className="btn my-btn  button00 my-button112233RedDelete" disabled={forDelete ? false : true} onClick={()=> AssignmnttttDeleteByIdApi(IdForDelete)} >Delete</button>
+                        <button type="button" className="btn my-btn  button00 my-button112233RedDelete" disabled={forDelete ? false : true} onClick={() => AssignmnttttDeleteByIdApi(IdForDelete)} >Delete</button>
                         <button type="button" className="btn cancel-btn ms-2" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                       </div>
 
@@ -1137,13 +1143,13 @@ const Assign_publish = (props) => {
                 </div>
               </div>
 
-          </div>
-            )
-          }
-          {/* ############## After click ##############  */}
+            </div>
+          )
+        }
+        {/* ############## After click ##############  */}
 
-        </div>
-        {/* ################ offcanvas delete end #############  */}
+      </div>
+      {/* ################ offcanvas delete end #############  */}
 
     </Container>
   )

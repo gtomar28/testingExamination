@@ -11,8 +11,7 @@ import { RequestUpdatePutApi } from '../Utils/Apis'
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
 import { Icon } from '@iconify/react/dist/iconify.js';
-// import HashLoader from './HashLoader';
-import DataLoader from '../Layouts/Loader';
+import HashLoader from './HashLoaderCom';
 
 // ## style css area start ####  
 
@@ -163,6 +162,14 @@ font-size: 12px;
     --bs-btn-border-color: #cdcdcd;
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #B50000;
+    border-radius: 0%;
+  }
+  .button0011{
+    --bs-btn-color: #959494;
+    --bs-btn-border-color: #cdcdcd;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #fff;
+    border-color: #cdcdcd;
     border-radius: 0%;
   }
   .sure-content h5{
@@ -385,7 +392,6 @@ const ManageFaq = () => {
   });
 
   useEffect(() => {
-    
     showName();
     RequestGetByIdApi();
   }, [pageNo]);
@@ -433,9 +439,9 @@ const ManageFaq = () => {
   const offcanvasRef = useRef(null);
   const offcanvasRef2 = useRef(null);
 
-  const [delValue, setDelValue] = useState(null);
+
   const [showDelete, setShowDelete] = useState(true);
-  const [hideDelete, setHideDelete] = useState(false);
+
 
   // resqust delete api
   const DeleteApi = async (id) => {
@@ -455,7 +461,7 @@ const ManageFaq = () => {
         setTimeout(() => {
           showName()
           setShowDelete(true);
-        }, 1000)
+        }, 0.5)
 
       } else {
         toast.error(response?.data?.message);
@@ -640,7 +646,7 @@ const ManageFaq = () => {
     <Container>
       {
         loader && (
-          <DataLoader />
+          <HashLoader />
         )
       }
       <div className="container-fluid main-body p-3">
@@ -685,11 +691,13 @@ const ManageFaq = () => {
                   <p style={{ fontSize: '14px' }}>Filter</p>
                 </Link>
               </div>
+
               {/* <div className="col-2 p-0 ps-2" >
                 <Link type="submit" className="btn btn-primary mb-3 heading-1 remove-shadow button-bg-color heading-14" style={{ border: '1px solid #008479', lineHeight: '1.3', display: 'flex' }} onClick={MyClearFunc}>
                   <p style={{ fontSize: '14px' }}>Clear</p>
                 </Link>
               </div> */}
+
             </form>
             <div className='me-2'>
               <div class="input-group mb-3 ">
@@ -726,7 +734,7 @@ const ManageFaq = () => {
                   </th>
                   <th>Actions</th>
                 </tr>
-             
+
               </thead>
 
               <tbody className='heading-14 align-middle greyTextColor'>
@@ -736,7 +744,7 @@ const ManageFaq = () => {
                       <td className='  greyText'>{index + 1}</td>
                       <td className='greyText'>{item?.reqDate ? item.reqDate.slice(0, 10) : ''} </td>
 
-                      <td className='  greyText'> 
+                      <td className='  greyText'>
                         {(item?.reqDesc).length > 20 ? item.reqDesc.substring(0, 30) + '....' : item.reqDesc}
                         {(item?.reqDesc).length > 20 ? <button type="button" class="my-i-button" data-bs-toggle="tooltip" data-bs-placement="top" title={item.reqDesc}>
                           <Icon icon="mdi:show-outline" width="1.2em" height="1.2em" style={{ color: 'black' }} />
@@ -1047,49 +1055,49 @@ const ManageFaq = () => {
 
         {/* * ########################## delete offcanvas  ################  */}
 
-       {
-        showDelete && (
-          <div className={`offcanvas offcanvas-end`} tabIndex="-1" id="offcanvasRight2233" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef}>
-          <div className="container-fluid">
-            <div className="offcanvas-header p-0 pt-3">
-              <Link data-bs-dismiss="offcanvas" className='ps-3'>
-                <img src="./images/Vector (13).svg" alt="" />
-              </Link>
-              <h5 className="offcanvas-title pe-3 heading-16" id="offcanvasRightLabel">Delete Section</h5>
-            </div>
-            <hr />
+        {
+          showDelete && (
+            <div className={`offcanvas offcanvas-end`} tabIndex="-1" id="offcanvasRight2233" aria-labelledby="offcanvasRightLabel" ref={offcanvasRef}>
+              <div className="container-fluid">
+                <div className="offcanvas-header p-0 pt-3">
+                  <Link data-bs-dismiss="offcanvas" className='ps-3'>
+                    <img src="./images/Vector (13).svg" alt="" />
+                  </Link>
+                  <h5 className="offcanvas-title pe-3 heading-16" id="offcanvasRightLabel">Delete Section</h5>
+                </div>
+                <hr />
 
-            <div className="offcanvas-body">
-              <div className="sure-main-container mt-4">
-                <div className="sure-container">
-                <div>
-                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M29.5312 0.46875C13.2656 0.46875 0 13.7344 0 30C0 46.2656 13.2656 59.5312 29.5312 59.5312C45.7969 59.5312 59.0625 46.2656 59.0625 30C59.0625 13.7344 45.7969 0.46875 29.5312 0.46875ZM29.5312 55.7812C15.3281 55.7812 3.75 44.2031 3.75 30C3.75 15.7969 15.3281 4.21875 29.5312 4.21875C43.7344 4.21875 55.3125 15.7969 55.3125 30C55.3125 44.2031 43.7344 55.7812 29.5312 55.7812Z" fill="#B50000" />
-                      <path d="M31.4062 25.5469H27.6562V44.2969H31.4062V25.5469Z" fill="#B50000" />
-                      <path d="M31.4062 16.6406H27.6562V20.3906H31.4062V16.6406Z" fill="#B50000" />
-                    </svg>
-                  </div>
-                  <div className="sure-content mt-2">
-                    <h4 className='heading-15'>Are you sure?</h4>
-                    <p>This Action will be permanently <br /> delete the Profile Data</p>
-                  </div>
-                  <div className="form-check mt-1">
-                    <input className="form-check-input my-red-tick" type="checkbox" onClick={(e) => setCheck(!check)} value="" id="flexCheckDefault" />
-                    <label className="form-check-label agree" for="flexCheckDefault">
-                      I Agree to delete the Profile Data
-                    </label>
-                  </div>
-                  <div className="mt-4">
-                    <button type="button" className="btn btn-outline-primary button00" style={{ backgroundColor: '#B50000', color: '#fff', borderColor: '#B50000' }} onClick={(e) => DeleteApi(delvalue)} disabled={check ? false : true}>Delete</button>
-                    <button type="button" className="btn btn-outline-primary button00 ms-2" data-bs-dismiss="offcanvas" aria-label={showdelete === true ? 'Close' : ''}>Cancel</button>
+                <div className="offcanvas-body">
+                  <div className="sure-main-container mt-4">
+                    <div className="sure-container">
+                      <div>
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M29.5312 0.46875C13.2656 0.46875 0 13.7344 0 30C0 46.2656 13.2656 59.5312 29.5312 59.5312C45.7969 59.5312 59.0625 46.2656 59.0625 30C59.0625 13.7344 45.7969 0.46875 29.5312 0.46875ZM29.5312 55.7812C15.3281 55.7812 3.75 44.2031 3.75 30C3.75 15.7969 15.3281 4.21875 29.5312 4.21875C43.7344 4.21875 55.3125 15.7969 55.3125 30C55.3125 44.2031 43.7344 55.7812 29.5312 55.7812Z" fill="#B50000" />
+                          <path d="M31.4062 25.5469H27.6562V44.2969H31.4062V25.5469Z" fill="#B50000" />
+                          <path d="M31.4062 16.6406H27.6562V20.3906H31.4062V16.6406Z" fill="#B50000" />
+                        </svg>
+                      </div>
+                      <div className="sure-content mt-2">
+                        <h4 className='heading-15'>Are you sure?</h4>
+                        <p>This Action will be permanently <br /> delete the Profile Data</p>
+                      </div>
+                      <div className="form-check mt-1">
+                        <input className="form-check-input my-red-tick" type="checkbox" onClick={(e) => setCheck(!check)} value="" id="flexCheckDefault" />
+                        <label className="form-check-label agree" for="flexCheckDefault">
+                          I Agree to delete the Profile Data
+                        </label>
+                      </div>
+                      <div className="mt-4">
+                        <button type="button" className="btn btn-outline-primary button00" style={{ backgroundColor: '#B50000', color: '#fff', borderColor: '#B50000' }} onClick={(e) => DeleteApi(delvalue)} disabled={check ? false : true}>Delete</button>
+                        <button type="button" className="btn btn-outline-primary button0011 ms-2" data-bs-dismiss="offcanvas" aria-label={showdelete === true ? 'Close' : ''}>Cancel</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        )
-       }
+          )
+        }
 
         {/* ############## After click ##############  */}
 

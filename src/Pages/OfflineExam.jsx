@@ -150,7 +150,7 @@ const OfflineExam = () => {
     useEffect(() => {
         getAllClassData();
         getAllOfflineExamData();
-    }, [token, pageNo, addOffExam, updateOffExam])
+    }, [token, pageNo, addOffExam, updateOffExam,])
 
     const handleOfflineExamAddModal = ()=> {
         setAddOffExam(true);
@@ -257,7 +257,7 @@ const OfflineExam = () => {
                 if (response?.data?.status === 'success') {
                     setloaderState(false);
                     setAllOfflineExamData(response?.data?.examDetails);
-                    setTotalItems(10);
+                    // setTotalItems(10);
                 }
             }
             else {
@@ -384,7 +384,7 @@ const OfflineExam = () => {
                             <form className="row g-3">
                                 <div className="col-md-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Class</label>
-                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => { setClassId(e.target.value), getAllSubjectData(e.target.value) }}>
+                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" value={classId} onChange={(e) => { setClassId(e.target.value), getAllSubjectData(e.target.value) }}>
                                         <option >--- Choose ---</option>
                                         {allClassData?.map(option => (
                                             <option key={option.classId} value={option?.classId}>
@@ -395,7 +395,7 @@ const OfflineExam = () => {
                                 </div>
                                 <div className="col-md-6 col-12">
                                     <label htmlFor="inputEmail4" className="form-label font14">Subject</label>
-                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" onChange={(e) => setSubjectId(e.target.value)}>
+                                    <select className="form-select borderRadius5 font14" aria-label="Default select example" value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
                                         <option >--- Choose ---</option>
                                         {allSubjectData?.map(option => (
                                             <option key={option.subjectId} value={option.subjectId}>
@@ -406,7 +406,7 @@ const OfflineExam = () => {
                                 </div>
                                 <p className='text-center p-3'>
                                     <button type='button' className='btn addCategoryButtons text-white' onClick={getSearchedOfflineExamData}>Search</button>
-                                    <button type='button' className='btn cancelButtons ms-3'>Cancel</button>
+                                    <button type='button' className='btn cancelButtons ms-3' onClick={() => { setClassId(''), setSubjectId(''), getAllOfflineExamData()}}>Cancel</button>
                                 </p>
                             </form>
                             <div className="row">
@@ -526,8 +526,8 @@ const OfflineExam = () => {
                             <p className='modalLightBorder p-2'>OfflineExam</p>
                             <p className='text-center p-3'> <img src="./images/errorI.svg" className='img-fluid' alt="" /></p>
                             <p className='text-center warningHeading'>Are you Sure?</p>
-                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Profile Data</p>
-                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Profile Data</p>
+                            <p className='text-center greyText warningText pt-2'>This Action will be permanently delete<br />the Offline Exam Data</p>
+                            <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Offline Exam Data</p>
                             <p className='text-center p-3'>
                                 <button className='btn deleteButtons text-white' onClick={DeleteOfflineExamDataById}>Delete</button>
                                 <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>

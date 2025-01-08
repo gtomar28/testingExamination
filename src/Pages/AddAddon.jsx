@@ -196,7 +196,7 @@ const AddSpecialFeature = () => {
                 </div>
               </div>
               <p className='text-center p-3'>
-                <button className='btn addButtons text-white' onClick={AddNewSpecialFeature} type='button'>Add SpecialFeature</button>
+                <button className='btn addButtons2 text-white' onClick={AddNewSpecialFeature} type='button'>Add Feature</button>
                 <button className='btn cancelButtons ms-3' onClick={handleCancel}  type='button'>Cancel</button>
               </p>
             </form>

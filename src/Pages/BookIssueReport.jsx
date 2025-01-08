@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { Icon } from '@iconify/react/dist/iconify.js';
-
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { BookIssuePostApi } from '../Utils/Apis'
 import { ClassGetApi } from '../Utils/Apis'
@@ -12,14 +10,11 @@ import { SectionRoomByIdGetApi } from '../Utils/Apis'
 import { BookManagerGetAllApi } from '../Utils/Apis'
 import { studentGetAllApi } from '../Utils/Apis'
 import { bookIssueGetAllApi } from '../Utils/Apis'
-
 import { IssueBookDeleteApi } from '../Utils/Apis'
 import { IssueBookGetById } from '../Utils/Apis'
 import { IssueBookPutApi } from '../Utils/Apis'
 import HashLoader from './HashLoaderCom';
-
 import Flatpickr from "react-flatpickr";
-// import Icon from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
 // ## style css area start ####  
 
@@ -534,19 +529,13 @@ const BookIssueReport = () => {
   const [bookData, setBookData] = useState([])
   const [studentData, setStudentData] = useState([])
   const [issuesData, setIssuesdata] = useState([])
-
-  // const [issuedate, setIssuedate] = useState()
   const [returndate, setReturndate] = useState()
-  console.log('return date is here', returndate)
   const [Class, setClass] = useState()
   const [sectionId, setSectionId] = useState()
   const [sectionName, setSectionName] = useState()
   const [student, setStudent] = useState()
   const [book, setBook] = useState()
   const [classNo, setClassNo] = useState();
-
-  console.log('my class nononononon', classNo)
-
   const [isValidDateRequired, setIsValidDateRequired] = useState(false);
   const [searchKey, setSearchKey] = useState('')
 
@@ -555,11 +544,10 @@ const BookIssueReport = () => {
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
 
   const RetunrBookHandleBtn = (e) => {
-
     if (returnbookshow === true && returnbookhide === false) {
       setReturnbookshow(false)
       setReturnbookhide(true)
@@ -579,8 +567,17 @@ const BookIssueReport = () => {
     MyRolPermisGetAllApi()
 
   }, [classNo, Class, sectionId, sectionName, token])
+
   useEffect(() => {
     MyBookIssueGetApi()
+
+    // const HandleClearDate = () =>{
+    //   setStartDate('')
+    //   setEndDate('')
+    //   MyBookIssueGetApi(pageNo)
+    // }
+    // HandleClearDate()
+
   }, [pageNo])
 
   const [errors, setErrors] = useState({});
@@ -619,7 +616,7 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await ClassGetApi(searchKey, pageNo, pageSize);
-      console.log('class-get-all-api in Book issue report ', response);
+      // console.log('class-get-all-api in Book issue report ', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.classes?.message)
         setClassdata(response?.data?.classes)
@@ -632,6 +629,11 @@ const BookIssueReport = () => {
     }
   }
 
+  const HandleClearDate = () =>{
+    setStartDate('')
+    setEndDate('')
+    MyBookIssueGetApi()
+  }
   const handle = (e) => {
 
     const value = e.target.value;
@@ -649,7 +651,6 @@ const BookIssueReport = () => {
     setSectionId(parseInt(val1))
     const name = val2.trim()
     setSectionName(name)
-    // console.log('my section id is ', sectionId)
   }
 
   // Section Get All Api from section page for id 
@@ -657,7 +658,6 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await SectionRoomByIdGetApi(Class);
-      console.log('SECTION-get-all-api', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setSectionData(response?.data?.allSections)
@@ -676,7 +676,6 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await studentGetAllApi(searchKey, classNo, sectionName);
-      console.log('STUDENT-get-all-api123456', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setStudentData(response?.data?.students)
@@ -695,8 +694,6 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await BookManagerGetAllApi(searchKey, pageNo, pageSize);
-
-      // console.log('My Book get all DATAAA12', response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setBookData(response?.data?.Books)
@@ -726,13 +723,13 @@ const BookIssueReport = () => {
       formData.append('bookId', book);
       try {
         const response = await BookIssuePostApi(formData);
-        console.log('my book manager list post api response', response)
         if (response?.data?.status === "success") {
           toast.success(response?.data?.message);
           MyBookIssueGetApi()
           setShow(false)
           setHide(true)
           setLoader(false)
+          
           const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef.current);
           offcanvasInstance.hide();
           setShow(false)
@@ -755,7 +752,7 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await bookIssueGetAllApi(startDate, endDate, pageNo, pageSize);
-      console.log(' my Issues book DATA', response);
+      console.log('data',response)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg)
         setIssuesdata(response?.data?.bookTransaction)
@@ -775,7 +772,6 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await IssueBookDeleteApi(id);
-      // console.log('my-subs-api',response)
       if (response?.status === 200) {
         setHidedelete(true)
         setShowdelete(false)
@@ -805,8 +801,6 @@ const BookIssueReport = () => {
     setLoader(true)
     try {
       const response = await IssueBookGetById(id);
-      console.log('my issue book get by IDDD', response)
-
       setReturndate(response?.data?.bookTransaction?.body?.Transaction?.returnDate)
       setClassNo(response?.data?.Transaction)
       setSectionName(response?.data?.Transaction?.sectionName)
@@ -814,7 +808,7 @@ const BookIssueReport = () => {
       setBook(response?.data?.book?.bookName)
 
       if (response?.status === 200) {
-        toast.success(response?.data?.msg);
+        // toast.success(response?.data?.msg);
         setLoader(false)
       } else {
         toast.error(response?.data?.msg);
@@ -827,6 +821,7 @@ const BookIssueReport = () => {
   // Section Put api 
   const MyIssueBookPutApi = async (id) => {
     setLoader(true)
+
     try {
       const PuData = {
         "returnDate": returndate,
@@ -837,11 +832,18 @@ const BookIssueReport = () => {
       }
       const response = await IssueBookPutApi(id, PuData);
 
-      console.log('MY_SECTION____put-Api', response)
       if (response?.status === 'success') {
         toast.success(response?.data?.message);
         MySectionGetApi()
         setLoader(false)
+        setEditshow(false)
+        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef22.current);
+        offcanvasInstance.hide();
+        setShow(false)
+        setTimeout(() => {
+          setEditshow(true)
+        }, 0.5)
+        
       } else {
         toast.error(response?.data?.message);
       }
@@ -849,7 +851,6 @@ const BookIssueReport = () => {
     } catch (error) {
       console.log(error)
     }
-    // console.log('my-dataset',data)
   }
 
   const handleForDelete = () => {
@@ -861,8 +862,8 @@ const BookIssueReport = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  console.log('my both date1 =', startDate)
-  console.log('my both date2 =', endDate)
+  // console.log('my both date1 =', startDate)
+  // console.log('my both date2 =', endDate)
 
   const handleDateChange = (dates) => {
     setStartDate(formatDate(dates[0]));
@@ -875,7 +876,6 @@ const BookIssueReport = () => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
-    // return "${year}-${month}-${day}";
   };
 
   return (
@@ -900,10 +900,7 @@ const BookIssueReport = () => {
           </div>
           <div className='d-flex g-1 for-media-query'>
             <div className='me-2 search-responsive'>
-              {/* <div className="input-group mb-3 ">
-                <input type="text" className="form-control form-focus font-color" style={{ height: '34px' }} placeholder="Search" aria-label="Recipient's username" onChange={(e) => setSearchKey(e.target.value)} aria-describedby="basic-addon2" />
-                <span className="input-group-text button-bg-color button-color heading-14 font-color " style={{ cursor: 'pointer', height: "34px" }} id="basic-addon2" onClick={MyStudentGetApi}>Search</span>
-              </div> */}
+            
             </div>
             <Link type="button" className="btn btn-success heading-16 my-own-button me-3 " data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop" to={''}>+ Issue Book</Link>
           </div>
@@ -933,9 +930,7 @@ const BookIssueReport = () => {
                     <div className="input-group d-flex">
 
                       <input {...props} ref={ref} defaultValue={defaultValue} />
-                      {/* <span className="input-group-text">
-                      <Icon icon="uiw:date" width="1.1em" height="1.1em" style={{ color: '#2C6DB5' }} />
-                    </span> */}
+                  
                     </div>
                   )}
                 />
@@ -947,7 +942,7 @@ const BookIssueReport = () => {
           <div className="row mb-3 buttons-topss">
             <div className='my-button11 heading-16'>
               <button type="button" class="btn btn-outline-success my-button112233" onClick={MyBookIssueGetApi}>Search</button>
-              <button type="button" class="btn btn-outline-success" style={{backgroundColor:"#fff", color:'#000'}}>Cancel</button>
+              <button type="button" class="btn btn-outline-success" style={{backgroundColor:"#fff", color:'#000'}} onClick={HandleClearDate}>Cancel</button>
             </div>
           </div>
 
@@ -974,7 +969,7 @@ const BookIssueReport = () => {
               <tbody className='heading-14 align-middle greyTextColor'>
                 {
                   issuesData?.map((item, index) => (
-                    <tr className='heading-14' >
+                    <tr className='heading-14' key={item.transactionId}>
                       <td className=' greyText pe-0'>{index + 1}</td>
                       <td className=' greyText pe-0'>{item.bookName}</td>
                       <td className=' greyText pe-0'>{item.issueDate}</td>
@@ -1023,7 +1018,6 @@ const BookIssueReport = () => {
 
         {/* ##### offcanvas added start ########  */}
 
-        {/* <div className={`offcanvas-end offcanvas${offcanvasclose ? ' offcanvas-close' : ''}`} data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel"> */}
         {
           show && (
             <>
@@ -1101,7 +1095,7 @@ const BookIssueReport = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success heading-16 my-button112233 btn-bgAndColor" onClick={(e) => { SubcPutDataApi() }}>Add Issue Book</button>
-                      <button type="button" className="btn btn-outline-success heading-16">Cancel</button>
+                      <button type="button" className="btn btn-outline-success heading-16" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
 
                     </div>
                   </div>
@@ -1113,7 +1107,7 @@ const BookIssueReport = () => {
         {/* ################## Off Canvas Area ####################  */}
 
         {/* ################## Edit Off Canvas Area ####################  */}
-        <div className="offcanvas-end offcanvas" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop11122" aria-labelledby="staticBackdropLabel">
+        <div className="offcanvas-end offcanvas" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop11122" aria-labelledby="staticBackdropLabel" ref={offcanvasRef22}>
           {
             editshow && (
               <>
@@ -1188,47 +1182,14 @@ const BookIssueReport = () => {
 
                     <div className='my-button11 '>
                       <button type="button" className="btn btn-outline-success heading-16 my-button112233 btn-bgAndColor" onClick={(e) => MyIssueBookPutApi(IdForUpdate)}>Update</button>
-                      <button type="button" className="btn btn-outline-success heading-16">Cancel</button>
+                      <button type="button" className="btn btn-outline-success heading-16" data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
                     </div>
                   </div>
                 </div>
               </>
             )
           }
-          {
-            edithide && (
-              <>
-                <div className="offcanvas-header d-block for-my-display">
-                  <div className="offcanvas-header p-0 ">
-                    <Link data-bs-dismiss="offcanvas" className='ps-3'><img src="./images/Vector (13).svg" alt="" /></Link>
-                    <h5 className="offcanvas-title pe-3 heading-16" id="offcanvasRightLabel" >Successfull Message</h5>
-                  </div>
-                  <hr className='' />
-                  <div className="delete-section mt-5">
-                    <div className="bg-container">
-                      <div className="img-container22">
-                        <svg className='pt-1 mt-2' width="38" height="29" viewBox="0 0 38 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M11.2266 26.4378L35.68 2" stroke="white" stroke-width="5" stroke-miterlimit="10" />
-                          <path d="M14.3912 26.5944L2 14.2032" stroke="white" stroke-width="5" stroke-miterlimit="10" />
-                        </svg>
-                        {/* <img src="./images/XMLID_1_.png" alt="" /> */}
-                      </div>
-                      <div className="content mt-5">
-                        <p className='heading-20'>Successful Update</p>
-                        <hr style={{ width: '' }} />
-                        <p className='mb-5' style={{ color: '#ADADBD', fontSize: '14px' }}>Your profile has been <br /> Successfully Updated</p>
-                      </div>
-                      <div className='button-position'  >
-                        <button type="button" className="btn btn-outline-primary button112233 mt-4 mb my-button112233 " data-bs-dismiss="offcanvas" aria-label="Close" style={{ fontSize: '14px' }}>Continue</button>
-
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </>
-            )
-          }
+          
         </div>
 
         {/* ################## Edit Off Canvas Area end  ####################  */}
@@ -1238,7 +1199,6 @@ const BookIssueReport = () => {
         {/* ################## Return book Off Canvas Area ####################  */}
 
         <div className="offcanvas-end offcanvas" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop3344" aria-labelledby="staticBackdropLabel">
-          {/* <div className={` offcanvas-end offcanvas${offcanvasclose ? ' offcanvas-close' : ''}`} data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel"> */}
           {
             returnbookshow && (
               <>
@@ -1255,10 +1215,10 @@ const BookIssueReport = () => {
                 <div class="offcanvas-body">
                   <div className="input " >
 
-                    <div class="mb-3">
+                    <dciv class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label heading-16 label-color">Issue Date</label>
                       <input type="date" class="form-control form-control-sm  r" id="exampleFormControlInput1" placeholder="Select Date" />
-                    </div>
+                    </dciv>
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label heading-16 label-color">Return Date</label>
                       <input type="date" class="form-control   " id="exampleFormControlInput1" placeholder="Select Date" />
@@ -1325,7 +1285,6 @@ const BookIssueReport = () => {
                           <path d="M11.2266 26.4378L35.68 2" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                           <path d="M14.3912 26.5944L2 14.2032" stroke="white" stroke-width="5" stroke-miterlimit="10" />
                         </svg>
-                        {/* <img src="./images/XMLID_1_.png" alt="" /> */}
                       </div>
                       <div className="content mt-5">
                         <p className='heading-20'>Successful Update</p>
@@ -1334,9 +1293,7 @@ const BookIssueReport = () => {
                       </div>
                       <div className='button-position'  >
                         <button type="button" className="btn btn-outline-primary button112233 mt-4 mb my-button112233 " data-bs-dismiss="offcanvas" aria-label="Close" style={{ fontSize: '14px' }}>Continue</button>
-
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -1386,13 +1343,7 @@ const BookIssueReport = () => {
             </div>
           )
         }
-      </div>
-
-
-
-
-
-
+      </div> 
     </Container>
   )
 }

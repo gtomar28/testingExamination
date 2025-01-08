@@ -8,7 +8,6 @@ import { ClassGetApi } from '../Utils/Apis'
 import { ClassDeleteApi } from '../Utils/Apis'
 import { ClassGetByIdApi } from '../Utils/Apis'
 import { ClassPutApi } from '../Utils/Apis'
-// import { ClassGetByIdApi } from '../Utils/Apis'
 import HashLoader from './HashLoaderCom';
 import { Icon } from '@iconify/react/dist/iconify.js';
 // ## style css area start ####  
@@ -416,7 +415,6 @@ font-size: 12px;
 const ClassList = () => {
 
   const [loader, setLoader] = useState(false)
-
   const [hide, setHide] = useState(false)
   const [show, setShow] = useState(true)
   const [hidedelete, setHidedelete] = useState(false)
@@ -426,53 +424,19 @@ const ClassList = () => {
   const [classno, setClassno] = useState()
   const [classdata, setClassdata] = useState([])
   const [classNoById, setClassNoById] = useState([])
-  console.log('my class no', classno)
-  console.log('my-class-no-by-id', classNoById)
   const [isValidNameRequired, setIsValidNameRequired] = useState(false);
 
   const [IdForDelete, setIdForDelete] = useState()
   const [IdForUpdate, setIdForUpdate] = useState()
-  // console.log('my-class-ID', classid)
   const [searchKey, setSearchKey] = useState('')
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   const handlePageClick = (event) => {
-    setPageNo(event.selected + 1); // as event start from 0 index
+    setPageNo(event.selected + 1); 
   };
-
-
-  const UpdateHandleBtn = (e) => {
-
-    if (show === true && hide === false) {
-      setShow(false)
-      setHide(true)
-    } else {
-      setShow(true)
-    }
-  }
-
-  const showNamedelete = () => {
-    if (showdelete === true && hidedelete === false) {
-      setShowdelete(false)
-      setHidedelete(true)
-    } else {
-      setShowdelete(true)
-    }
-  }
-
-  const UpdateHandleBtn12 = (e) => {
-
-    if (show12 === true && hide12 === false) {
-      setShow12(false)
-      setHide12(true)
-    } else {
-      setShow12(true)
-    }
-  }
 
   useEffect(() => {
     UpdatClassGetApi()
@@ -519,13 +483,10 @@ const ClassList = () => {
       setLoader(true)
       try {
         const response = await ClassPostApi(formData);
-        // console.log('class-post-api', response)
-
         if (response?.status === 200) {
           if (response?.data?.status === "success") {
             toast.success(response?.data?.message);
             setShow12(false)
-
             UpdatClassGetApi()
             setLoader(false)
             const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasRef.current);
@@ -559,7 +520,6 @@ const ClassList = () => {
     setLoader(true)
     try {
       const response = await ClassGetApi(searchKey, pageNo, pageSize);
-      console.log('class-get-all-api', response);
       if (response?.status === 200) {
         // toast.success(response?.data?.message)
         setClassdata(response?.data?.classes)
@@ -579,7 +539,6 @@ const ClassList = () => {
     setLoader(true)
     try {
       const response = await ClassDeleteApi(id);
-      console.log('my-subs-api', response)
       if (response?.status === 200) {
         setHidedelete(true)
         setShowdelete(false)
@@ -601,7 +560,6 @@ const ClassList = () => {
     setLoader(true)
     try {
       const response = await ClassGetByIdApi(id);
-      console.log('Class-get-by-id', response)
       setClassno(response?.data?.class?.classNo)
       if (response?.status === 200) {
         // toast.success(response?.data?.msg);
@@ -623,7 +581,6 @@ const ClassList = () => {
         formData.append('classNo', classno)
   
         const response = await ClassPutApi(id, formData);
-        console.log('MY_Class___put-Api', response)
         if (response?.status === 200) {
           toast.success(response?.data?.message);
           setShow(false)
@@ -654,11 +611,9 @@ const ClassList = () => {
           <HashLoader />
         )
       }
-
       <div className="container-fluid main-body p-3">
 
         <div className='d-flex justify-content-between for-dislay-direction'>
-
           <div className="breadCrum ms-2">
             <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
               <ol className="breadcrumb ms-2">
@@ -691,7 +646,6 @@ const ClassList = () => {
                 <tr className='heading-16 text-color-000' style={{ fontWeight: '500' }}>
                   <th className='' style={{ width: '10%' }}>#</th>
                   <th style={{ width: '70%' }}>Class</th>
-                  {/* <th style={{width:'680px'}}>Section</th> */}
                   <th >Actions</th>
                 </tr>
               </thead>
@@ -711,7 +665,7 @@ const ClassList = () => {
                           </button>
                           <ul className="dropdown-menu anchor-color heading-14">
                             <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop12" aria-controls="staticBackdrop" onClick={(e) => MyClassGetByIdApi(item.classId)} >Edit</Link></li>
-                            <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e)=>  setIdForDelete(item.classId)}>Delete</Link></li>
+                            {/* <li><Link className="dropdown-item" to={''} data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight22" aria-controls="offcanvasRight" onClick={(e)=>  setIdForDelete(item.classId)}>Delete</Link></li> */}
                           </ul>
                         </div>
                       </td>
@@ -852,7 +806,6 @@ const ClassList = () => {
                       <p className='heading-14 '>4290 Gregory Lane <br />Louisville, KY 40202</p>
                     </div>
                   </div>
-
                 </div>
 
                 <hr className='mt-4' />
