@@ -364,8 +364,8 @@ const Grades = () => {
                                         <th className='text-center'><span className='font14'>#</span></th>
                                         <th><span className='font14'>Grade</span></th>
                                         <th><span className='font14'>Grade Point</span></th>
-                                        <th><span className='font14'>Mark From</span></th>
-                                        <th><span className='font14'>Mark Upto</span></th>
+                                        <th><span className='font14'>Percentage From</span></th>
+                                        <th><span className='font14'>Percentage Upto</span></th>
                                         <th className='text-center'><span className='font14'>Action</span></th>
                                     </tr>
                                 </thead>
@@ -375,8 +375,8 @@ const Grades = () => {
                                             <th className='text-center greyText'><h3>{index + 1}</h3></th>
                                             <td className='greyText'><h3>{item.grade}</h3></td>
                                             <td className='greyText'><h3>{item.gradePoint}</h3></td>
-                                            <td className='greyText'><h3>{item.marksFrom}</h3></td>
-                                            <td className='greyText'><h3>{item.marksUpTo}</h3></td>
+                                            <td className='greyText'><h3>{item.percentageFrom}</h3></td>
+                                            <td className='greyText'><h3>{item.percentageGoat}</h3></td>
                                             <td className='text-center'>
                                                 <div className="dropdown dropdownbtn">
                                                     <button className="btn btn-sm actionButtons dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

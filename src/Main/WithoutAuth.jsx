@@ -21,6 +21,7 @@ const WithoutAuth = () => {
           <Route path='/forgotPassword' element={<ForgotPassword/>}/>
           <Route path='/verifyOtp' element={<VerifyOTP/>}/>
           <Route path='/setNewPass' element={<NewPassSet/>}/>
+          <Route path='/*' element={<Login />}/>
         </Routes>
       </Container>
     </>

@@ -34,6 +34,11 @@ const ContainerCSS = styled.div`
   .formdltcheck:checked{
     background-color: #B50000;
     border-color: #B50000;
+    box-shadow: none;
+  }
+
+  .formdltcheck{
+    box-shadow: none;
   }
 
   .formEditSpecFeatcheck:checked{
@@ -275,6 +280,9 @@ const Packages = () => {
         console.error('Error during login:', error);
       }
     }
+    else{
+      toast.error('Please agree to delete the package data first');
+    }
   }
 
 
@@ -420,7 +428,7 @@ const Packages = () => {
         }
         <div className="container-fluid ps-3 pe-3 pt-2 pb-2">
           <div className="row pt-2">
-            <div className="col-lg-7 col-md-4 col-sm-12 flex-grow-1">
+            <div className="col-xl-6 col-lg-5 col-md-5 col-sm-12 flex-grow-1">
               <div className="row">
                 <nav className='breadcrumnav' aria-label="breadcrumb">
                   <ol className="breadcrumb">
@@ -431,11 +439,11 @@ const Packages = () => {
               </div>
               <div className="row mb-3 for-margin-top"><h2>Manage Package</h2></div>
             </div>
-            <div className="col-lg-5 col-md-8 col-sm-12 mb-lg-0 mb-md-0 mb-3">
+            <div className="col-xl-6 col-lg-7 col-md-7 col-sm-12 mb-lg-0 mb-md-0 mb-3">
               <div className="row">
                 <div className="col-md-9 col-sm-6 col-8">
                   <div className="d-flex">
-                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" onChange={(e) => setSearchKeyData(e.target.value)} onKeyDown={handleKeyDown} />
+                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" value={searchKeyData} onChange={(e) => setSearchKeyData(e.target.value.trimStart())} onKeyDown={handleKeyDown} onPaste={(e) => { e.preventDefault(); const pastedValue = e.clipboardData.getData('text'); setSearchKeyData(pastedValue.trimStart()); }} />
                     <button className="btn searchButtons text-white" type="button" onClick={getAllPlans}><h2>Search</h2></button>
                   </div>
                 </div>
@@ -449,35 +457,35 @@ const Packages = () => {
           </div>
           
           <div className="row ps-2 pe-2">
-            <div className=" cardradius bg-white p-3">  {/* overflow-scroll */}
+            <div className=" overflow-scroll cardradius bg-white p-3">  {/* overflow-scroll */}
               {AllPlan.length > 0 ?
                 <>
                   <table className="table align-middle table-striped">
                     <thead>
                       <tr>
-                        <th><h2>#</h2></th>
-                        <th><h2>Package</h2></th>
-                        <th><h2>Price <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th><h2>Interval <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th><h2>Period <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th><h2>Student Limit <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th><h2>Feature Details</h2></th>
-                        <th><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th><h2>Action</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>#</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Package</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Price <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Interval <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Period <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Student Limit <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Feature Details</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Action</h2></th>
                       </tr>
                     </thead>
                     <tbody>
                       {AllPlan.map((item, index) => (
                         <tr key={item.planId} className={`my-bg-color align-middle`}>
-                          <th className='greyText'><h3>{index + 1}</h3></th>
-                          <td className='greyText'><h3>{item.planName}</h3></td>
-                          <td className='greyText'><h3>{item.price}</h3></td>
-                          <td className='greyText'><h3>{item.type}</h3></td>
-                          <td className='greyText'><h3>{item.value}</h3></td>
-                          <td className='greyText'><h3>{item.studentLimit}</h3></td>
-                          <td><h3>{(item.usedAddons).length > 0 ? <span className='blueText text-decoration-none' data-bs-toggle="modal" data-bs-target="#FeatureModal" style={{ cursor: 'pointer' }} onClick={(e) => setFeaturePackData(item.usedAddons)}>View Linked Features</span> : <span className='blueText text-decoration-none text-center'>---</span>}</h3></td>
-                          <td>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
-                          <td>
+                          <th className='greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1}</h3></th>
+                          <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.planName}</h3></td>
+                          <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.price}</h3></td>
+                          <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.type}</h3></td>
+                          <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.value}</h3></td>
+                          <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.studentLimit}</h3></td>
+                          <td style={{ textWrap: 'nowrap'}}><h3>{(item.usedAddons).length > 0 ? <span className='blueText text-decoration-none' data-bs-toggle="modal" data-bs-target="#FeatureModal" style={{ cursor: 'pointer' }} onClick={(e) => setFeaturePackData(item.usedAddons)}>View Linked Features</span> : <span className='blueText text-decoration-none text-center'>---</span>}</h3></td>
+                          <td style={{ textWrap: 'nowrap'}}>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
+                          <td style={{ textWrap: 'nowrap'}}>
                             <div className="dropdown dropdownbtn">
                               <button className="btn btn-sm actionButtons dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span>Action</span>

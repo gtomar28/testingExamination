@@ -200,7 +200,7 @@ const EditExam = ({ EditId, offlineUpdateState }) => {
                     <div className="row">
                         <form className='p-3' onSubmit={handleSubmit(AddNewOfflineExam)}>
                             <div className="mb-3">
-                                <label htmlFor="categoryId" className="form-label font14">Exam Name</label>
+                                <label htmlFor="categoryId" className="form-label font14">Exam Name / Category</label>
                                 <select id="categoryId" className={`form-select font14 ${errors.categoryId ? 'border-danger' : ''}`} {...register('categoryId', { required: 'Exam Category selection is required *' })}>
                                     <option value="">-- Select --</option>
                                     {ExamCategoryData.map((examCategory) => (
@@ -744,7 +744,7 @@ export default EditExam
 //                             <>
 //                                 <form className='p-3'>
 //                                     <div className="mb-3">
-//                                         <label htmlFor="exampleInputEmail1" className="form-label font14">Exam Name</label>
+//                                         <label htmlFor="exampleInputEmail1" className="form-label font14">Exam Name / Category</label>
 //                                         <select className={`form-select font14 ${CategoriesError ? 'border-1 border-danger' : ''}`} aria-label="Default select example" value={Categories} onChange={(e) => handleCategoriesChange(e.target.value)}>
 //                                             <option value=''>--- Choose ---</option>
 //                                             {ExamCategoryData?.map(option => (
@@ -1154,7 +1154,7 @@ export default EditExam
 //                             <>
 //                                 <form className='p-3'>
 //                                     <div className="mb-3">
-//                                         <label htmlFor="exampleInputEmail1" className="form-label font14">Exam Name</label>
+//                                         <label htmlFor="exampleInputEmail1" className="form-label font14">Exam Name / Category</label>
 //                                         <select className={`form-select font14 ${CategoriesError ? 'border-1 border-danger' : ''}`} aria-label="Default select example" value={Categories} onChange={(e) => setCategories(e.target.value)}>
 //                                             <option >--- Choose ---</option>
 //                                             {ExamCategoryData?.map(option => (
@@ -1522,7 +1522,7 @@ export default EditExam
 //                             <>
 //                                 <form className='p-3' onSubmit={handleSubmit}>
 //                                     <div className="mb-3">
-//                                         <label htmlFor="examCategory" className="form-label font14">Exam Name</label>
+//                                         <label htmlFor="examCategory" className="form-label font14">Exam Name / Category</label>
 //                                         <select className={`form-select font14 ${errors.examCategory && touched.examCategory ? 'border-1 border-danger' : ''}`} aria-label="Default select example" name='examCategory' id='examCategory' value={values.examCategory} onChange={(e)=> handleChange(e)} onBlur={handleBlur}>
 //                                             <option >--- Choose ---</option>
 //                                             {ExamCategoryData?.map(option => (

@@ -20,7 +20,6 @@ const Container = styled.div`
 
 
 `;
-
 const SidebarContainer = styled.div`
     flex-shrink: 0;
     width: ${(props) => (props.sidebarOpen ? '224px' : '64px')};
@@ -40,11 +39,13 @@ const SidebarContainer = styled.div`
 `;
 
 const MainContainer = styled.div`
-    width: ${(props) => (props.sidebarOpen ? '85%' : '96%')};
-    transition: all width 0.6s ease; 
+    /* margin-left: ${(props) => (props.sidebarOpen ? '224px' : '64px')}; */
+    width: calc(100% - ${(props) => (props.sidebarOpen ? '224px' : '64px')});
+    transition: margin-left 0.6s ease, width 0.6s ease; 
     background-color: #F2F3F6;
 
     @media screen and (max-width: 1000px) {
+        margin-left: 0;
         width: 100% !important;
     }
 `;

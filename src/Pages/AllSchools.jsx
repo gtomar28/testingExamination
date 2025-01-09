@@ -9,7 +9,7 @@ import ReactPaginate from 'react-paginate';
 import { useForm } from 'react-hook-form';
 
 const Container = styled.div`
-  
+  width: 100%;
   .scrollHide::-webkit-scrollbar{
     display: none !important;
   }
@@ -349,7 +349,7 @@ const AllSchools = () => {
             if (offcanvas) {
               offcanvas.hide();
             }
-          }, 1500);
+          }, 300);
         }
         else {
           setloaderState(false);
@@ -466,6 +466,10 @@ const AllSchools = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Backspace'){
+      if (searchKeyData.trim() === '') {
+        toast.error('Search key is empty');
+        return;
+      }
       getAllSchoolData();
     }
   };
@@ -474,9 +478,9 @@ const AllSchools = () => {
     <>
       <Container className='scrollHide'>
         { loaderState && ( <DataLoader /> ) }
-        <div className="container-fluid ps-3 pe-3 pt-2 pb-2">
+        <div className="container-fluid ps-3 pe-3 pt-2 pb-2 w-100">
           <div className="row pt-2">
-            <div className="col-lg-7 col-md-4 col-sm-12 flex-grow-1">
+            <div className="col-xl-6 col-lg-5 col-md-5 col-sm-12 flex-grow-1">
               <div className="row">
                 <nav className='breadcrumnav' aria-label="breadcrumb">
                   <ol className="breadcrumb">
@@ -487,11 +491,11 @@ const AllSchools = () => {
               </div>
               <div className="row mb-3 for-margin-top"><h2>School List</h2></div>
             </div>
-            <div className="col-lg-5 col-md-8 col-sm-12 mb-lg-0 mb-md-0 mb-3">
+            <div className="col-xl-6 col-lg-7 col-md-7 col-sm-12 mb-lg-0 mb-md-0 mb-3">
               <div className="row">
                 <div className="col-md-9 col-sm-6 col-8">
                   <div className="d-flex">
-                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" onChange={(e) => setSearchKeyData(e.target.value)} onKeyDown={handleKeyDown} />
+                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" value={searchKeyData} onChange={(e) => setSearchKeyData(e.target.value.trimStart())} onKeyDown={handleKeyDown} onPaste={(e) => { e.preventDefault(); const pastedValue = e.clipboardData.getData('text'); setSearchKeyData(pastedValue.trimStart()); }} />
                     <button className="btn searchButtons text-white" type="button" onClick={getAllSchoolData}><h2>Search</h2></button>
                   </div>
                 </div>
@@ -503,35 +507,36 @@ const AllSchools = () => {
               </div>
             </div>
           </div>
-
+        </div>
           {/* School Data Table */}
-          
+
+        <div className="container-fluid ps-3 pe-3 pt-2 pb-2">
           <div className="row ps-2 pe-2">
             <div className="overflow-scroll cardradius bg-white p-3">
               <table className="table align-middle overflow-scroll table-striped">
                 <thead>
                   <tr>
-                    <th><h2>#</h2></th>
-                    <th><h2>School name</h2></th>
-                    <th><h2>Address</h2></th>
-                    <th><h2>Phone</h2></th>
-                    <th><h2>Package <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th className='bolddText'><h2>Spe. Features</h2></th>
-                    <th><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                    <th><h2>Action</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>#</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>School name</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>Address</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>Phone</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>Package <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                    <th style={{ textWrap: 'nowrap'}} className='bolddText'><h2>Spe. Features</h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                    <th style={{ textWrap: 'nowrap'}}><h2>Action</h2></th>
                   </tr>
                 </thead>
                 <tbody>
                   {schoolData.map((item, index) => (
                     <tr key={item.id} className='my-bg-color align-middle'>
-                      <th className='greyText'><h3>{index + 1}</h3></th>
-                      <td className='greyText'><h3>{item.schoolName}</h3></td>
-                      <td className='greyText'><h3>{item.schoolAddress}</h3></td>
-                      <td className='greyText'><h3>{item.schoolPhone}</h3></td>
-                      <td className='greyText'><h3>{item.plans.planName}</h3></td>
-                      <td><h3>{(item.plans.usedAddons).length > 0 ? <span className='blueText text-decoration-none' data-bs-toggle="modal" data-bs-target="#specialFeaturesModal" style={{ cursor: 'pointer' }} onClick={(e) => setViewFeaturesData(item.plans.usedAddons)}>View Features</span> : <span className='blueText text-decoration-none text-center' style={{ cursor: 'pointer' }}>---</span>}</h3></td>
-                      <td>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
-                      <td>
+                      <th className='greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1}</h3></th>
+                      <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.schoolName}</h3></td>
+                      <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.schoolAddress}</h3></td>
+                      <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.schoolPhone}</h3></td>
+                      <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.plans.planName}</h3></td>
+                      <td style={{ textWrap: 'nowrap' }}><h3>{(item.plans.usedAddons).length > 0 ? <span className='blueText text-decoration-none' data-bs-toggle="modal" data-bs-target="#specialFeaturesModal" style={{ cursor: 'pointer' }} onClick={(e) => setViewFeaturesData(item.plans.usedAddons)}>View Features</span> : <span className='blueText text-decoration-none text-center' style={{ cursor: 'pointer' }}>---</span>}</h3></td>
+                      <td style={{ textWrap: 'nowrap' }}>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
+                      <td style={{ textWrap: 'nowrap' }}>
                         <div className="dropdown dropdownbtn">
                           <button className="btn btn-sm actionButtons dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>Action</span>
@@ -560,7 +565,7 @@ const AllSchools = () => {
               </div>
             </div>
           </div>
-
+        </div>
           {/* Edit School */}
           <div className="offcanvas offcanvas-end p-2" data-bs-backdrop="static" tabIndex="-1" id="Edit_staticBackdrop" aria-labelledby="staticBackdropLabel">
             <div className="offcanvas-header border-bottom border-2 p-1">
@@ -862,7 +867,6 @@ const AllSchools = () => {
           </div>
 
           <Toaster />
-        </div>
       </Container>
     </>
   )

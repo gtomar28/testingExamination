@@ -278,7 +278,7 @@ const AllStudents = () => {
               </div>
               <div className="col-md-4 col-sm-4 col-12">
                 <div className="d-flex">
-                  <input className="form-control formcontrolsearch font14" type="text" placeholder="Search" onChange={(e) => setSearchByKey(e.target.value)} onKeyDown={handleKeyDown} />
+                  <input className="form-control formcontrolsearch"type="text" placeholder="Search" value={searchByKey} onChange={(e) => setSearchByKey(e.target.value.trimStart())} onKeyDown={handleKeyDown} onCut={(e)=> {e.preventDefault(); const pastedValue = e.clipboardData.getData('text')}} onPaste={(e) => { e.preventDefault(); const pastedValue = e.clipboardData.getData('text'); setSearchByKey(pastedValue.trimStart()); }} />
                   <button className="btn searchhhButtons text-white font14" type="button" onClick={getAllStudentData}><h2>Search</h2></button>
                 </div>
                 {/* <form className="d-flex" role="search">

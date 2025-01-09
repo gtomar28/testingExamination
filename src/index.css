@@ -288,6 +288,21 @@ tr {
     height: 24px;
 }
 
+.closeModalButtons, .closeModalButtons:focus, .closeModalButtons:hover, .closeModalButtons:active {
+    background-color: var(--lightgreyColorBtn);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.btn-close {
+    width: 15px;
+    height: 15px;
+    font-size: 16px;
+    /* Adjust the font size as needed */
+}
+
 .CorrectSignButtons:hover,
 .CorrectSignButtons:focus {
     background-color: var(--lightgreyColorBtn);
@@ -367,6 +382,10 @@ tr {
     border-radius: 5px;
     width: 135px;
     height: 36px;
+}
+
+.textWrapClass{
+    text-wrap: 'nowrap' !important;
 }
 
 .addButtons3:hover,

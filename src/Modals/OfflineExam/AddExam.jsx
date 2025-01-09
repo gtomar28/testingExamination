@@ -167,7 +167,7 @@ const AddExam = ({ offlineExamState }) => {
                     <div className="row">
                         <form className='p-3' onSubmit={handleSubmit(AddNewOfflineExam)}>
                             <div className="mb-3">
-                                <label htmlFor="categoryId" className="form-label font14">Exam Name</label>
+                                <label htmlFor="categoryId" className="form-label font14">Exam Name / Category</label>
                                 <select id="categoryId" className={`form-select font14 ${errors.categoryId ? 'border-danger' : ''}`} {...register('categoryId', { required: 'Exam Category selection is required *' })}>
                                     <option value="">-- Select --</option>
                                     {ExamCategoryData.map((examCategory) => (

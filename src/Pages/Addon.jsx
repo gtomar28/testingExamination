@@ -170,22 +170,6 @@ const Addon = () => {
   };
 
 
-  const handleSearchInputChange = (e) => {
-    const value = e.target.value.trim();
-    setSearchKeyData(value);
-
-    // Only trigger API call if value changes meaningfully
-    if (value === '') {
-      if (searchKeyData !== '') {
-        // Fetch all data when clearing search input
-        getAllSpecialFeature();
-      }
-    } else {
-      // Perform search if there's a non-empty value
-      getAllSpecialFeature();
-    }
-  };
-
   const getAllSpecialFeature = async () => {
     try {
       setloaderState(true);
@@ -341,7 +325,7 @@ const Addon = () => {
         { loaderState && ( <DataLoader /> ) }
         <div className="container-fluid ps-3 pe-3 pt-2 pb-2">
           <div className="row pt-2">
-            <div className="col-lg-7 col-md-4 col-sm-12 flex-grow-1">
+            <div className="col-xl-6 col-lg-5 col-md-5 col-sm-12 flex-grow-1">
               <div className="row">
                 <nav className='breadcrumnav' aria-label="breadcrumb">
                   <ol className="breadcrumb">
@@ -352,11 +336,11 @@ const Addon = () => {
               </div>
               <div className="row mb-3 for-margin-top"><h2>Manage Feature</h2></div>
             </div>
-            <div className="col-lg-5 col-md-8 col-sm-12 mb-lg-0 mb-md-0 mb-3">
+            <div className="col-xl-6 col-lg-7 col-md-7 col-sm-12 mb-lg-0 mb-md-0 mb-3">
               <div className="row">
                 <div className="col-md-9 col-sm-6 col-8">
                   <div className="d-flex">
-                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" onKeyDown={handleKeyDown} onChange={handleSearchInputChange} />
+                    <input className="form-control formcontrolsearch" type="text" placeholder="Search" value={searchKeyData} onChange={(e) => setSearchKeyData(e.target.value.trimStart())} onKeyDown={handleKeyDown} onPaste={(e) => { e.preventDefault(); const pastedValue = e.clipboardData.getData('text'); setSearchKeyData(pastedValue.trimStart()); }} />
                     <button className="btn searchButtons text-white" type="button" onClick={getAllSpecialFeature}><h2>Search</h2></button>
                   </div>
                 </div>
@@ -376,19 +360,19 @@ const Addon = () => {
                   <table className="table align-middle table-striped">
                     <thead>
                       <tr>
-                        <th><h2>#</h2></th>
-                        <th><h2>Feature Name</h2></th>
-                        <th className='text-center'><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
-                        <th className='text-end'><h2>Action</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>#</h2></th>
+                        <th style={{ textWrap: 'nowrap'}}><h2>Feature Name</h2></th>
+                        <th className=' text-center' style={{ textWrap: 'nowrap'}}><h2>Status <img src="./images/StatusArrow.svg" alt="" /></h2></th>
+                        <th className=' text-end' style={{ textWrap: 'nowrap'}}><h2>Action</h2></th>
                       </tr>
                     </thead>
                     <tbody>
                       {allSpeFeature.map((item, index) => (
                         <tr key={item.planFeatureId}>
-                          <th className='greyText'><h3>{index + 1}</h3></th>{/*  + (pageNo - 1) * pageSize */}
-                          <td className='greyText'><h3>{item.featureName}</h3></td>
-                          <td className='text-center'>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
-                          <td className='text-end'>
+                          <th className=' greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1}</h3></th>{/*  + (pageNo - 1) * pageSize */}
+                          <td className=' greyText' style={{ textWrap: 'nowrap'}}><h3>{item.featureName}</h3></td>
+                          <td className=' text-center' style={{ textWrap: 'nowrap'}}>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
+                          <td className=' text-end' style={{ textWrap: 'nowrap'}}>
                             <div className="dropdown">
                               <button className="btn btn-sm actionButtons dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span>Action</span>

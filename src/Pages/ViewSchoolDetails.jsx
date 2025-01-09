@@ -123,8 +123,8 @@ const ViewSchoolDetails = () => {
                   </div>
                 </div>
                 <p className='text-center p-3'>
-                  <button className='btn printButton text-white' type='button'>Print</button>
-                  <Link className='btn cancelButtons ms-3' to='/'>Cancel</Link>
+                  {/* <button className='btn printButton text-white' type='button'>Print</button> */}
+                  <Link className='btn cancelButtons ms-3' to='/'>Back</Link>
                 </p>
               </div>
             </div>
