@@ -82,10 +82,10 @@ const Navbar = () => {
                                 </button>
                             </div>
                             <div className="p-2 align-self-center">
-                                <form className="d-flex" role="search">
+                                {/* <form className="d-flex" role="search">
                                     <input className="form-control formcontrolsearch font14" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchByKey(e.target.value)} />
                                     <button className="btn searchhhButtons text-white " type="button"><span className='font14'>Search</span></button>
-                                </form>
+                                </form> */}
                             </div>
                         </div>
                     </div>

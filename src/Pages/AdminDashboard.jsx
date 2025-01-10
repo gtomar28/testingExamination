@@ -236,7 +236,7 @@ const AdminDashboard = () => {
                   <div className="d-flex pe-0">
                     <div className="w-100"><h1 className='orangeText'>{DashData?.totalVehicle}</h1></div>
                     {/* <div className="w-100"><h1 className='orangeText'>{DashData.totalSchool}</h1></div> */}
-                    <div className="flex-shrink-1 p-1"><Link to='/teacher'><img src="./images/Vector.svg" alt="" height={20} /></Link></div>
+                    <div className="flex-shrink-1 p-1"><Link to='/vehicle'><img src="./images/Vector.svg" alt="" height={20} /></Link></div>
                   </div>
                 </div>
               </div>
@@ -253,7 +253,7 @@ const AdminDashboard = () => {
                   <div className="d-flex pe-0">
                     <div className="w-100"><h1 className='orangeText'>{DashData?.totalDriver}</h1></div>
                     {/* <div className="w-100"><h1 className='orangeText'>{DashData.totalSchool}</h1></div> */}
-                    <div className="flex-shrink-1 p-1"><Link to='/allStudent'><img src="./images/Vector.svg" alt="" height={20} /></Link></div>
+                    <div className="flex-shrink-1 p-1"><Link to='/driver'><img src="./images/Vector.svg" alt="" height={20} /></Link></div>
                   </div>
                 </div>
               </div>

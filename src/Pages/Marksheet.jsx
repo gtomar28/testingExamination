@@ -272,7 +272,7 @@ const Marksheet = () => {
                                     >
                                         <option value="">--- Choose ---</option>
                                         {allClassData?.map((option, index) => (
-                                            <option key={option.classId} value={`${option?.classId}, ${option.classNo}`}>
+                                            <option key={option.classId} value={option?.classId}>
                                                 {option.classNo}
                                             </option>
                                         ))}

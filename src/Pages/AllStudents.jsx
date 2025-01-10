@@ -225,6 +225,10 @@ const AllStudents = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Backspace') {
+      if (searchKeyData.trim() === '') {
+        toast.error('Search key is empty');
+        return;
+      }
       getAllStudentData();
     }
   };
@@ -309,7 +313,7 @@ const AllStudents = () => {
                   <tbody>
                     {studentData.map((item, index) => (
                       <tr key={item.id} className='my-bg-color align-middle'>
-                        <th className='greyText'><h3>{index + 1}</h3></th>
+                        <th className='greyText'><h3>{index + 1 + (currentPage - 1) * pageSize}</h3></th>
                         <td className='greyText'><h3>{item.studentId}</h3></td>
                         <td className='greyText'><h3>{item.studentName}</h3></td>
                         <td className='greyText'><h3>{item.fatherName}</h3></td>

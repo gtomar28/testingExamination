@@ -312,7 +312,11 @@ const Addon = () => {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Backspace'){
+    if (e.key === 'Backspace') {
+      if (searchKeyData.trim() === '') {
+        toast.error('Search key is empty');
+        return;
+      }
       getAllSpecialFeature();
     }
   };
@@ -369,7 +373,7 @@ const Addon = () => {
                     <tbody>
                       {allSpeFeature.map((item, index) => (
                         <tr key={item.planFeatureId}>
-                          <th className=' greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1}</h3></th>{/*  + (pageNo - 1) * pageSize */}
+                          <th className=' greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1 + (currentPage - 1) * pageSize}</h3></th>{/*  + (pageNo - 1) * pageSize */}
                           <td className=' greyText' style={{ textWrap: 'nowrap'}}><h3>{item.featureName}</h3></td>
                           <td className=' text-center' style={{ textWrap: 'nowrap'}}>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>
                           <td className=' text-end' style={{ textWrap: 'nowrap'}}>
@@ -923,7 +927,7 @@ export default Addon
 //                 <tbody>
 //                   {allSpeFeature.map((item, index) => (
 //                     <tr key={item.planFeatureId}>
-//                       <th className='greyText'><h3>{index + 1}</h3></th>
+//                       <th className='greyText'><h3>{index + 1 + (currentPage - 1) * pageSize}</h3></th>
 //                       <td className='greyText'><h3>{item.featureName}</h3></td>
 //                       {/* <td className='greyText'><h3>{item.feaPermission.map(permission => permission.perName).join(', ')}</h3></td> */}
 //                       <td className='text-center'>{item.status ? <h3 className='activeText'> Active </h3> : <h3 className='deactiveText'> InActive </h3>}</td>

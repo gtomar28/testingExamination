@@ -128,7 +128,7 @@ const AddSchool = () => {
       formData.append('schoolPhone', data?.schoolPhone);
       formData.append('planId', data?.planId);
       formData.append('schoolDis', data?.schoolDis);
-      formData.append('schoolLogo', data?.schoolLogo);
+      formData.append('schoolLogo', data?.schoolLogo[0]);
       formData.append('adminName', data?.adminName);
       formData.append('gender', data?.gender);
       formData.append('adminAddress', data?.adminAddress);
@@ -228,7 +228,8 @@ const AddSchool = () => {
                         </div>
                         <div className="col-md-6 mb-3">
                           <label htmlFor="schoolLogo" className="form-label font14">School Logo</label>
-                          <input id="schoolLogo" type="file" className={`form-control font14 ${errors.schoolLogo ? 'border-danger' : ''}`} accept="image/*" {...register('schoolLogo', { required: 'School Logo is required *', validate: (value) => { if (value.length > 0 && (value[0].size < 10240 || value[0].size > 204800)) { return 'File size must be between 10 KB to 200 KB'; } return true; }, })} />
+                          {/* <input id="schoolLogo" type="file" className={`form-control font14 ${errors.schoolLogo ? 'border-danger' : ''}`} accept="image/*" {...register('schoolLogo', { required: 'School Logo is required *', validate: (value) => { if (value.length > 0 && (value[0].size < 10240 || value[0].size > 204800)) { return 'File size must be between 10 KB to 200 KB'; } return true; }, })} /> */}
+                          <input id="schoolLogo" type="file" className={`form-control font14 ${errors.schoolLogo ? 'border-danger' : ''}`} accept='.jpg, .jpeg, .png' {...register('schoolLogo', { required: 'School Logo is required *', validate: value => { if (value.length > 0 && (value[0].size < 10240 || value[0].size > 204800)) { return 'File size must be between 10 KB to 200 KB'; } return true; } })} />
                           {errors.schoolLogo && <p className="font12 text-danger">{errors.schoolLogo.message}</p>}
                         </div>
                       </div>

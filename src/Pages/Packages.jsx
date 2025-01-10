@@ -412,7 +412,11 @@ const Packages = () => {
   }
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Backspace'){
+    if (e.key === 'Backspace') {
+      if (searchKeyData.trim() === '') {
+        toast.error('Search key is empty');
+        return;
+      }
       getAllPlans();
     }
   };
@@ -477,7 +481,7 @@ const Packages = () => {
                     <tbody>
                       {AllPlan.map((item, index) => (
                         <tr key={item.planId} className={`my-bg-color align-middle`}>
-                          <th className='greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1}</h3></th>
+                          <th className='greyText' style={{ textWrap: 'nowrap'}}><h3>{index + 1 + (currentPage - 1) * pageSize}</h3></th>
                           <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.planName}</h3></td>
                           <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.price}</h3></td>
                           <td className='greyText' style={{ textWrap: 'nowrap'}}><h3>{item.type}</h3></td>
@@ -751,7 +755,7 @@ const Packages = () => {
                     <tbody>
                       {FeaturePackData.map((item, index) => (
                         <tr key={item.id} className=' align-middle'>
-                          <td><span>{index + 1}.</span></td>
+                          <td><span>{index + 1 + (currentPage - 1) * pageSize}.</span></td>
                           <td><span>{item.featureName}</span></td>
                           <td>{item.status ? <span className='activeText'>Active</span> : <span className='deactiveText'>InActive</span>}</td>
                         </tr>
