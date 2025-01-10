@@ -139,7 +139,7 @@ const ExamCategory = () => {
     };
 
     const handleAddNewExam = () => {
-        setAddValue(true);
+        // setAddValue(true);
     }
 
     // Get all Exam category data for table
@@ -350,7 +350,7 @@ const ExamCategory = () => {
                                                                     </button>
                                                                 </li>
                                                                 <li>
-                                                                    <button className="dropdown-item greyText" type="button" data-bs-toggle="offcanvas" data-bs-target="#Delete_staticBackdrop" aria-controls="Delete_staticBackdrop" onClick={() => setDeleteExamCategoryId(item.categoryId)}>
+                                                                    <button className="dropdown-item greyText" type="button" data-bs-target="#Delete_staticBackdrop" aria-controls="Delete_staticBackdrop" onClick={() => setDeleteExamCategoryId(item.categoryId)}>
                                                                         Delete
                                                                     </button>
                                                                 </li>
@@ -420,7 +420,7 @@ const ExamCategory = () => {
                                 </div>
                                 <p className='text-center p-3'>
                                     <button className='btn updateButtons text-white' type='submit' >Update</button>
-                                    <button className='btn cancelButtons ms-3' type='button' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
+                                    <button className='btn cancelButtons ms-3' type='button'>Cancel</button>
                                 </p>
                             </form>
                         </div>
@@ -448,7 +448,7 @@ const ExamCategory = () => {
                             <p className='text-center warningText p-2'><input className="form-check-input formdltcheck me-2" type="checkbox" value="" id="flexCheckChecked" onChange={(e) => setIsChecked(e.target.checked)} />I Agree to delete the Exam Category Data</p>
                             <p className='text-center p-3'>
                                 <button className='btn deleteButtons text-white' onClick={() => DeleteExamCategory(deleteExamCategoryId)}>Delete</button>
-                                <button className='btn dltcancelButtons ms-3' data-bs-dismiss="offcanvas" aria-label="Close">Cancel</button>
+                                <button className='btn dltcancelButtons ms-3'>Cancel</button>
                             </p>
                         </div>
                     </div>

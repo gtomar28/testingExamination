@@ -24,7 +24,7 @@ const AddExamCategory = ({ setAddedExam }) => {
                 if (response?.data?.status === 'success') {
                     setloaderState(false);
                     toast.success(response?.data?.message);
-                    setAddedExam(true)
+                    // setAddedExam(true)
                     setTimeout(() => {
                         setValue('examCategoryName', '')
                     }, 500);
@@ -59,7 +59,7 @@ const AddExamCategory = ({ setAddedExam }) => {
                     </div>
                     <p className='text-center p-3'>
                         <button className='btn updateCategoryButtons text-white' type='submit'>Create Category</button>
-                        <button className='btn cancelButtons ms-3' type='button' data-bs-dismiss="offcanvas" aria-label="Close" >Cancel</button>
+                        <button className='btn cancelButtons ms-3' type='button' aria-label="Close" >Cancel</button>
                     </p>
                 </form>
             </div>

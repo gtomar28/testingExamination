@@ -406,7 +406,7 @@ const OfflineExam = () => {
                                 </div>
                                 <p className='text-center p-3'>
                                     <button type='button' className='btn addCategoryButtons text-white' onClick={getSearchedOfflineExamData}>Search</button>
-                                    <button type='button' className='btn cancelButtons ms-3' onClick={() => { setClassId(''), setSubjectId(''), getAllOfflineExamData()}}>Cancel</button>
+                                    <button type='button' className='btn cancelButtons ms-3'>Cancel</button>
                                 </p>
                             </form>
                             <div className="row">
